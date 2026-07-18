@@ -12,7 +12,7 @@ const config: Config = {
   },
 
   url: 'https://lumimoon.cn',
-  baseUrl: '/',
+  baseUrl: '/qiyue-tanwei-website/',
 
   organizationName: 'lumimoon-robotics',
   projectName: 'qiyue-tanwei-website',
