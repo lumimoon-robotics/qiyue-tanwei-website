@@ -1,0 +1,138 @@
+/**
+ * 启月探微 — 品牌定制样式
+ * 深蓝/青色调，科技感设计，灵感源自 Seeed Studio Wiki
+ */
+
+/* ---- Infima 主色调覆写 ---- */
+:root {
+  --ifm-color-primary: #1a5276;
+  --ifm-color-primary-dark: #174a6a;
+  --ifm-color-primary-darker: #164664;
+  --ifm-color-primary-darkest: #123a53;
+  --ifm-color-primary-light: #1d5a82;
+  --ifm-color-primary-lighter: #1e5e88;
+  --ifm-color-primary-lightest: #226a99;
+  --ifm-color-primary-contrast-background: #eaf3f9;
+  --ifm-color-primary-contrast-foreground: #0d2b3e;
+
+  --ifm-color-secondary: #2ecc71;
+  --ifm-color-secondary-dark: #29b765;
+  --ifm-color-secondary-darker: #27ad60;
+  --ifm-color-secondary-darkest: #208f4f;
+  --ifm-color-secondary-light: #33d57a;
+  --ifm-color-secondary-lighter: #3dd782;
+  --ifm-color-secondary-lightest: #5cde96;
+
+  --ifm-color-accent: #e67e22;
+  --ifm-color-accent-dark: #d0711d;
+  --ifm-color-accent-darker: #c46a1b;
+  --ifm-color-accent-darkest: #a15816;
+  --ifm-color-accent-light: #e88b35;
+  --ifm-color-accent-lighter: #ea9241;
+  --ifm-color-accent-lightest: #eda55f;
+
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --ifm-font-family-base: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --ifm-heading-font-family: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
+  --ifm-heading-font-weight: 700;
+  --ifm-navbar-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  --ifm-global-radius: 0.5rem;
+}
+
+/* ---- 暗色模式 ---- */
+[data-theme='dark'] {
+  --ifm-color-primary: #3498db;
+  --ifm-color-primary-dark: #2e8ece;
+  --ifm-color-primary-darker: #2b86c2;
+  --ifm-color-primary-darkest: #246fa0;
+  --ifm-color-primary-light: #48a4df;
+  --ifm-color-primary-lighter: #53aae1;
+  --ifm-color-primary-lightest: #72bbe6;
+  --ifm-color-primary-contrast-background: #0d2b3e;
+  --ifm-color-primary-contrast-foreground: #d6eaf8;
+
+  --ifm-color-secondary: #2ecc71;
+  --ifm-color-secondary-dark: #29b765;
+  --ifm-color-secondary-darker: #27ad60;
+  --ifm-color-secondary-darkest: #208f4f;
+  --ifm-color-secondary-light: #3cd681;
+  --ifm-color-secondary-lighter: #47d989;
+  --ifm-color-secondary-lightest: #6ce1a2;
+
+  --ifm-color-accent: #f39c12;
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ---- 全局样式 ---- */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ---- 导航栏 ---- */
+.navbar {
+  backdrop-filter: blur(8px);
+}
+
+.navbar__title {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ---- 页脚 ---- */
+.footer--dark {
+  --ifm-footer-background-color: #0d2b3e;
+  --ifm-footer-color: #cbdbe8;
+  --ifm-footer-link-color: #85c1e9;
+  --ifm-footer-link-hover-color: #3498db;
+  --ifm-footer-title-color: #ffffff;
+}
+
+/* ---- 文档区域 ---- */
+.markdown h1 {
+  font-size: 2.25rem;
+  border-bottom: 2px solid var(--ifm-color-primary-lightest);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.markdown h2 {
+  font-size: 1.75rem;
+  margin-top: 2.5rem;
+  border-left: 4px solid var(--ifm-color-primary);
+  padding-left: 1rem;
+}
+
+.markdown h3 {
+  font-size: 1.35rem;
+  margin-top: 2rem;
+}
+
+/* ---- 特性/产品卡片 ---- */
+.card {
+  border-radius: var(--ifm-global-radius);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* ---- Badge / 标签 ---- */
+.badge--accent {
+  --ifm-badge-background-color: var(--ifm-color-accent);
+  --ifm-badge-border-color: var(--ifm-color-accent);
+  --ifm-badge-color: #fff;
+}
+
+/* ---- 响应式 ---- */
+@media screen and (max-width: 996px) {
+  .markdown h1 {
+    font-size: 1.75rem;
+  }
+  .markdown h2 {
+    font-size: 1.4rem;
+  }
+}

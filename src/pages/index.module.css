@@ -1,0 +1,356 @@
+/**
+ * 启月探微 主页样式 — Qiyue Robotics Homepage
+ */
+
+/* ================================================================
+   英雄区 Hero
+   ================================================================ */
+.heroBanner {
+  padding: 0;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, #0d2b3e 0%, #1a3a52 40%, #1a5276 100%);
+  min-height: 520px;
+  display: flex;
+  align-items: center;
+}
+
+.heroContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 5rem 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.heroContent {
+  flex: 1;
+  max-width: 600px;
+}
+
+.heroBadge {
+  display: inline-block;
+  background: rgba(46, 204, 113, 0.15);
+  color: #2ecc71;
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  padding: 0.3rem 1rem;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 1.25rem;
+  letter-spacing: 0.02em;
+}
+
+.heroTitle {
+  font-size: 3.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.heroSubtitle {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.heroCta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.heroCta a:first-child {
+  --ifm-button-background-color: #2ecc71;
+  --ifm-button-border-color: #2ecc71;
+  --ifm-button-color: #0d2b3e;
+  font-weight: 700;
+}
+
+.heroCta a:last-child {
+  --ifm-button-border-color: rgba(255,255,255,0.3);
+  --ifm-button-color: #ffffff;
+  --ifm-button-background-color: transparent;
+}
+
+.heroCta a:last-child:hover {
+  --ifm-button-background-color: rgba(255,255,255,0.1);
+  --ifm-button-border-color: rgba(255,255,255,0.5);
+}
+
+/* 装饰性圆形 */
+.heroVisual {
+  flex: 0 0 320px;
+  height: 320px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroOrb {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(46, 204, 113, 0.2) 0%, rgba(52, 152, 219, 0.08) 50%, transparent 70%);
+  position: absolute;
+  animation: float 6s ease-in-out infinite;
+}
+
+.heroOrbSecondary {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(52, 152, 219, 0.15) 0%, transparent 70%);
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  animation: float 8s ease-in-out 1s infinite;
+}
+
+.heroOrbTertiary {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(243, 156, 18, 0.12) 0%, transparent 70%);
+  position: absolute;
+  bottom: 30px;
+  left: 50px;
+  animation: float 7s ease-in-out 2s infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-18px) scale(1.04); }
+}
+
+/* ================================================================
+   产品区 Products
+   ================================================================ */
+.productSection {
+  padding: 5rem 0;
+  background: var(--ifm-background-color);
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.sectionLabel {
+  display: inline-block;
+  background: var(--ifm-color-primary-contrast-background);
+  color: var(--ifm-color-primary);
+  padding: 0.3rem 1rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 1rem;
+}
+
+.sectionTitle {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 0.75rem;
+  color: var(--ifm-heading-color);
+}
+
+.sectionDesc {
+  font-size: 1.1rem;
+  color: var(--ifm-color-emphasis-600);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* 产品卡片 */
+.productCard {
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  text-decoration: none !important;
+  color: inherit;
+  height: 100%;
+}
+
+.productCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.13);
+  text-decoration: none;
+  color: inherit;
+}
+
+.productCardGradient {
+  height: 8px;
+  width: 100%;
+}
+
+.productCardBody {
+  padding: 2rem;
+}
+
+.productIcon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.productTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.productTagline {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  opacity: 0.85;
+}
+
+.productDesc {
+  font-size: 0.95rem;
+  color: var(--ifm-color-emphasis-600);
+  line-height: 1.65;
+  margin-bottom: 1rem;
+}
+
+.productCta {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+}
+
+/* ================================================================
+   亮点区 Highlights
+   ================================================================ */
+.highlightsSection {
+  padding: 5rem 0;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.highlightCard {
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  background: var(--ifm-background-color);
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.highlightCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.highlightTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.highlightDesc {
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-600);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ================================================================
+   CTA 区
+   ================================================================ */
+.ctaSection {
+  padding: 5rem 0;
+  background: linear-gradient(135deg, #0d2b3e 0%, #1a5276 100%);
+}
+
+.ctaInner {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.ctaTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.ctaDesc {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ctaButtons a:first-child {
+  --ifm-button-background-color: #2ecc71;
+  --ifm-button-border-color: #2ecc71;
+  --ifm-button-color: #0d2b3e;
+  font-weight: 700;
+}
+
+.ctaButtons a:last-child {
+  --ifm-button-background-color: transparent;
+  --ifm-button-border-color: rgba(255,255,255,0.3);
+  --ifm-button-color: #ffffff;
+}
+
+.ctaButtons a:last-child:hover {
+  --ifm-button-background-color: rgba(255,255,255,0.1);
+}
+
+/* ================================================================
+   响应式
+   ================================================================ */
+@media screen and (max-width: 996px) {
+  .heroContainer {
+    flex-direction: column;
+    text-align: center;
+    padding: 3rem 1.5rem;
+  }
+
+  .heroContent {
+    max-width: 100%;
+  }
+
+  .heroTitle {
+    font-size: 2.25rem;
+  }
+
+  .heroCta {
+    justify-content: center;
+  }
+
+  .heroVisual {
+    display: none;
+  }
+
+  .sectionTitle {
+    font-size: 1.75rem;
+  }
+
+  .ctaTitle {
+    font-size: 1.5rem;
+  }
+}

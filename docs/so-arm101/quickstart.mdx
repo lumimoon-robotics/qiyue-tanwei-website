@@ -1,0 +1,134 @@
+---
+sidebar_position: 2
+title: 快速开始
+description: SO-ARM101 机械臂快速入门 — 环境搭建与第一个控制 Demo
+keywords: [SO-ARM101, 快速开始, 教程, Python, ROS2]
+last_update:
+  date: 2026-07-18
+  author: Qiyue Team
+---
+
+# ⚡ 快速开始
+
+按照以下步骤，在 15 分钟内让你的 SO-ARM101 动起来。
+
+## 1. 环境要求
+
+- **操作系统**: Ubuntu 22.04 / macOS 14+ / Windows 11 (WSL2)
+- **Python**: 3.10 或更高版本
+- **ROS2**: Humble Hawksbill（可选，用于高级功能）
+
+## 2. 硬件连接
+
+```
+┌──────────────┐     USB Type-C      ┌──────────────┐
+│  SO-ARM101   │ ◄──────────────────► │    电脑      │
+│  机械臂      │                      │  (PC/Laptop) │
+└──────┬───────┘                      └──────────────┘
+       │
+       │ DC 12V
+       ▼
+┌──────────────┐
+│   电源适配器  │
+└──────────────┘
+```
+
+1. 将电源适配器连接到机械臂底座
+2. 使用 USB Type-C 线连接机械臂与电脑
+3. 接通电源，等待机械臂上电自检（LED 由红转绿）
+
+## 3. 安装 SDK
+
+```bash
+# 创建虚拟环境（推荐）
+python3 -m venv so-arm101-env
+source so-arm101-env/bin/activate
+
+# 安装 SO-ARM101 Python SDK
+pip install so-arm101-sdk
+
+# 验证安装
+python -c "import so_arm101; print(so_arm101.__version__)"
+```
+
+## 4. 第一个 Demo
+
+创建一个 Python 脚本 `hello_arm.py`：
+
+```python
+#!/usr/bin/env python3
+""" SO-ARM101 Hello World — 让机械臂动起来 """
+
+from so_arm101 import ArmController
+import time
+
+# 初始化机械臂（自动检测串口）
+arm = ArmController(auto_connect=True)
+
+print(f"已连接: {arm.get_device_info()}")
+
+# 回零位
+print("回零位...")
+arm.move_home()
+time.sleep(2)
+
+# 控制各个关节运动
+print("关节运动演示...")
+arm.move_joint(joint_id=1, angle=45, speed=30)
+time.sleep(1)
+arm.move_joint(joint_id=2, angle=30, speed=30)
+time.sleep(1)
+arm.move_joint(joint_id=3, angle=-30, speed=30)
+time.sleep(1)
+
+# 末端直线运动（笛卡尔空间）
+print("末端直线运动...")
+arm.move_linear(x=0.2, y=0.1, z=0.15, speed=50)
+time.sleep(2)
+
+# 夹爪控制
+print("夹爪演示...")
+arm.gripper_open()
+time.sleep(1)
+arm.gripper_close()
+time.sleep(1)
+
+# 回零并断开
+arm.move_home()
+time.sleep(2)
+arm.disconnect()
+print("✅ Demo 完成！")
+```
+
+运行：
+
+```bash
+python hello_arm.py
+```
+
+## 5. ROS2 环境（可选）
+
+```bash
+# 创建工作空间
+mkdir -p ~/so-arm101_ws/src
+cd ~/so-arm101_ws/src
+
+# 克隆 ROS2 包
+git clone https://github.com/qiyue-robotics/so-arm101_ros2.git
+
+# 编译
+cd ~/so-arm101_ws
+colcon build --symlink-install
+source install/setup.bash
+
+# 启动 Gazebo 仿真（无需实物机械臂）
+ros2 launch so_arm101_description gazebo.launch.py
+
+# 启动 MoveIt 运动规划
+ros2 launch so_arm101_moveit_config demo.launch.py
+```
+
+## 📖 下一步
+
+- [产品概述](./overview) — 了解完整技术规格
+- [常见问题](./faq) — 遇到问题？查看 FAQ

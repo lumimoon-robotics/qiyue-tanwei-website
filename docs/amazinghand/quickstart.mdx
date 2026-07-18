@@ -1,0 +1,124 @@
+---
+sidebar_position: 2
+title: 快速开始
+description: AmazingHand 灵巧手快速入门 — 安装、通信配置与抓取 Demo
+keywords: [AmazingHand, 快速开始, 触觉, 抓取, ROS2]
+last_update:
+  date: 2026-07-18
+  author: Qiyue Team
+---
+
+# ⚡ 快速开始
+
+在 15 分钟内完成 AmazingHand 的安装与第一次抓取。
+
+## 1. 环境要求
+
+- **操作系统**: Ubuntu 22.04 / macOS 14+
+- **Python**: 3.10+
+- **硬件**: CAN 接口或 USB-CAN 转换器
+
+## 2. 机械安装
+
+```
+┌────────────────┐
+│   机械臂末端    │
+│   (法兰接口)   │
+└───────┬────────┘
+        │ 螺栓固定 (4×M4)
+┌───────▼────────┐
+│  安装法兰      │
+│  ┌─────────┐   │
+│  │ 控制板  │   │
+│  └─────────┘   │
+│  ┌─────────┐   │
+│  │AmazingHand│  │ ← 灵巧手本体
+│  │          │   │
+│  │ 🤚 ✋ ✊  │   │
+│  └─────────┘   │
+└────────────────┘
+```
+
+1. 将安装法兰固定到机械臂末端（4 颗 M4 螺栓）
+2. 将灵巧手本体拧紧到法兰上
+3. 连接电源线与 CAN 通信线
+
+## 3. 通信配置
+
+```bash
+# 安装 Python SDK
+pip install amazinghand-sdk
+
+# 检查 CAN 连接（Linux）
+ip link set can0 up type can bitrate 1000000
+candump can0
+```
+
+## 4. 第一个抓取 Demo
+
+```python
+#!/usr/bin/env python3
+""" AmazingHand 抓取演示 """
+
+from amazinghand_sdk import AmazingHand
+import time
+
+# 初始化
+hand = AmazingHand(interface="can0", hand_id=1)
+hand.enable()
+print(f"已连接: {hand.get_info()}")
+
+# 校准
+hand.calibrate()
+print("✅ 校准完成")
+
+# 张开手掌
+hand.set_grasp("open")
+time.sleep(1)
+
+# 三指捏取（拇指 + 食指 + 中指）
+hand.set_grasp("pinch", force=3.0)
+time.sleep(2)
+print(f"触觉反馈: {hand.get_tactile_data()}")
+
+# 力量抓取（五指包络）
+hand.set_grasp("power", force=8.0)
+time.sleep(2)
+
+# 松开
+hand.set_grasp("open")
+time.sleep(1)
+
+# 读取触觉阵列
+tactile = hand.get_tactile_data()
+for finger_id, data in tactile.items():
+    print(f"手指 {finger_id}: 最大压力 {data['max_pressure']:.2f}N")
+
+# 单关节控制
+hand.move_joint(finger="index", joint=1, angle=45)
+hand.move_joint(finger="thumb", joint=0, angle=60)
+
+hand.disable()
+print("✅ Demo 完成")
+```
+
+## 5. ROS2 控制（可选）
+
+```bash
+# 安装 ROS2 包
+sudo apt install ros-humble-amazinghand-driver
+
+# 启动驱动节点
+ros2 launch amazinghand_driver hand.launch.py interface:=can0
+
+# 发送抓取指令
+ros2 action send_goal /amazinghand/grasp amazinghand_msgs/action/Grasp \
+  "{grasp_type: 'pinch', force: 5.0}"
+
+# 查看触觉数据
+ros2 topic echo /amazinghand/tactile
+```
+
+## 📖 下一步
+
+- [产品概述](./overview) — 了解完整技术规格与参数

@@ -1,0 +1,97 @@
+---
+sidebar_position: 2
+title: 快速开始
+description: Xlerobot 快速入门 — 激活、网络配置、目标抓取 Demo
+keywords: [Xlerobot, 快速开始, 模仿学习, 目标抓取]
+last_update:
+  date: 2026-07-18
+  author: Qiyue Team
+---
+
+# ⚡ 快速开始
+
+初次使用 Xlerobot？按照以下步骤唤醒它。
+
+## 1. 激活与开机
+
+1. **放置底座** — 将 Xlerobot 放置在平整地面，连接充电底座电源
+2. **安装 App** — 手机扫描包装二维码，下载 Xlerobot App（iOS/Android）
+3. **配网** — 打开 App，扫描机器人摄像头显示的二维码完成 Wi-Fi 配网
+4. **唤醒** — 长按机器人胸前按钮 3 秒，或语音说"Xlerobot"
+
+## 2. 语音指令测试
+
+Xlerobot 支持自然语言指令，试试以下命令：
+
+```
+💬 "Xlerobot，把桌上的红色杯子拿给我"
+💬 "Xlerobot，清扫厨房台面"
+💬 "Xlerobot，帮我把沙发上的衣服叠起来"
+💬 "Xlerobot，去充电"
+```
+
+## 3. 遥操作示教
+
+通过遥操作采集数据，让 Xlerobot 学习新技能：
+
+```python
+#!/usr/bin/env python3
+""" Xlerobot 数据采集与训练示例 """
+
+from xlerobot_sdk import Xlerobot, DataCollector
+
+# 连接机器人
+robot = Xlerobot(host="xlerobot.local")
+
+# 启动数据采集模式
+collector = DataCollector(robot)
+
+# 开始录制遥操作轨迹
+collector.start_recording(task_name="pick_up_cup")
+print("🎥 录制中... 请操作主手完成一次'拿起杯子'的动作")
+
+# （此时通过遥操作主手演示动作）
+
+collector.stop_recording()
+print(f"✅ 已保存轨迹，共 {collector.frame_count} 帧")
+
+# 训练新技能
+from xlerobot_sdk import SkillTrainer
+
+trainer = SkillTrainer()
+trainer.add_demo("pick_up_cup", collector.get_trajectory())
+model = trainer.train(epochs=50)
+model.save("pick_up_cup.skill")
+
+# 部署并执行
+robot.load_skill("pick_up_cup.skill")
+robot.execute_skill("pick_up_cup")
+```
+
+## 4. API 编程控制
+
+```python
+from xlerobot_sdk import Xlerobot
+
+robot = Xlerobot(host="xlerobot.local")
+
+# 导航到指定位置
+robot.navigate_to("kitchen")
+
+# 识别并抓取物体
+objects = robot.detect_objects()
+cup = robot.find_object("red cup")
+if cup:
+    robot.pick(cup)
+    robot.place(x=0.5, y=0.3, z=0.8)
+
+# 执行预训练技能
+robot.execute_skill("clean_desk")
+robot.execute_skill("fold_laundry")
+
+print("✅ 任务完成")
+```
+
+## 📖 下一步
+
+- [产品概述](./overview) — 了解完整功能与规格参数

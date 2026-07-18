@@ -1,0 +1,80 @@
+---
+sidebar_position: 5
+title: 常见问题
+description: SO-ARM101 机械臂常见问题与故障排查
+keywords: [SO-ARM101, FAQ, 故障排查, 常见问题]
+last_update:
+  date: 2026-07-18
+  author: Qiyue Team
+---
+
+# ❓ 常见问题
+
+## 连接问题
+
+<details>
+<summary><strong>Q: 机械臂无法连接，串口检测不到？</strong></summary>
+
+**排查步骤**：
+
+1. 检查 USB 线是否插紧，尝试更换 USB 接口
+2. **Linux**: 运行 `ls /dev/ttyUSB*` 或 `ls /dev/ttyACM*` 检查设备
+3. **macOS**: 运行 `ls /dev/cu.*` 检查设备
+4. **Linux 权限**: 将用户加入 `dialout` 组 — `sudo usermod -aG dialout $USER`，然后重新登录
+5. 检查机械臂电源指示灯是否正常（应为绿色常亮）
+
+</details>
+
+<details>
+<summary><strong>Q: 连接后机械臂无响应？</strong></summary>
+
+1. 确认电源适配器输出电压正常（12V）
+2. 重新上电，等待自检完成（LED 由红转绿，约 5 秒）
+3. 尝试手动指定串口号：`arm = ArmController(port="/dev/ttyUSB0")`
+
+</details>
+
+## 运动问题
+
+<details>
+<summary><strong>Q: 机械臂运动抖动或异常？</strong></summary>
+
+1. 检查关节是否被外力阻挡
+2. 降低运动速度：`arm.move_joint(joint_id=1, angle=45, speed=15)`
+3. 检查电源供电是否稳定
+4. 运行自检程序：`arm.self_test()`
+
+</details>
+
+<details>
+<summary><strong>Q: 定位精度差？</strong></summary>
+
+1. 每次启动后执行回零校准：`arm.move_home()`
+2. 检查机械结构是否松动
+3. 运行标定程序优化关节参数
+
+</details>
+
+## 软件问题
+
+<details>
+<summary><strong>Q: pip install 失败？</strong></summary>
+
+```bash
+# 确保 pip 已更新
+pip install --upgrade pip
+
+# 指定国内镜像源（如遇网络问题）
+pip install so-arm101-sdk -i https://pypi.tuna.tsinghua.edu.cn/simple
+```
+
+</details>
+
+<details>
+<summary><strong>Q: ROS2 节点启动报错？</strong></summary>
+
+1. 确认已 source ROS2 环境：`source /opt/ros/humble/setup.bash`
+2. 确认工作空间已正确编译和 source
+3. 检查依赖：`rosdep install --from-paths src --ignore-src -r -y`
+
+</details>
