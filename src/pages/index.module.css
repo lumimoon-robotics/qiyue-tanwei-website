@@ -1,349 +1,609 @@
-/**
- * 启月探微 主页样式 — Qiyue Robotics Homepage
- */
+/* ================================================================
+   启月探微 · 专业主页样式
+   风格参考：Seeed Studio / 现代科技企业官网
+   ================================================================ */
+
+/* ---- 设计令牌 ---- */
+:root {
+  --qy-brand: #2563eb;
+  --qy-brand-dark: #1d4ed8;
+  --qy-accent: #10b981;
+  --qy-surface: #f8fafc;
+  --qy-border: #e2e8f0;
+  --qy-text: #0f172a;
+  --qy-text-muted: #64748b;
+}
 
 /* ================================================================
-   英雄区 Hero
+   顶部通知条
    ================================================================ */
-.heroBanner {
-  padding: 0;
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(160deg, #0d2b3e 0%, #1a3a52 40%, #1a5276 100%);
-  min-height: 520px;
-  display: flex;
-  align-items: center;
-}
-
-.heroContainer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2rem;
-  padding: 5rem 2rem;
-  position: relative;
-  z-index: 2;
-}
-
-.heroContent {
-  flex: 1;
-  max-width: 600px;
-}
-
-.heroBadge {
-  display: inline-block;
-  background: rgba(46, 204, 113, 0.15);
-  color: #2ecc71;
-  border: 1px solid rgba(46, 204, 113, 0.3);
-  padding: 0.3rem 1rem;
-  border-radius: 100px;
+.topBanner {
+  background: linear-gradient(90deg, #1e3a5f, #2563eb, #1e3a5f);
+  color: #fff;
+  text-align: center;
+  padding: 0.55rem 1rem;
   font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 1.25rem;
-  letter-spacing: 0.02em;
-}
-
-.heroTitle {
-  font-size: 3.25rem;
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-  letter-spacing: 0.04em;
-}
-
-.heroSubtitle {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.75);
-  line-height: 1.6;
-  margin-bottom: 2rem;
-}
-
-.heroCta {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.heroCta a:first-child {
-  --ifm-button-background-color: #2ecc71;
-  --ifm-button-border-color: #2ecc71;
-  --ifm-button-color: #0d2b3e;
-  font-weight: 700;
-}
-
-.heroCta a:last-child {
-  --ifm-button-border-color: rgba(255,255,255,0.3);
-  --ifm-button-color: #ffffff;
-  --ifm-button-background-color: transparent;
-}
-
-.heroCta a:last-child:hover {
-  --ifm-button-background-color: rgba(255,255,255,0.1);
-  --ifm-button-border-color: rgba(255,255,255,0.5);
-}
-
-/* 装饰性圆形 */
-.heroVisual {
-  flex: 0 0 320px;
-  height: 320px;
+  font-weight: 500;
   position: relative;
+  letter-spacing: 0.01em;
+}
+
+.topBannerClose {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 1px solid rgba(255,255,255,0.3);
+  color: #fff;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.7rem;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.heroOrb {
-  width: 260px;
-  height: 260px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(46, 204, 113, 0.2) 0%, rgba(52, 152, 219, 0.08) 50%, transparent 70%);
-  position: absolute;
-  animation: float 6s ease-in-out infinite;
-}
-
-.heroOrbSecondary {
-  width: 180px;
-  height: 180px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(52, 152, 219, 0.15) 0%, transparent 70%);
-  position: absolute;
-  top: 20px;
-  right: 40px;
-  animation: float 8s ease-in-out 1s infinite;
-}
-
-.heroOrbTertiary {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(243, 156, 18, 0.12) 0%, transparent 70%);
-  position: absolute;
-  bottom: 30px;
-  left: 50px;
-  animation: float 7s ease-in-out 2s infinite;
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-18px) scale(1.04); }
+  line-height: 1;
 }
 
 /* ================================================================
-   产品区 Products
+   英雄区
    ================================================================ */
-.productSection {
-  padding: 5rem 0;
-  background: var(--ifm-background-color);
+.hero {
+  position: relative;
+  background: #0b1623;
+  padding: 6rem 0 5rem;
+  overflow: hidden;
+  min-height: 580px;
+  display: flex;
+  align-items: center;
 }
 
-.sectionHeader {
-  text-align: center;
-  margin-bottom: 3rem;
+.heroBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
 }
 
-.sectionLabel {
-  display: inline-block;
-  background: var(--ifm-color-primary-contrast-background);
-  color: var(--ifm-color-primary);
-  padding: 0.3rem 1rem;
+.heroGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(37, 99, 235, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.heroGlow1 {
+  position: absolute;
+  top: -200px;
+  right: -100px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, transparent 70%);
+  animation: heroPulse 8s ease-in-out infinite;
+}
+
+.heroGlow2 {
+  position: absolute;
+  bottom: -150px;
+  left: -50px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, transparent 70%);
+  animation: heroPulse 10s ease-in-out 2s infinite;
+}
+
+@keyframes heroPulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+
+.heroInner {
+  position: relative;
+  z-index: 2;
+  max-width: 800px;
+}
+
+.heroBadgeRow {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 0.3rem 0.9rem;
   border-radius: 100px;
   font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.heroBadgeOutline {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.9rem;
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.7);
+}
+
+.heroTitle {
+  font-size: 3.75rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.heroTitleAccent {
+  display: block;
+  background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroDesc {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+  max-width: 560px;
+}
+
+.heroActions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 3.5rem;
+}
+
+.btnPrimary {
+  background: #2563eb !important;
+  border: none !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  padding: 0.65rem 1.5rem !important;
+  border-radius: 8px !important;
+  font-size: 0.95rem !important;
+  transition: all 0.2s !important;
+}
+
+.btnPrimary:hover {
+  background: #1d4ed8 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.4);
+}
+
+.btnGhost {
+  background: rgba(255,255,255,0.06) !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  padding: 0.65rem 1.5rem !important;
+  border-radius: 8px !important;
+  font-size: 0.95rem !important;
+  transition: all 0.2s !important;
+}
+
+.btnGhost:hover {
+  background: rgba(255,255,255,0.12) !important;
+  border-color: rgba(255,255,255,0.3) !important;
+}
+
+.btnOutlineLight {
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,0.15) !important;
+  color: rgba(255,255,255,0.75) !important;
+  font-weight: 600 !important;
+  padding: 0.65rem 1.25rem !important;
+  border-radius: 8px !important;
+  font-size: 0.95rem !important;
+  transition: all 0.2s !important;
+}
+
+.btnOutlineLight:hover {
+  color: #fff !important;
+  border-color: rgba(255,255,255,0.4) !important;
+}
+
+.btnOutline {
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,0.25) !important;
+  color: #fff !important;
+  font-weight: 600 !important;
+  padding: 0.65rem 1.5rem !important;
+  border-radius: 8px !important;
+  font-size: 0.95rem !important;
+}
+
+.btnOutline:hover {
+  background: rgba(255,255,255,0.08) !important;
+}
+
+/* 英雄区统计数据 */
+.heroStats {
+  display: flex;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+}
+
+.heroStatItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.heroStatValue {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
+
+.heroStatValue small {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  margin-left: 0.15rem;
+}
+
+.heroStatLabel {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+  font-weight: 500;
+}
+
+/* ================================================================
+   产品区
+   ================================================================ */
+.products {
+  padding: 5rem 0;
+  background: var(--qy-surface);
+}
+
+.sectionHeading {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.sectionTag {
+  display: inline-block;
+  background: #dbeafe;
+  color: #2563eb;
+  padding: 0.25rem 0.85rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   margin-bottom: 1rem;
 }
 
 .sectionTitle {
-  font-size: 2.25rem;
-  font-weight: 800;
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1.2;
+  color: #0f172a;
   margin-bottom: 0.75rem;
-  color: var(--ifm-heading-color);
+  letter-spacing: -0.02em;
+}
+
+.sectionTitleAccent {
+  color: #2563eb;
 }
 
 .sectionDesc {
-  font-size: 1.1rem;
-  color: var(--ifm-color-emphasis-600);
-  max-width: 600px;
+  font-size: 1.05rem;
+  color: #64748b;
+  max-width: 560px;
   margin: 0 auto;
   line-height: 1.6;
 }
 
-/* 产品卡片 */
+/* 产品网格 */
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
 .productCard {
-  display: block;
-  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  border: 1px solid var(--qy-border);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
   text-decoration: none !important;
-  color: inherit;
-  height: 100%;
+  color: inherit !important;
 }
 
 .productCard:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.13);
-  text-decoration: none;
-  color: inherit;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+  border-color: #93c5fd;
 }
 
-.productCardGradient {
-  height: 8px;
-  width: 100%;
+.productCardMedia {
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.productCardIcon {
+  font-size: 3.5rem;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+  transition: transform 0.3s ease;
+}
+
+.productCard:hover .productCardIcon {
+  transform: scale(1.12);
+}
+
+.productCardOverlay {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
+.productCardBadge {
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  padding: 0.2rem 0.7rem;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .productCardBody {
-  padding: 2rem;
+  padding: 1.5rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.productIcon {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 0.75rem;
-}
-
-.productTitle {
-  font-size: 1.4rem;
-  font-weight: 700;
+.productCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 0.35rem;
 }
 
-.productTagline {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--ifm-color-primary);
+.productCardTitle {
+  font-size: 1.3rem;
+  font-weight: 800;
+  margin: 0;
+  color: #0f172a;
+}
+
+.productCardArrow {
+  font-size: 1.1rem;
+  color: #94a3b8;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.productCard:hover .productCardArrow {
+  transform: translateX(3px);
+  color: #2563eb;
+}
+
+.productCardTagline {
+  font-size: 0.82rem;
+  color: #2563eb;
   font-weight: 600;
-  margin-bottom: 0.75rem;
-  opacity: 0.85;
+  margin-bottom: 0.5rem;
 }
 
-.productDesc {
-  font-size: 0.95rem;
-  color: var(--ifm-color-emphasis-600);
-  line-height: 1.65;
-  margin-bottom: 1rem;
-}
-
-.productCta {
+.productCardDesc {
   font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.55;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+.productCardStats {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.productCardStat {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--ifm-color-primary);
 }
 
 /* ================================================================
-   亮点区 Highlights
+   亮点区
    ================================================================ */
-.highlightsSection {
+.highlights {
   padding: 5rem 0;
-  background: var(--ifm-color-emphasis-100);
+  background: #fff;
+}
+
+.highlightGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
 }
 
 .highlightCard {
   padding: 2rem 1.5rem;
   border-radius: 12px;
-  background: var(--ifm-background-color);
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.04);
-  height: 100%;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #f1f5f9;
+  background: #fafbfc;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .highlightCard:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  border-color: #e2e8f0;
+}
+
+.highlightIcon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 1rem;
 }
 
 .highlightTitle {
   font-size: 1.1rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  color: #0f172a;
 }
 
 .highlightDesc {
   font-size: 0.9rem;
-  color: var(--ifm-color-emphasis-600);
+  color: #64748b;
   line-height: 1.6;
   margin: 0;
 }
 
 /* ================================================================
+   技术栈
+   ================================================================ */
+.tech {
+  padding: 5rem 0;
+  background: var(--qy-surface);
+}
+
+.techGrid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.techBadge {
+  background: #fff;
+  border: 1px solid var(--qy-border);
+  color: #334155;
+  padding: 0.45rem 1rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: 'SF Mono', 'JetBrains Mono', monospace;
+  transition: all 0.2s;
+}
+
+.techBadge:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
+}
+
+/* ================================================================
    CTA 区
    ================================================================ */
-.ctaSection {
-  padding: 5rem 0;
-  background: linear-gradient(135deg, #0d2b3e 0%, #1a5276 100%);
+.cta {
+  position: relative;
+  padding: 6rem 0;
+  background: #0b1623;
+  overflow: hidden;
+}
+
+.ctaBg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.ctaGlow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, transparent 70%);
 }
 
 .ctaInner {
+  position: relative;
+  z-index: 2;
   text-align: center;
-  max-width: 600px;
+  max-width: 580px;
   margin: 0 auto;
 }
 
 .ctaTitle {
-  font-size: 2rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 0.75rem;
+  font-size: 2.25rem;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
 }
 
 .ctaDesc {
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
+  font-size: 1.05rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.65;
   margin-bottom: 2rem;
 }
 
-.ctaButtons {
+.ctaActions {
   display: flex;
-  gap: 1rem;
   justify-content: center;
+  gap: 0.75rem;
   flex-wrap: wrap;
-}
-
-.ctaButtons a:first-child {
-  --ifm-button-background-color: #2ecc71;
-  --ifm-button-border-color: #2ecc71;
-  --ifm-button-color: #0d2b3e;
-  font-weight: 700;
-}
-
-.ctaButtons a:last-child {
-  --ifm-button-background-color: transparent;
-  --ifm-button-border-color: rgba(255,255,255,0.3);
-  --ifm-button-color: #ffffff;
-}
-
-.ctaButtons a:last-child:hover {
-  --ifm-button-background-color: rgba(255,255,255,0.1);
 }
 
 /* ================================================================
    响应式
    ================================================================ */
 @media screen and (max-width: 996px) {
-  .heroContainer {
-    flex-direction: column;
-    text-align: center;
-    padding: 3rem 1.5rem;
-  }
-
-  .heroContent {
-    max-width: 100%;
+  .hero {
+    padding: 4rem 0 3rem;
+    min-height: auto;
   }
 
   .heroTitle {
     font-size: 2.25rem;
   }
 
-  .heroCta {
-    justify-content: center;
+  .heroDesc {
+    font-size: 0.95rem;
   }
 
-  .heroVisual {
-    display: none;
+  .heroStats {
+    gap: 1.5rem;
+  }
+
+  .heroStatValue {
+    font-size: 1.5rem;
+  }
+
+  .productGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .highlightGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .sectionTitle {
@@ -352,5 +612,16 @@
 
   .ctaTitle {
     font-size: 1.5rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .highlightGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .heroActions {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

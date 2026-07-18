@@ -1,138 +1,131 @@
 /**
  * 启月探微 — 品牌定制样式
- * 深蓝/青色调，科技感设计，灵感源自 Seeed Studio Wiki
+ * 现代科技蓝 + 绿松石强调色
+ * 风格参考：Seeed Studio / Vercel / Linear
  */
 
-/* ---- Infima 主色调覆写 ---- */
+/* ---- Infima 色板覆写 ---- */
 :root {
-  --ifm-color-primary: #1a5276;
-  --ifm-color-primary-dark: #174a6a;
-  --ifm-color-primary-darker: #164664;
-  --ifm-color-primary-darkest: #123a53;
-  --ifm-color-primary-light: #1d5a82;
-  --ifm-color-primary-lighter: #1e5e88;
-  --ifm-color-primary-lightest: #226a99;
-  --ifm-color-primary-contrast-background: #eaf3f9;
-  --ifm-color-primary-contrast-foreground: #0d2b3e;
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a5f;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
+  --ifm-color-primary-contrast-background: #eff6ff;
+  --ifm-color-primary-contrast-foreground: #1e3a5f;
 
-  --ifm-color-secondary: #2ecc71;
-  --ifm-color-secondary-dark: #29b765;
-  --ifm-color-secondary-darker: #27ad60;
-  --ifm-color-secondary-darkest: #208f4f;
-  --ifm-color-secondary-light: #33d57a;
-  --ifm-color-secondary-lighter: #3dd782;
-  --ifm-color-secondary-lightest: #5cde96;
-
-  --ifm-color-accent: #e67e22;
-  --ifm-color-accent-dark: #d0711d;
-  --ifm-color-accent-darker: #c46a1b;
-  --ifm-color-accent-darkest: #a15816;
-  --ifm-color-accent-light: #e88b35;
-  --ifm-color-accent-lighter: #ea9241;
-  --ifm-color-accent-lightest: #eda55f;
+  --ifm-color-secondary: #10b981;
+  --ifm-color-accent: #f59e0b;
 
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.06);
   --ifm-font-family-base: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
   --ifm-heading-font-family: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
   --ifm-heading-font-weight: 700;
-  --ifm-navbar-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.08);
+  --ifm-navbar-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
   --ifm-global-radius: 0.5rem;
 }
 
 /* ---- 暗色模式 ---- */
 [data-theme='dark'] {
-  --ifm-color-primary: #3498db;
-  --ifm-color-primary-dark: #2e8ece;
-  --ifm-color-primary-darker: #2b86c2;
-  --ifm-color-primary-darkest: #246fa0;
-  --ifm-color-primary-light: #48a4df;
-  --ifm-color-primary-lighter: #53aae1;
-  --ifm-color-primary-lightest: #72bbe6;
-  --ifm-color-primary-contrast-background: #0d2b3e;
-  --ifm-color-primary-contrast-foreground: #d6eaf8;
+  --ifm-color-primary: #3b82f6;
+  --ifm-color-primary-dark: #2563eb;
+  --ifm-color-primary-darker: #1d4ed8;
+  --ifm-color-primary-darkest: #1e40af;
+  --ifm-color-primary-light: #60a5fa;
+  --ifm-color-primary-lighter: #93c5fd;
+  --ifm-color-primary-lightest: #bfdbfe;
+  --ifm-color-primary-contrast-background: #0f172a;
+  --ifm-color-primary-contrast-foreground: #dbeafe;
 
-  --ifm-color-secondary: #2ecc71;
-  --ifm-color-secondary-dark: #29b765;
-  --ifm-color-secondary-darker: #27ad60;
-  --ifm-color-secondary-darkest: #208f4f;
-  --ifm-color-secondary-light: #3cd681;
-  --ifm-color-secondary-lighter: #47d989;
-  --ifm-color-secondary-lightest: #6ce1a2;
-
-  --ifm-color-accent: #f39c12;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+  --ifm-color-secondary: #34d399;
+  --ifm-color-accent: #fbbf24;
+  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.06);
 }
 
-/* ---- 全局样式 ---- */
-html {
-  scroll-behavior: smooth;
-}
+/* ---- 全局 ---- */
+html { scroll-behavior: smooth; }
 
 /* ---- 导航栏 ---- */
 .navbar {
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px);
+  background: rgba(255,255,255,0.85);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+[data-theme='dark'] .navbar {
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .navbar__title {
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.02em;
+}
+
+.navbar__link {
+  font-weight: 500;
+  font-size: 0.9rem;
 }
 
 /* ---- 页脚 ---- */
 .footer--dark {
-  --ifm-footer-background-color: #0d2b3e;
-  --ifm-footer-color: #cbdbe8;
-  --ifm-footer-link-color: #85c1e9;
-  --ifm-footer-link-hover-color: #3498db;
-  --ifm-footer-title-color: #ffffff;
+  --ifm-footer-background-color: #0b1623;
+  --ifm-footer-color: #94a3b8;
+  --ifm-footer-link-color: #cbd5e1;
+  --ifm-footer-link-hover-color: #3b82f6;
+  --ifm-footer-title-color: #f1f5f9;
 }
 
-/* ---- 文档区域 ---- */
+/* ---- 文档 ---- */
 .markdown h1 {
   font-size: 2.25rem;
-  border-bottom: 2px solid var(--ifm-color-primary-lightest);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  border-bottom: 2px solid #e2e8f0;
   padding-bottom: 0.5rem;
   margin-bottom: 1.5rem;
 }
 
 .markdown h2 {
-  font-size: 1.75rem;
+  font-size: 1.6rem;
+  font-weight: 700;
   margin-top: 2.5rem;
-  border-left: 4px solid var(--ifm-color-primary);
-  padding-left: 1rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid #f1f5f9;
 }
 
 .markdown h3 {
-  font-size: 1.35rem;
+  font-size: 1.25rem;
+  font-weight: 700;
   margin-top: 2rem;
 }
 
-/* ---- 特性/产品卡片 ---- */
-.card {
-  border-radius: var(--ifm-global-radius);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* ---- 表格 ---- */
+.markdown table {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+.markdown th {
+  background: #f8fafc;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
-/* ---- Badge / 标签 ---- */
-.badge--accent {
-  --ifm-badge-background-color: var(--ifm-color-accent);
-  --ifm-badge-border-color: var(--ifm-color-accent);
-  --ifm-badge-color: #fff;
+/* ---- 代码块 ---- */
+code {
+  border-radius: 4px;
+  font-size: 0.9em;
 }
 
 /* ---- 响应式 ---- */
 @media screen and (max-width: 996px) {
-  .markdown h1 {
-    font-size: 1.75rem;
-  }
-  .markdown h2 {
-    font-size: 1.4rem;
-  }
+  .markdown h1 { font-size: 1.75rem; }
+  .markdown h2 { font-size: 1.35rem; }
 }
