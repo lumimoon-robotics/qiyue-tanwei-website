@@ -99,7 +99,7 @@ export default function About(): ReactNode {
             </p>
             <ul style={{fontSize: '1.05rem', lineHeight: 2}}>
               <li>📧 邮箱：contact@qiyue-robotics.com</li>
-              <li>💻 GitHub：<a href="https://github.com/qiyue-robotics">github.com/qiyue-robotics</a></li>
+              <li>💻 GitHub：<a href="https://github.com/lumimoo-robotics">github.com/qiyue-robotics</a></li>
               <li>📖 文档中心：<a href="/docs/intro">启月探微文档中心</a></li>
             </ul>
           </div>

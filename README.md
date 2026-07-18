@@ -30,7 +30,7 @@ npm run serve    # 本地预览构建结果
 
 | 类型 | 主机记录 | 记录值 |
 |------|---------|--------|
-| CNAME | `@` (或 `www`) | `qiyue-robotics.github.io` |
+| CNAME | `@` (或 `www`) | `lumimoo-robotics.github.io` |
 
 ## 📦 产品
 

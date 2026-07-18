@@ -14,7 +14,7 @@ const config: Config = {
   url: 'https://lumimoon.cn',
   baseUrl: '/',
 
-  organizationName: 'qiyue-robotics',
+  organizationName: 'lumimoo-robotics',
   projectName: 'qiyue-tanwei-website',
 
   onBrokenLinks: 'warn',
@@ -30,7 +30,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          editUrl: 'https://github.com/qiyue-robotics/qiyue-tanwei-website/tree/main/',
+          editUrl: 'https://github.com/lumimoo-robotics/qiyue-tanwei-website/tree/main/',
         },
         blog: false,
         theme: {
@@ -84,7 +84,7 @@ const config: Config = {
         },
         {to: '/about', label: '关于我们', position: 'left'},
         {
-          href: 'https://github.com/qiyue-robotics',
+          href: 'https://github.com/lumimoo-robotics',
           label: 'GitHub',
           position: 'right',
         },
@@ -106,8 +106,8 @@ const config: Config = {
           title: '资源',
           items: [
             {label: '文档中心', to: '/docs/intro'},
-            {label: 'GitHub', href: 'https://github.com/qiyue-robotics'},
-            {label: '开源硬件', href: 'https://github.com/qiyue-robotics'},
+            {label: 'GitHub', href: 'https://github.com/lumimoo-robotics'},
+            {label: '开源硬件', href: 'https://github.com/lumimoo-robotics'},
           ],
         },
         {
