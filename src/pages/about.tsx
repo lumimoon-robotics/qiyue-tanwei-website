@@ -98,8 +98,8 @@ export default function About(): ReactNode {
               无论是技术咨询、商务合作还是社区贡献，我们都期待与您交流。
             </p>
             <ul style={{fontSize: '1.05rem', lineHeight: 2}}>
-              <li>📧 邮箱：contact@qiyue-robotics.com</li>
-              <li>💻 GitHub：<a href="https://github.com/lumimoo-robotics">github.com/qiyue-robotics</a></li>
+              <li>📧 邮箱：contact@lumimoon.cn</li>
+              <li>💻 GitHub：<a href="https://github.com/lumimoon-robotics">github.com/lumimoon-robotics</a></li>
               <li>📖 文档中心：<a href="/docs/intro">启月探微文档中心</a></li>
             </ul>
           </div>

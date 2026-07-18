@@ -89,7 +89,7 @@ function HeroBanner() {
             </Link>
             <Link
               className="button button--outline button--lg"
-              to="https://github.com/lumimoo-robotics"
+              to="https://github.com/lumimoon-robotics"
               target="_blank">
               ⭐ GitHub
             </Link>
