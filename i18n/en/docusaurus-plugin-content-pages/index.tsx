@@ -106,19 +106,6 @@ function Hero() {
               <Link to="https://github.com/lumimoon-robotics" className={styles.btnStroke}>GitHub</Link>
             </div>
           </div>
-          <div className={styles.heroVisual}>
-            <div className={styles.heroProductGrid}>
-              {categories.map((p) => (
-                <Link key={p.id} to={p.to} className={styles.heroProductItem}
-                  style={{'--accent': p.accent} as React.CSSProperties}>
-                  <div className={clsx(styles.heroProductBg, `bg-gradient-to-br ${p.gradient}`)}>
-                    <span style={{fontSize: '2rem'}}>{p.icon}</span>
-                  </div>
-                  <span className={styles.heroProductLabel}>{p.title}</span>
-                </Link>
-              ))}
-            </div>
-          </div>
         </div>
       </div>
     </header>
