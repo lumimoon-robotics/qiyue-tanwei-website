@@ -42,5 +42,49 @@
   "item.label.⚙️ 舵机产品": {
     "message": "⚙️ Servo Products",
     "description": "Navbar item with label ⚙️ 舵机产品"
+  },
+  "item.label.SO-ARM101 机械臂": {
+    "message": "SO-ARM101 Robotic Arm",
+    "description": "Navbar item with label SO-ARM101 机械臂"
+  },
+  "item.label.Lekiwi 底盘": {
+    "message": "Lekiwi Chassis",
+    "description": "Navbar item with label Lekiwi 底盘"
+  },
+  "item.label.Xlerobot 家务机器人": {
+    "message": "Xlerobot Home Robot",
+    "description": "Navbar item with label Xlerobot 家务机器人"
+  },
+  "item.label.腕部相机": {
+    "message": "Wrist Camera",
+    "description": "Navbar item with label 腕部相机"
+  },
+  "item.label.固定相机": {
+    "message": "Fixed Camera",
+    "description": "Navbar item with label 固定相机"
+  },
+  "item.label.双相机": {
+    "message": "Dual Camera",
+    "description": "Navbar item with label 双相机"
+  },
+  "item.label.ST3215 C018": {
+    "message": "ST3215 C018",
+    "description": "Navbar item with label ST3215 C018"
+  },
+  "item.label.ST3215 C001": {
+    "message": "ST3215 C001",
+    "description": "Navbar item with label ST3215 C001"
+  },
+  "item.label.ST3215 C044": {
+    "message": "ST3215 C044",
+    "description": "Navbar item with label ST3215 C044"
+  },
+  "item.label.ST3215 C046": {
+    "message": "ST3215 C046",
+    "description": "Navbar item with label ST3215 C046"
+  },
+  "item.label.SCS0009": {
+    "message": "SCS0009",
+    "description": "Navbar item with label SCS0009"
   }
 }

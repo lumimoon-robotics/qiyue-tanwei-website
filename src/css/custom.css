@@ -67,6 +67,29 @@ html { scroll-behavior: smooth; }
 }
 .navbar__link--store:hover { opacity: 0.88; color: #fff !important; }
 
+/* ---- 嵌套子菜单 ---- */
+.dropdown__submenu {
+  position: relative;
+}
+.dropdown__menu--sub {
+  position: absolute;
+  top: -0.5rem;
+  left: 100%;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.15s ease, visibility 0.15s ease;
+  min-width: 12rem;
+}
+.dropdown__menu--show {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.dropdown__link--with-submenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 /* Footer */
 .footer--dark {
   --ifm-footer-background-color: #0b1120;

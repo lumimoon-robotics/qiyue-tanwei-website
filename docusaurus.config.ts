@@ -69,9 +69,35 @@ const config: Config = {
           label: '产品',
           position: 'left',
           items: [
-            {label: '🤖 LeRobot 开源硬件', to: '/docs/lerobot/overview'},
-            {label: '📷 相机产品', to: '/docs/cameras/overview'},
-            {label: '⚙️ 舵机产品', to: '/docs/servos/overview'},
+            {
+              label: '🤖 LeRobot 开源硬件',
+              to: '/docs/lerobot/overview',
+              children: [
+                {label: 'SO-ARM101 机械臂', to: '/docs/lerobot/so-arm101/overview'},
+                {label: 'Lekiwi 底盘', to: '/docs/lerobot/lekiwi/overview'},
+                {label: 'Xlerobot 家务机器人', to: '/docs/lerobot/xlerobot/overview'},
+              ],
+            },
+            {
+              label: '📷 相机产品',
+              to: '/docs/cameras/overview',
+              children: [
+                {label: '腕部相机', to: '/docs/cameras/wrist/overview'},
+                {label: '固定相机', to: '/docs/cameras/fixed/overview'},
+                {label: '双相机', to: '/docs/cameras/dual/overview'},
+              ],
+            },
+            {
+              label: '⚙️ 舵机产品',
+              to: '/docs/servos/overview',
+              children: [
+                {label: 'ST3215 C018', to: '/docs/servos/st3215-c018'},
+                {label: 'ST3215 C001', to: '/docs/servos/st3215-c001'},
+                {label: 'ST3215 C044', to: '/docs/servos/st3215-c044'},
+                {label: 'ST3215 C046', to: '/docs/servos/st3215-c046'},
+                {label: 'SCS0009', to: '/docs/servos/scs0009'},
+              ],
+            },
           ],
         },
         {
@@ -79,9 +105,35 @@ const config: Config = {
           label: '教程',
           position: 'left',
           items: [
-            {label: '🤖 LeRobot 开源硬件', to: '/docs/lerobot/overview'},
-            {label: '📷 相机产品', to: '/docs/cameras/overview'},
-            {label: '⚙️ 舵机产品', to: '/docs/servos/overview'},
+            {
+              label: '🤖 LeRobot 开源硬件',
+              to: '/docs/lerobot/overview',
+              children: [
+                {label: 'SO-ARM101 机械臂', to: '/docs/lerobot/so-arm101/overview'},
+                {label: 'Lekiwi 底盘', to: '/docs/lerobot/lekiwi/overview'},
+                {label: 'Xlerobot 家务机器人', to: '/docs/lerobot/xlerobot/overview'},
+              ],
+            },
+            {
+              label: '📷 相机产品',
+              to: '/docs/cameras/overview',
+              children: [
+                {label: '腕部相机', to: '/docs/cameras/wrist/overview'},
+                {label: '固定相机', to: '/docs/cameras/fixed/overview'},
+                {label: '双相机', to: '/docs/cameras/dual/overview'},
+              ],
+            },
+            {
+              label: '⚙️ 舵机产品',
+              to: '/docs/servos/overview',
+              children: [
+                {label: 'ST3215 C018', to: '/docs/servos/st3215-c018'},
+                {label: 'ST3215 C001', to: '/docs/servos/st3215-c001'},
+                {label: 'ST3215 C044', to: '/docs/servos/st3215-c044'},
+                {label: 'ST3215 C046', to: '/docs/servos/st3215-c046'},
+                {label: 'SCS0009', to: '/docs/servos/scs0009'},
+              ],
+            },
           ],
         },
         {to: '/about', label: '关于我们', position: 'left'},
