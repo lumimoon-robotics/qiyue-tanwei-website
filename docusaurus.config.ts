@@ -75,10 +75,14 @@ const config: Config = {
           ],
         },
         {
-          type: 'docSidebar',
-          sidebarId: 'productSidebar',
-          position: 'left',
+          type: 'dropdown',
           label: '教程',
+          position: 'left',
+          items: [
+            {label: '🤖 LeRobot 开源硬件', to: '/docs/lerobot/overview'},
+            {label: '📷 相机产品', to: '/docs/cameras/overview'},
+            {label: '⚙️ 舵机产品', to: '/docs/servos/overview'},
+          ],
         },
         {to: '/about', label: '关于我们', position: 'left'},
         {
