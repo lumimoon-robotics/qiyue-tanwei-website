@@ -1,0 +1,45 @@
+---
+sidebar_position: 5
+title: FAQ
+description: SO-ARM101 Frequently Asked Questions
+keywords: [SO-ARM101, FAQ, troubleshooting]
+---
+
+# ❓ FAQ
+
+## Connection Issues
+
+<details>
+<summary><strong>Q: Arm not detected?</strong></summary>
+
+1. Check USB cable and try another port
+2. **Linux**: `ls /dev/ttyUSB*` or `ls /dev/ttyACM*`
+3. **macOS**: `ls /dev/cu.*`
+4. **Linux permissions**: `sudo usermod -aG dialout $USER` then re-login
+5. Ensure power LED is solid green
+
+</details>
+
+## Motion Issues
+
+<details>
+<summary><strong>Q: Jerky or abnormal motion?</strong></summary>
+
+1. Check for external interference on joints
+2. Reduce speed: `arm.move_joint(joint_id=1, angle=45, speed=15)`
+3. Verify stable power supply
+4. Run self-test: `arm.self_test()`
+
+</details>
+
+## Software Issues
+
+<details>
+<summary><strong>Q: pip install fails?</strong></summary>
+
+```bash
+pip install --upgrade pip
+pip install so-arm101-sdk
+```
+
+</details>

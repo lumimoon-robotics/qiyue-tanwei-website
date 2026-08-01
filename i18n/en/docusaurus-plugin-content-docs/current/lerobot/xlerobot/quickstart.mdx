@@ -1,0 +1,58 @@
+---
+sidebar_position: 2
+title: Quick Start
+description: Xlerobot Quick Start — Activation, configuration, and first object pickup demo
+keywords: [Xlerobot, quickstart, imitation learning, object pickup]
+---
+
+# ⚡ Quick Start
+
+Wake up your Xlerobot and run your first task.
+
+## 1. Activation & Power On
+
+1. Place Xlerobot on flat ground, connect charging dock
+2. Install Xlerobot App (scan QR on package)
+3. Complete Wi-Fi setup through the App
+4. Wake: press and hold chest button for 3s, or say "Xlerobot"
+
+## 2. Voice Commands
+
+```
+💬 "Xlerobot, bring me the red cup on the table"
+💬 "Xlerobot, clean the kitchen counter"
+💬 "Xlerobot, fold the laundry on the sofa"
+💬 "Xlerobot, go charge"
+```
+
+## 3. Teach by Demonstration
+
+```python
+from xlerobot_sdk import Xlerobot, DataCollector, SkillTrainer
+
+robot = Xlerobot(host="xlerobot.local")
+collector = DataCollector(robot)
+
+collector.start_recording(task_name="pick_up_cup")
+# ... perform task via teleoperation ...
+collector.stop_recording()
+
+trainer = SkillTrainer()
+trainer.add_demo("pick_up_cup", collector.get_trajectory())
+model = trainer.train(epochs=50)
+model.save("pick_up_cup.skill")
+
+robot.load_skill("pick_up_cup.skill")
+robot.execute_skill("pick_up_cup")
+```
+
+## 4. API Control
+
+```python
+robot = Xlerobot(host="xlerobot.local")
+robot.navigate_to("kitchen")
+objects = robot.detect_objects()
+cup = robot.find_object("red cup")
+robot.pick(cup)
+robot.place(x=0.5, y=0.3, z=0.8)
+```

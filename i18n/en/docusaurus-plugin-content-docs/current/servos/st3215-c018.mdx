@@ -1,0 +1,30 @@
+---
+sidebar_position: 2
+title: ST3215 C018
+description: Feetech ST3215 C018 Smart Bus Servo — Standard, 15kg·cm
+keywords: [ST3215, C018, Feetech servo, smart servo]
+---
+
+# ST3215 C018
+
+Standard model in the ST3215 series, balancing torque and speed for general-purpose robot joints.
+
+## Specifications
+
+| Parameter | Value |
+|-----------|-------|
+| Model | ST3215 C018 |
+| Torque | 15 kg·cm (1.47 N·m) |
+| Speed | 0.15 s/60° |
+| Precision | 0.3° |
+| Voltage | 6V - 12V |
+| Communication | RS485 Bus |
+| Feedback | Position, velocity, torque, temperature |
+| Weight | 85g |
+
+## Quick Start
+
+```bash
+pip install feetech-sdk
+python -c "from feetech import Servo; s = Servo('/dev/ttyUSB0', 1); s.enable(); s.move(90)"
+```

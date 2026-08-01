@@ -22,7 +22,11 @@ const config: Config = {
 
   i18n: {
     defaultLocale: 'zh-Hans',
-    locales: ['zh-Hans'],
+    locales: ['zh-Hans', 'en'],
+    localeConfigs: {
+      'zh-Hans': {label: '简体中文', direction: 'ltr'},
+      en: {label: 'English', direction: 'ltr'},
+    },
   },
 
   presets: [
@@ -71,6 +75,10 @@ const config: Config = {
           label: '文档',
         },
         {to: '/about', label: '关于我们', position: 'left'},
+        {
+          type: 'localeDropdown',
+          position: 'right',
+        },
         {
           href: 'https://github.com/lumimoon-robotics',
           label: 'GitHub',

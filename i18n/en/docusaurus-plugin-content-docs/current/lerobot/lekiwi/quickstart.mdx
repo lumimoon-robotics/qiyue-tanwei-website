@@ -1,0 +1,47 @@
+---
+sidebar_position: 2
+title: Quick Start
+description: Lekiwi Quick Start — Power up, teleop, mapping & navigation
+keywords: [Lekiwi, quickstart, SLAM, navigation, ROS2]
+---
+
+# ⚡ Quick Start
+
+Get your Lekiwi chassis moving in 20 minutes.
+
+## 1. Requirements
+
+- **OS**: Ubuntu 22.04 (on main controller)
+- **ROS2**: Humble Hawksbill
+- **Floor**: Flat indoor surface
+
+## 2. Power Up
+
+1. Install battery and lock the latch
+2. Release emergency stop (pull out)
+3. Press power button, wait ~30s for boot
+4. Connect to AP: `Lekiwi-XXXX`, password `qiyue2024`
+
+## 3. Teleop
+
+```bash
+ssh qiyue@lekiwi.local   # default password: qiyue2024
+ros2 launch lekiwi_bringup base.launch.py
+# On your PC:
+ros2 run teleop_twist_keyboard teleop_twist_keyboard
+```
+
+## 4. SLAM Mapping
+
+```bash
+ros2 launch lekiwi_slam online_async.launch.py slam_type:=cartographer
+# Manually drive around the area
+ros2 run nav2_map_server map_saver_cli -f ~/maps/my_map
+```
+
+## 5. Autonomous Navigation
+
+```bash
+ros2 launch lekiwi_nav bringup.launch.py map:=~/maps/my_map.yaml
+# Set goal in Rviz
+```

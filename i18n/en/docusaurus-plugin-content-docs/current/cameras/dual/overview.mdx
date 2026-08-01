@@ -1,0 +1,31 @@
+---
+sidebar_position: 3
+title: Dual Camera
+description: Stereo vision camera — depth estimation, SLAM and 3D reconstruction
+keywords: [dual camera, stereo camera, depth estimation, SLAM]
+---
+
+# 👁️ Dual Camera
+
+Stereo vision module providing real-time depth maps and point clouds for SLAM, 3D reconstruction, and depth-aware grasping.
+
+## Specifications
+
+| Parameter | Value |
+|-----------|-------|
+| Sensors | 2× 1/2.8" CMOS |
+| Resolution | 2× 1920×1080 @ 30fps |
+| Baseline | 65mm |
+| Depth Range | 0.3m ~ 10m |
+| FOV | 85° (H) × 55° (V) |
+| Weight | 120g |
+| Interface | USB 3.0 Type-C |
+| Software | ROS2 / OpenCV / Calibration SDK |
+
+## Quick Start
+
+```bash
+pip install qiyue-camera-sdk
+ros2 launch qiyue_camera dual.launch.py
+ros2 topic echo /qiyue_camera/depth/image_raw
+```

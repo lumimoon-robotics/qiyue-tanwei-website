@@ -1,0 +1,30 @@
+---
+sidebar_position: 1
+title: Wrist Camera
+description: Robot end-effector wrist camera — 1080P lightweight vision module for dexterous manipulation
+keywords: [wrist camera, end-effector camera, robot vision]
+---
+
+# ⌚ Wrist Camera
+
+Ultra-lightweight camera module for robotic arm end-effector integration, providing close-range high-precision visual guidance.
+
+## Specifications
+
+| Parameter | Value |
+|-----------|-------|
+| Sensor | 1/2.8" CMOS |
+| Resolution | 1920×1080 @ 60fps |
+| FOV | 90° (H) × 60° (V) |
+| Weight | 35g |
+| Dimensions | 38×28×22 mm |
+| Interface | USB 3.0 Type-C |
+| Focus | 8cm ~ ∞ autofocus |
+| Software | ROS2 / OpenCV / Python SDK |
+
+## Quick Start
+
+```bash
+pip install qiyue-camera-sdk
+ros2 launch qiyue_camera wrist.launch.py
+```

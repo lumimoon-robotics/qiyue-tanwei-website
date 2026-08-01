@@ -1,0 +1,59 @@
+---
+sidebar_position: 2
+title: Quick Start
+description: SO-ARM101 Quick Start — Setup and first control demo
+keywords: [SO-ARM101, quickstart, tutorial, Python, ROS2]
+---
+
+# ⚡ Quick Start
+
+Get your SO-ARM101 moving in 15 minutes.
+
+## 1. Requirements
+
+- **OS**: Ubuntu 22.04 / macOS 14+ / Windows 11 (WSL2)
+- **Python**: 3.10+
+- **ROS2**: Humble (optional, for advanced features)
+
+## 2. Hardware Connection
+
+1. Connect power adapter to the arm base
+2. Connect USB Type-C to your computer
+3. Power on — LED turns green after self-test (~5s)
+
+## 3. Install SDK
+
+```bash
+python3 -m venv so-arm101-env
+source so-arm101-env/bin/activate
+pip install so-arm101-sdk
+```
+
+## 4. First Demo
+
+```python
+from so_arm101 import ArmController
+import time
+
+arm = ArmController(auto_connect=True)
+print(f"Connected: {arm.get_device_info()}")
+
+arm.move_home()
+time.sleep(2)
+
+arm.move_joint(joint_id=1, angle=45, speed=30)
+time.sleep(1)
+
+arm.gripper_open()
+time.sleep(1)
+arm.gripper_close()
+
+arm.move_home()
+arm.disconnect()
+print("✅ Demo complete!")
+```
+
+## Next Steps
+
+- [Product Overview](./overview) — Full specifications
+- [FAQ](./faq) — Troubleshooting guide
