@@ -56,6 +56,16 @@ html { scroll-behavior: smooth; }
 }
 .navbar__title { font-weight: 800; }
 .navbar__link { font-weight: 500; font-size: 0.88rem; }
+.navbar__link--store {
+  background: linear-gradient(135deg, #f97316, #ef4444) !important;
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 0.35rem 0.85rem !important;
+  font-weight: 700 !important;
+  font-size: 0.85rem !important;
+  transition: opacity 0.2s;
+}
+.navbar__link--store:hover { opacity: 0.88; color: #fff !important; }
 
 /* Footer */
 .footer--dark {

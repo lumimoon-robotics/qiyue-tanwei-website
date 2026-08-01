@@ -95,6 +95,7 @@ function Hero() {
             </p>
             <div className={styles.heroBtns}>
               <Link to="/docs/intro" className={styles.btnFill}>Quick Start →</Link>
+              <Link to="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" className={styles.btnStore}>🛒 Store</Link>
               <Link to="https://github.com/lumimoon-robotics" className={styles.btnStroke}>GitHub</Link>
             </div>
           </div>
@@ -240,6 +241,7 @@ function Cta() {
           <p className={styles.ctaP}>Whether you're a researcher, startup team, or individual developer — you'll find the right tools and partners here.</p>
           <div className={styles.ctaBtns}>
             <Link to="/docs/intro" className={styles.btnFill}>📖 Get Started</Link>
+            <Link to="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" className={styles.btnStore}>🛒 Store</Link>
             <Link to="/about" className={styles.btnStrokeLight}>About Us</Link>
           </div>
         </div>

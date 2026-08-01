@@ -217,6 +217,26 @@
   border-color: rgba(255,255,255,0.35);
 }
 
+.btnStore {
+  display: inline-flex;
+  align-items: center;
+  background: linear-gradient(135deg, #f97316, #ef4444);
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.6rem 1.5rem;
+  border-radius: 10px;
+  text-decoration: none !important;
+  transition: all 0.2s;
+  box-shadow: 0 2px 12px rgba(249, 115, 22, 0.3);
+}
+
+.btnStore:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
+  color: #fff !important;
+}
+
 /* Hero 产品缩略图 */
 .heroVisual {
   flex: 0 0 360px;

@@ -76,6 +76,12 @@ const config: Config = {
         },
         {to: '/about', label: '关于我们', position: 'left'},
         {
+          href: 'https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/',
+          label: '🛒 商店',
+          position: 'right',
+          className: 'navbar__link--store',
+        },
+        {
           type: 'localeDropdown',
           position: 'right',
         },
@@ -101,6 +107,7 @@ const config: Config = {
           title: '资源',
           items: [
             {label: '文档中心', to: '/docs/intro'},
+            {label: '🛒 淘宝店铺', href: 'https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/'},
             {label: 'GitHub', href: 'https://github.com/lumimoon-robotics'},
             {label: '开源硬件', href: 'https://github.com/lumimoon-robotics'},
           ],
