@@ -67,17 +67,30 @@ html { scroll-behavior: smooth; }
 }
 .navbar__link--store:hover { opacity: 0.88; color: #fff !important; }
 
+/* ---- 导航栏不裁剪下拉 ---- */
+.navbar__inner,
+.navbar__items {
+  overflow: visible !important;
+}
+
 /* ---- Mega 菜单 ---- */
+.dropdown--mega .dropdown__menu {
+  overflow: visible !important;
+}
 .dropdown__mega {
   display: flex !important;
   flex-direction: row !important;
   gap: 0;
   padding: 1rem 0.5rem !important;
   min-width: 580px;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
+  left: auto !important;
+  right: auto !important;
   border-radius: 14px !important;
   box-shadow: 0 16px 48px rgba(0,0,0,0.12) !important;
+}
+.navbar__items--left .dropdown--mega .dropdown__menu {
+  left: 0 !important;
+  right: auto !important;
 }
 .dropdown__mega-col {
   flex: 1;
