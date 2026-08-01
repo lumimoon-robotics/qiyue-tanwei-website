@@ -1,0 +1,91 @@
+---
+sidebar_position: 5
+title: 软件环境安装
+---
+
+# 软件环境安装
+
+以下安装步骤需要在**树莓派**和**笔记本电脑**上分别执行。
+
+## 系统要求
+
+| 平台 | Python | 备注 |
+|------|--------|------|
+| **树莓派 5** | 3.10 | Raspberry Pi OS |
+| **Ubuntu x86** | 3.10 | CUDA 12+, Torch 2.6 |
+| **macOS** | 3.10 | MPS (Apple Silicon) |
+| **Jetson Orin** | 3.10 | JetPack 6.0, Torch 2.3+ |
+
+## 安装步骤
+
+### 1. 安装 Miniconda
+
+**树莓派：**
+```bash
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm ~/miniconda3/miniconda.sh
+```
+
+**Linux 笔记本：**
+```bash
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm ~/miniconda3/miniconda.sh
+```
+
+**macOS：**
+```bash
+mkdir -p ~/miniconda3
+curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm ~/miniconda3/miniconda.sh
+```
+
+### 2. 重启 Shell
+```bash
+# Linux / 树莓派
+source ~/.bashrc
+
+# macOS
+source ~/.zshrc
+```
+
+### 3. 创建并激活 Conda 环境
+```bash
+conda create -y -n lerobot python=3.10
+conda activate lerobot
+```
+
+### 4. 克隆并安装 LeRobot
+```bash
+git clone https://github.com/huggingface/lerobot.git ~/lerobot
+conda install ffmpeg -c conda-forge
+cd ~/lerobot && pip install -e ".[lekiwi]"
+```
+
+> [!IMPORTANT]
+> 每次打开新终端都需要运行 `conda activate lerobot` 来激活环境。
+
+## 验证安装
+
+```bash
+conda activate lerobot
+python -c "import lerobot; print('LeRobot 安装成功！')"
+```
+
+如果看到 "LeRobot 安装成功！" 则表示安装完成。
+
+## 命令速查
+
+| 命令 | 说明 |
+|------|------|
+| `conda activate lerobot` | 激活 LeRobot 环境 |
+| `source ~/.bashrc` | 重新加载 Shell 配置 |
+| `Ctrl+C` | 终止正在运行的程序 |
+
+## 下一步
+
+前往 [电机配置](/05-motor-config) 配置舵机！

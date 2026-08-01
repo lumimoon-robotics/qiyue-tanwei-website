@@ -1,0 +1,62 @@
+---
+sidebar_position: 11
+title: 可视化与回放
+---
+
+# 可视化与回放
+
+## 在线可视化
+
+如果录制时使用了 `--control.push_to_hub=true`，数据集已上传到 Hugging Face Hub，可直接在线查看。
+
+## 本地可视化
+
+未上传或在本地查看：
+
+```bash
+python lerobot/scripts/visualize_dataset_html.py \
+  --repo-id ${HF_USER}/lekiwi_test \
+  --local-files-only 1
+```
+
+浏览器访问 `http://127.0.0.1:9090` 打开可视化工具。
+
+## 可视化功能
+
+| 功能 | 说明 |
+|------|------|
+| 🎥 **播放视频** | 逐帧查看录制的摄像头画面 |
+| 📊 **关节角度** | 查看每个舵机的角度变化曲线 |
+| 🗺️ **底盘轨迹** | 查看移动底盘的运行轨迹 |
+| 🔍 **逐帧分析** | 逐帧检查数据质量 |
+| 🏷️ **回合选择** | 切换查看不同的录制回合 |
+
+## 回放一个回合
+
+在机器人上回放录制的操作序列：
+
+```bash
+python lerobot/scripts/control_robot.py \
+  --robot.type=lekiwi \
+  --control.type=replay \
+  --control.fps=30 \
+  --control.repo_id=${HF_USER}/lekiwi_test \
+  --control.episode=0
+```
+
+> [!WARNING]
+> 回放会实际驱动机器人运动！确保机器人有足够空间，周围无障碍物。
+
+## 数据质量检查清单
+
+训练前建议检查：
+
+- [ ] 摄像头画面清晰、无遮挡
+- [ ] 关节角度变化平滑、无跳变
+- [ ] 每个回合的任务都完整执行
+- [ ] 动作序列时间长度合理
+- [ ] 数据集中没有失败的回合
+
+## 下一步
+
+前往 [训练策略与部署](/11-training) 开始训练 AI 模型！

@@ -25,6 +25,25 @@ const sidebars: SidebarsConfig = {
           items: [
             'lerobot/lekiwi/overview',
             'lerobot/lekiwi/quickstart',
+            {
+              type: 'category',
+              label: '📖 技术文档',
+              link: {type: 'doc', id: 'lerobot/lekiwi/bom'},
+              items: [
+                'lerobot/lekiwi/bom',
+                'lerobot/lekiwi/3d-printing',
+                'lerobot/lekiwi/assembly',
+                'lerobot/lekiwi/software-setup',
+                'lerobot/lekiwi/motor-config',
+                'lerobot/lekiwi/calibration',
+                'lerobot/lekiwi/teleoperation',
+                'lerobot/lekiwi/camera-setup',
+                'lerobot/lekiwi/data-collection',
+                'lerobot/lekiwi/visualization',
+                'lerobot/lekiwi/training',
+                'lerobot/lekiwi/troubleshooting',
+              ],
+            },
           ],
         },
         {

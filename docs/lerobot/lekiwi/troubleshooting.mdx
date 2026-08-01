@@ -1,0 +1,112 @@
+---
+sidebar_position: 13
+title: 故障排查
+---
+
+# 故障排查
+
+## 通信问题
+
+### 无法连接到机器人
+
+**1. 验证 IP 地址**
+```bash
+hostname -I  # 在树莓派上运行
+```
+
+**2. Ping 测试**
+```bash
+ping <树莓派IP地址>
+```
+如果 ping 失败：确认树莓派已开机且两台设备在同一网络中。
+
+**3. SSH 测试**
+```bash
+ssh <用户名>@<树莓派IP地址>
+```
+如果无法 SSH 登录，启用 SSH：
+```bash
+sudo raspi-config
+# Interfacing Options -> SSH -> 启用
+```
+
+**4. 配置文件一致性**：确保笔记本和树莓派上的配置文件完全一致。
+
+## USB / 端口问题
+
+### USB 端口权限不足（Linux）
+```bash
+sudo chmod 666 /dev/ttyACM0
+sudo chmod 666 /dev/ttyACM1
+sudo chmod 666 /dev/video*
+```
+
+### 找不到 USB 设备
+```bash
+ls /dev/tty*      # 列出串口设备
+ls /dev/video*    # 列出摄像头
+lsusb             # 查看 USB 设备
+```
+
+### macOS 键盘权限
+遥操作时键盘无响应：前往「系统偏好设置 > 安全性与隐私 > 隐私 > 输入监控」，勾选终端应用。
+
+## 舵机问题
+
+| 症状 | 解决方案 |
+|------|---------|
+| 舵机不响应 | 检查线缆是否插紧，确认舵机 ID 配置正确，检查控制板供电 |
+| 舵机抖动/异响 | 重新校准该舵机，检查机械结构是否卡住 |
+| 舵机过热 | 减少连续运行时间，检查是否有机械卡滞，确认供电电压正确 |
+
+## 摄像头问题
+
+| 症状 | 解决方案 |
+|------|---------|
+| 无画面 | `ls /dev/video*` 检查设备 |
+| 画面黑屏 | 尝试 `/dev/video0`~`/dev/video3` |
+| 权限不足 | `sudo chmod 666 /dev/video*` |
+| 画面倒置 | 在配置中设置 `rotation=90` 或 `180` |
+
+## 训练问题
+
+### GPU 显存不足
+减小图像分辨率或 batch size。
+
+### 训练损失不下降
+检查数据集质量，调整学习率，增加训练 epoch。
+
+## 有线版本特殊问题
+
+### USB 设备间歇性断开
+使用高质量的 USB-C 延长线，检查 USB 集线器供电。
+
+### USB-C 方向问题
+翻转 USB-C 接口 180 度重新插入。
+
+## URDF 仿真（附录）
+
+LeKiwi 提供从 CAD 导出的 URDF 模型文件，位于 `Code/URDF/` 目录。
+
+### 在 PyBullet 中使用
+
+```python
+import pybullet as p
+robot_id = p.loadURDF("Code/URDF/LeKiwi.urdf", useFixedBase=False)
+```
+
+### 支持的仿真器
+- **PyBullet**：快速原型验证
+- **MuJoCo**：物理精度更高
+- **Isaac Sim / Gazebo**：原生支持 URDF 导入
+
+> [!TIP]
+> 推荐工作流：**仿真验证 → 真实数据采集 → 混合训练 → 真实部署**
+
+## 获取帮助
+
+| 渠道 | 说明 |
+|------|------|
+| 💬 [LeRobot Discord](https://discord.gg/Jtz5TJtb2u) | `#mobile-so100-arm` 频道 |
+| 🐙 [GitHub Issues](https://github.com/SIGRobotics-UIUC/LeKiwi/issues) | 提交 Bug 报告 |
+| 📖 [LeRobot 官方文档](https://huggingface.co/docs/lerobot/lekiwi) | 官方使用指南 |

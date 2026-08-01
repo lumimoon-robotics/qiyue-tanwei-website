@@ -1,0 +1,77 @@
+---
+sidebar_position: 7
+title: 校准
+---
+
+# 校准
+
+需要校准**主臂（Leader）** 和**从臂（Follower）**。轮子电机无需校准。
+
+## 校准流程
+
+```mermaid
+flowchart LR
+    A[校准主臂] --> B[校准从臂]
+    B --> C[保存校准参数]
+
+    style A fill:#6366f1,color:#fff
+    style B fill:#6366f1,color:#fff
+    style C fill:#22c55e,color:#fff
+```
+
+## 校准步骤
+
+每个手臂需要依次摆放到 4 个位置：
+
+| 步骤 | 位置 | 说明 |
+|:--:|------|------|
+| 1 | **中间位置** | 手臂自然伸直的水平位置 |
+| 2 | **零位位置** | 手臂的机械零点位置 |
+| 3 | **旋转位置** | 各关节旋转到极限位置 |
+| 4 | **休息位置** | 手臂自然垂下的休息姿态 |
+
+## 校准主臂（Leader Arm）
+
+在主臂连接的**笔记本电脑**上运行：
+
+```bash
+conda activate lerobot
+
+python lerobot/scripts/control_robot.py \
+  --robot.type=lekiwi \
+  --robot.cameras='{}' \
+  --control.type=calibrate \
+  --control.arms='["main_leader"]'
+```
+
+## 校准从臂（Follower Arm）
+
+在**树莓派**上运行：
+
+```bash
+conda activate lerobot
+
+python lerobot/scripts/control_robot.py \
+  --robot.type=lekiwi \
+  --robot.cameras='{}' \
+  --control.type=calibrate \
+  --control.arms='["main_follower"]'
+```
+
+## 校准参数
+
+校准完成后，数据自动保存到 `.cache/calibration/lekiwi` 目录。如需重新校准，覆盖即可。
+
+> [!TIP]
+> 如果校准过程中舵机不响应：
+> 1. 检查 USB 线是否连接正确
+> 2. 在 Linux 上运行 `sudo chmod 666 /dev/ttyACM0`
+> 3. 确保控制板供电正常
+
+## 有线版本
+
+有线版本的两个校准命令都在**笔记本电脑**上运行。
+
+## 下一步
+
+前往 [遥控操作](/07-teleoperation) 开始操控机器人！

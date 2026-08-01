@@ -1,0 +1,74 @@
+---
+sidebar_position: 9
+title: 摄像头设置
+---
+
+# 摄像头设置
+
+LeKiwi 支持两种摄像头方案，对应不同的 3D 打印支架。
+
+## 支持的摄像头
+
+| 型号 | 类型 | 支架文件 |
+|------|------|---------|
+| Arducam 5MP 广角 | USB 摄像头模块 | `base_camera_mount.stl` + `wrist_camera_mount.stl` |
+| 标准 USB 网络摄像头 | USB 网络摄像头 | `webcam_mount/` 系列 |
+
+## 方案 1：Arducam 5MP 广角摄像头
+
+适用于 [Arducam 5MP](https://www.amazon.com/Arducam-Camera-Computer-Without-Microphone/dp/B0972KK7BC)。
+
+摄像头在 Linux 上通常映射为 `/dev/video0` 和 `/dev/video2`。
+
+## 方案 2：USB 网络摄像头
+
+适用于 [USB 网络摄像头](https://www.amazon.fr/Vinmooog-equipement-Microphone-Enregistrement-conférences/dp/B0BG1YJWFN/)。
+
+## 验证摄像头
+
+### 在树莓派上检查
+```bash
+# 列出所有摄像头设备
+ls /dev/video*
+
+# 使用 ffmpeg 测试
+ffmpeg -f v4l2 -list_formats all -i /dev/video0
+```
+
+### 在 LeRobot 中测试
+```bash
+conda activate lerobot
+python -c "
+import cv2
+cap = cv2.VideoCapture(0)
+ret, frame = cap.read()
+if ret:
+    print(f'摄像头分辨率: {frame.shape[1]}x{frame.shape[0]}')
+else:
+    print('无法读取摄像头')
+cap.release()
+"
+```
+
+## 摄像头配置参数
+
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| `camera_index` | `/dev/video0` 或数字索引 | 摄像头设备路径 |
+| `fps` | 30 | 帧率 |
+| `width` | 640 | 图像宽度 |
+| `height` | 480 | 图像高度 |
+| `rotation` | 0 | 旋转角度（0/90/180/270） |
+
+## 故障排查
+
+| 问题 | 解决方案 |
+|------|---------|
+| 摄像头无画面 | 运行 `ls /dev/video*` 检查设备 |
+| 画面黑屏 | 尝试 `/dev/video0`～`/dev/video3` |
+| 权限不足 (Linux) | `sudo chmod 666 /dev/video*` |
+| 画面倒置 | 设置 `rotation=180` |
+
+## 下一步
+
+前往 [数据采集与记录](/09-data-collection) 开始录制数据！

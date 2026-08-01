@@ -1,0 +1,75 @@
+---
+sidebar_position: 3
+title: 3D 打印指南
+---
+
+# 3D 打印指南
+
+> **预计时间：约 34 小时**
+
+所有 STL 文件位于 `Code/3DPrintMeshes/` 目录。使用通用 PLA 耗材在消费级 FDM 打印机上即可打印，已在 Bambu Lab P1S 上完成测试验证。
+
+## STL 零件清单
+
+### 标准版本（12V / 有线通用）
+
+| 零件 | 文件路径 | 数量 | 备注 |
+|------|----------|:---:|------|
+| 底板顶层 | `base_plate_layer2.stl` | 1 | |
+| 底板底层 | `base_plate_layer1.stl` | 1 | |
+| 驱动电机支架 | `drive_motor_mount_v2.stl` | 3 | |
+| 舵机轮毂 | `servo_wheel_hub.stl` | 3 | ⚠️ 需要支撑 |
+| 舵机控制器支架 | `servo_controller_mount.stl` | 1 | |
+| 电池支架 (12V) | `battery_mount.stl` | 1 | 12V 版本 |
+| 电池支架 (12V EU) | `battery_mount_eu.stl` | 1 | 12V 欧洲版 |
+| 树莓派外壳顶部 | `pi_case_top.stl` | 1 | |
+| 树莓派外壳底部 | `pi_case_bottom.stl` | 1 | |
+| 摄像头底座支架 | `base_camera_mount.stl` | 1 | Arducam 方案 |
+| 摄像头腕部支架 | `wrist_camera_mount.stl` | 1 | Arducam 方案 |
+| 网络摄像头底座支架 | `webcam_mount/webcam_mount.stl` | 1 | USB 摄像头方案 |
+| 网络摄像头夹持器插入件 | `webcam_mount/so100_gripper_cam_mount_insert.stl` | 1 | USB 摄像头方案 |
+| 网络摄像头腕部支架 | `webcam_mount/webcam_mount_wrist.stl` | 1 | USB 摄像头方案 |
+| 修改版从臂底座 | `modified_base_arm.stl` | 1 | ⚠️ 树形支撑 |
+
+### 有线版本额外零件
+
+| 零件 | 文件路径 | 数量 |
+|------|----------|:---:|
+| 线缆夹 | `wired_specific/cable_holder v0.stl` | 1 |
+| USB 连接器外壳 | `wired_specific/usb_connector_case v1.stl` | 1 |
+
+### SO-ARM100 手臂零件（外部）
+
+从 [SO-ARM100 仓库](https://github.com/TheRobotStudio/SO-ARM100) 打印：
+- 从臂（Follower arm）× 1
+- 主臂（Leader arm）× 1
+
+## 打印参数
+
+| 参数 | 推荐值 | 备注 |
+|------|--------|------|
+| 材料 | PLA / PLA+ | 通用即可 |
+| 喷嘴直径 | 0.2 mm | |
+| 层高 | 0.2 mm | |
+| 填充密度 | 15% | |
+| 打印速度 | 150 mm/s | |
+| 支撑 | 按需开启 | 仅标记了「需要支撑」的零件 |
+
+## 打印步骤
+
+1. 将 STL 文件导入切片软件（Bambu Studio、PrusaSlicer 等）
+2. 对标记为「需要支撑」的零件启用支撑
+3. 使用推荐参数切片，上传 G-code 到打印机
+
+### 后处理
+- 从打印平台取下打印件
+- 拆除支撑结构
+- 检查螺丝孔是否通畅（如需可用钻头清理）
+
+## 没有 3D 打印机？
+
+可以选择在线 3D 打印服务，或选购市面上已有的套件。
+
+## 下一步
+
+前往 [组装指南](/03-assembly) 开始组装！

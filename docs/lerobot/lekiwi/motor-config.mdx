@@ -1,0 +1,128 @@
+---
+sidebar_position: 6
+title: 电机配置
+---
+
+# 电机配置
+
+## 电机连接拓扑
+
+```mermaid
+flowchart TB
+    subgraph 笔记本电脑
+        L[LeRobot 遥控端]
+    end
+    subgraph 树莓派_5 ["树莓派 5"]
+        R[LeRobot 机器人端]
+    end
+    subgraph 主臂 ["主臂 (Leader)"]
+        L1[ID 1: 肩部旋转]
+        L2[ID 2: 肩部抬升]
+        L3[ID 3: 肘部弯曲]
+        L4[ID 4: 腕部弯曲]
+        L5[ID 5: 腕部旋转]
+        L6[ID 6: 夹持器]
+    end
+    subgraph 从臂与底盘 ["从臂 (Follower) + 底盘"]
+        F1[ID 1-6: 手臂舵机]
+        F2[ID 7: 左前轮]
+        F3[ID 8: 后轮]
+        F4[ID 9: 右前轮]
+    end
+    L <-->|TCP :5555| R
+    R -->|USB| 主臂
+    R -->|USB| 从臂与底盘
+```
+
+## 查找 USB 端口
+
+运行以下脚本找到各控制板的端口：
+
+```bash
+lerobot-find-port
+```
+
+**示例输出**：
+- `/dev/tty.usbmodem575E0031751`（主臂控制板）
+- `/dev/tty.usbmodem575E0032081`（从臂控制板）
+- Linux：`/dev/ttyACM0`、`/dev/ttyACM1`
+
+> [!WARNING]
+> 在 Linux 上可能需要授予 USB 端口访问权限：
+> ```bash
+> sudo chmod 666 /dev/ttyACM0
+> sudo chmod 666 /dev/ttyACM1
+> ```
+
+## 配置电机 ID
+
+依次插入每个电机并运行以下脚本：
+
+```bash
+lerobot-setup-motors \
+  --robot.type=lekiwi \
+  --robot.port=/dev/tty.usbmodem58760431551   # ← 替换为实际端口
+```
+
+### 电机 ID 分配
+
+#### 机械臂舵机
+
+| 舵机名称 | ID | 型号 |
+|---------|:--:|------|
+| shoulder_pan（肩部旋转） | 1 | sts3215 |
+| shoulder_lift（肩部抬升） | 2 | sts3215 |
+| elbow_flex（肘部弯曲） | 3 | sts3215 |
+| wrist_flex（腕部弯曲） | 4 | sts3215 |
+| wrist_roll（腕部旋转） | 5 | sts3215 |
+| gripper（夹持器） | 6 | sts3215 |
+
+#### 底盘舵机
+
+| 舵机名称 | ID | 位置 |
+|---------|:--:|------|
+| left_wheel（左前轮） | 7 | 左前方 |
+| back_wheel（后轮） | 8 | 后方 |
+| right_wheel（右前轮） | 9 | 右前方 |
+
+## 查找树莓派 IP 地址
+
+在树莓派上运行：
+
+```bash
+hostname -I
+```
+
+记下输出的 IP 地址，后续配置中需要使用。
+
+## 软件通信架构
+
+```mermaid
+sequenceDiagram
+    participant L as 笔记本电脑
+    participant P as 树莓派 5
+    participant C as 舵机控制板
+    participant M as 舵机 (ID 1-9)
+
+    L->>P: TCP :5555 控制指令
+    L->>P: TCP :5556 视频流
+    P->>C: USB 串口通信
+    C->>M: UART 总线控制
+    M-->>C: 编码器反馈
+    C-->>P: 状态回传
+    P-->>L: 遥测数据
+```
+
+## 有线版本
+
+有线版本中所有设备连接在同一台笔记本上，IP 地址设为：
+```
+ip: str = "127.0.0.1"
+```
+
+> [!IMPORTANT]
+> 确保两台设备上对应的配置文件保持一致！
+
+## 下一步
+
+前往 [校准](/06-calibration) 完成手臂校准！
