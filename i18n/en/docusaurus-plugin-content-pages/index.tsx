@@ -42,6 +42,12 @@ const categories = [
   },
 ];
 
+const leRobotProducts = [
+  {name: 'SO-ARM101', desc: 'Desktop Robotic Arm', img: '/img/so-arm101.png', to: '/docs/lerobot/so-arm101/overview'},
+  {name: 'Lekiwi', desc: 'Omnidirectional Chassis', img: '/img/lekiwi.png', to: '/docs/lerobot/lekiwi/overview'},
+  {name: 'Xlerobot', desc: 'AI Home Robot', img: '/img/xlerobot.png', to: '/docs/lerobot/xlerobot/overview'},
+];
+
 const advantages = [
   {icon: '📐', title: 'Fully Open Source', desc: 'CAD, PCB, firmware, and SDK all under Apache 2.0. No closed components.'},
   {icon: '🧩', title: 'Modular Design', desc: 'Standardized interfaces across products. Mix and match to build your ideal robot.'},
@@ -128,6 +134,29 @@ function Marquee() {
         ))}
       </div>
     </div>
+  );
+}
+
+/* ---- Showcase ---- */
+function ProductsShowcase() {
+  return (
+    <section className={styles.showcase}>
+      <div className="container">
+        <div className={styles.showcaseGrid}>
+          {leRobotProducts.map((p, i) => (
+            <Link key={i} to={p.to} className={styles.showcaseCard}>
+              <div className={styles.showcaseImgWrap}>
+                <img src={p.img} alt={p.name} className={styles.showcaseImg} />
+              </div>
+              <div className={styles.showcaseInfo}>
+                <h3 className={styles.showcaseName}>{p.name}</h3>
+                <p className={styles.showcaseDesc}>{p.desc}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -260,6 +289,7 @@ export default function Home(): ReactNode {
       <Hero />
       <main>
         <Marquee />
+        <ProductsShowcase />
         <Products />
         <Advantages />
         <Metrics />

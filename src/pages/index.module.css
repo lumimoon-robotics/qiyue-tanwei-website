@@ -291,6 +291,81 @@
 }
 
 /* ================================================================
+   产品图片展示
+   ================================================================ */
+.showcase {
+  padding: 3rem 0 0;
+  background: #fff;
+}
+
+.showcaseGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.showcaseCard {
+  display: flex;
+  flex-direction: column;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  background: #fafbfd;
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.showcaseCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+}
+
+.showcaseImgWrap {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.showcaseImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.showcaseCard:hover .showcaseImg {
+  transform: scale(1.04);
+}
+
+.showcaseInfo {
+  padding: 1rem 1.25rem;
+}
+
+.showcaseName {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.2rem;
+}
+
+.showcaseDesc {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0;
+}
+
+@media screen and (max-width: 640px) {
+  .showcaseGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================================================================
    跑马灯
    ================================================================ */
 .marquee {

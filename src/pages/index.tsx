@@ -20,6 +20,7 @@ const categories = [
     gradient: 'from-indigo-950 via-blue-900 to-violet-950',
     accent: '#6366f1',
     icon: '🤖',
+    image: '/img/lerobot-showcase.png',
   },
   {
     id: 'cameras',
@@ -43,6 +44,12 @@ const categories = [
     accent: '#f59e0b',
     icon: '⚙️',
   },
+];
+
+const leRobotProducts = [
+  {name: 'SO-ARM101', desc: '桌面级开源机械臂', img: '/img/so-arm101.png', to: '/docs/lerobot/so-arm101/overview'},
+  {name: 'Lekiwi', desc: '全向移动底盘', img: '/img/lekiwi.png', to: '/docs/lerobot/lekiwi/overview'},
+  {name: 'Xlerobot', desc: 'AI 家务机器人', img: '/img/xlerobot.png', to: '/docs/lerobot/xlerobot/overview'},
 ];
 
 const advantages = [
@@ -243,6 +250,31 @@ function Marquee() {
 }
 
 /* ================================================================
+   LeRobot 产品图片展示
+   ================================================================ */
+function ProductsShowcase() {
+  return (
+    <section className={styles.showcase}>
+      <div className="container">
+        <div className={styles.showcaseGrid}>
+          {leRobotProducts.map((p, i) => (
+            <Link key={i} to={p.to} className={styles.showcaseCard}>
+              <div className={styles.showcaseImgWrap}>
+                <img src={p.img} alt={p.name} className={styles.showcaseImg} />
+              </div>
+              <div className={styles.showcaseInfo}>
+                <h3 className={styles.showcaseName}>{p.name}</h3>
+                <p className={styles.showcaseDesc}>{p.desc}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ================================================================
    产品展示
    ================================================================ */
 function Products() {
@@ -391,6 +423,7 @@ export default function Home(): ReactNode {
       <Hero />
       <main>
         <Marquee />
+        <ProductsShowcase />
         <Products />
         <Advantages />
         <Metrics />
