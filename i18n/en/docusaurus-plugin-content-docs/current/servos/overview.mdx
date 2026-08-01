@@ -1,27 +1,59 @@
 ---
-sidebar_position: 1
-title: Servo Products Overview
+sidebar_position: 3
+title: Servo Products
 description: Feetech ST3215 Series Smart Servos — C018/C001/C044/C046/SCS0009
-keywords: [ST3215, Feetech servo, smart servo, bus servo, C018, C001, SCS0009]
+keywords: [ST3215, Feetech servo, smart servo, bus servo]
 ---
 
 # ⚙️ Servo Products
 
-Smart bus servos based on the Feetech ST3215 platform, covering diverse torque, speed, and precision requirements.
+Smart bus servos based on the Feetech ST3215 platform, covering diverse needs from standard to high-precision, from regular to micro form factors. All models support RS485 multi-drop communication with full state feedback.
 
-## Product Lines
+---
 
-| Model | Torque | Speed | Precision | Positioning |
-|-------|--------|-------|-----------|-------------|
-| [C018](./st3215-c018) | 15kg·cm | 0.15s/60° | 0.3° | Standard |
-| [C001](./st3215-c001) | 20kg·cm | 0.12s/60° | 0.2° | High Torque |
-| [C044](./st3215-c044) | 10kg·cm | 0.10s/60° | 0.2° | High Speed |
-| [C046](./st3215-c046) | 18kg·cm | 0.13s/60° | 0.15° | High Precision |
-| [SCS0009](./scs0009) | 5kg·cm | 0.08s/60° | 0.1° | Micro High-Speed |
+## Product Matrix
+
+| Model | Torque | Speed | Precision | Weight | Positioning |
+|-------|--------|-------|-----------|--------|-------------|
+| **C018** | 15 kg·cm | 0.15 s/60° | 0.3° | 85g | Standard |
+| **C001** | 20 kg·cm | 0.12 s/60° | 0.2° | 95g | High Torque |
+| **C044** | 10 kg·cm | 0.10 s/60° | 0.2° | 78g | High Speed |
+| **C046** | 18 kg·cm | 0.13 s/60° | 0.15° | 90g | High Precision |
+| **SCS0009** | 5 kg·cm | 0.08 s/60° | 0.1° | 32g | Micro High-Speed |
+
+---
 
 ## Common Features
 
-- **Bus Control** — RS485 multi-drop, up to 254 nodes
-- **Full Feedback** — Position, velocity, torque, temperature
-- **ROS2 Driver** — Standard `joint_state` + PID tuning
-- **Wide Voltage** — 6V-12V, compatible with all robot platforms
+### 🔌 Bus Control
+RS485 multi-drop protocol, up to 254 servos on a single bus. Simplified wiring, reduced cable clutter.
+
+### 📊 Full Feedback
+Each servo streams real-time position, velocity, torque, and temperature data for closed-loop control and monitoring.
+
+### 🤖 ROS2 Driver
+Standard `joint_state` interface with PID tuning panel. Seamless integration with ROS2 robotics projects.
+
+### ⚡ Wide Voltage
+6V-12V input range, compatible with 2S-3S LiPo batteries and various robot power systems.
+
+### 🛠️ Debugging Tools
+Companion software for parameter read/write, trajectory planning, and multi-servo synchronization.
+
+---
+
+## Selection Guide
+
+| Application | Recommended Model |
+|-------------|-------------------|
+| Lightweight arm joints | C018 |
+| Heavy-duty joints / legged robots | C001 |
+| High-speed sorting / dynamic control | C044 |
+| Dexterous hands / precision positioning | C046 |
+| Micro finger joints / gimbals | SCS0009 |
+
+---
+
+:::tip Documentation
+For detailed specs, wiring diagrams, and driver configuration, see the [Tutorials →](/docs/servos/st3215-c018)
+:::

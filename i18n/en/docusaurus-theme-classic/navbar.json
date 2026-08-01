@@ -1,0 +1,46 @@
+{
+  "title": {
+    "message": "Qiyue Robotics",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "Qiyue Robotics Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.首页": {
+    "message": "Home",
+    "description": "Navbar item with label 首页"
+  },
+  "item.label.产品": {
+    "message": "Products",
+    "description": "Navbar item with label 产品"
+  },
+  "item.label.教程": {
+    "message": "Tutorials",
+    "description": "Navbar item with label 教程"
+  },
+  "item.label.关于我们": {
+    "message": "About",
+    "description": "Navbar item with label 关于我们"
+  },
+  "item.label.🛒 商店": {
+    "message": "🛒 Store",
+    "description": "Navbar item with label 🛒 商店"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  },
+  "item.label.🤖 LeRobot 开源硬件": {
+    "message": "🤖 LeRobot Open Hardware",
+    "description": "Navbar item with label 🤖 LeRobot 开源硬件"
+  },
+  "item.label.📷 相机产品": {
+    "message": "📷 Camera Products",
+    "description": "Navbar item with label 📷 相机产品"
+  },
+  "item.label.⚙️ 舵机产品": {
+    "message": "⚙️ Servo Products",
+    "description": "Navbar item with label ⚙️ 舵机产品"
+  }
+}

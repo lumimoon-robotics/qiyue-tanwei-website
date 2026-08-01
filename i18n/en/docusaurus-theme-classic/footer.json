@@ -1,0 +1,54 @@
+{
+  "link.title.产品": {
+    "message": "Products",
+    "description": "The title of the footer links column with title=产品 in the footer"
+  },
+  "link.title.资源": {
+    "message": "Resources",
+    "description": "The title of the footer links column with title=资源 in the footer"
+  },
+  "link.title.关于": {
+    "message": "About",
+    "description": "The title of the footer links column with title=关于 in the footer"
+  },
+  "link.item.label.LeRobot 开源硬件": {
+    "message": "LeRobot Open Hardware",
+    "description": "The label of footer link with label=LeRobot 开源硬件 linking to /docs/lerobot/overview"
+  },
+  "link.item.label.相机产品": {
+    "message": "Camera Products",
+    "description": "The label of footer link with label=相机产品 linking to /docs/cameras/overview"
+  },
+  "link.item.label.舵机产品": {
+    "message": "Servo Products",
+    "description": "The label of footer link with label=舵机产品 linking to /docs/servos/overview"
+  },
+  "link.item.label.教程中心": {
+    "message": "Tutorials",
+    "description": "The label of footer link with label=教程中心 linking to /docs/intro"
+  },
+  "link.item.label.🛒 淘宝店铺": {
+    "message": "🛒 Taobao Store",
+    "description": "The label of footer link with label=🛒 淘宝店铺 linking to https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/"
+  },
+  "link.item.label.GitHub": {
+    "message": "GitHub",
+    "description": "The label of footer link with label=GitHub linking to https://github.com/lumimoon-robotics"
+  },
+  "link.item.label.开源硬件": {
+    "message": "Open Hardware",
+    "description": "The label of footer link with label=开源硬件 linking to https://github.com/lumimoon-robotics"
+  },
+  "link.item.label.关于我们": {
+    "message": "About Us",
+    "description": "The label of footer link with label=关于我们 linking to /about"
+  },
+  "link.item.label.联系我们": {
+    "message": "Contact",
+    "description": "The label of footer link with label=联系我们 linking to /about#contact"
+  },
+  "copyright": {
+    "message": "Copyright © {year} Qiyue Robotics. Built with Docusaurus.",
+    "description": "The footer copyright"
+  }
+}

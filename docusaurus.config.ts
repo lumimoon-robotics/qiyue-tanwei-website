@@ -78,7 +78,7 @@ const config: Config = {
           type: 'docSidebar',
           sidebarId: 'productSidebar',
           position: 'left',
-          label: '文档',
+          label: '教程',
         },
         {to: '/about', label: '关于我们', position: 'left'},
         {
@@ -112,7 +112,7 @@ const config: Config = {
         {
           title: '资源',
           items: [
-            {label: '文档中心', to: '/docs/intro'},
+            {label: '教程中心', to: '/docs/intro'},
             {label: '🛒 淘宝店铺', href: 'https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/'},
             {label: 'GitHub', href: 'https://github.com/lumimoon-robotics'},
             {label: '开源硬件', href: 'https://github.com/lumimoon-robotics'},

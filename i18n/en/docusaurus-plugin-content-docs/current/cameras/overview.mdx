@@ -1,25 +1,79 @@
 ---
-sidebar_position: 1
-title: Camera Products Overview
+sidebar_position: 2
+title: Camera Products
 description: Qiyue Robotics Vision Camera Modules — Wrist, Fixed, and Dual Cameras
 keywords: [robot camera, wrist camera, fixed camera, dual camera, machine vision]
 ---
 
 # 📷 Camera Products
 
-Vision modules purpose-built for robotic perception, covering end-effector guidance, global awareness, and stereo depth.
+Vision modules purpose-built for robotic perception — covering end-effector guidance, global scene awareness, and stereo depth. All cameras feature ROS2 standard interfaces and Python/C++ SDKs, plug and play.
 
-## Product Lines
+---
 
-| Product | Type | Resolution | Use Case |
-|---------|------|------------|----------|
-| [Wrist Camera](./wrist/overview) | End-Effector | 1080P | Dexterous manipulation guidance |
-| [Fixed Camera](./fixed/overview) | Scene Perception | 2K | Global environment understanding |
-| [Dual Camera](./dual/overview) | Stereo Vision | 1080P×2 | Depth estimation & SLAM |
+## ⌚ Wrist Camera
 
-## Key Features
+Ultra-lightweight end-effector camera for dexterous manipulation guidance.
 
-- **Robot-Optimized** — Designed for arm vibrations and motion blur
-- **ROS2-Native** — Standard `sensor_msgs` interface, plug-and-play
-- **Ultra-Compact** — As light as 35g, no payload compromise
-- **Complete SDK** — Python/C++ APIs with calibration tools
+| Parameter | Specification |
+|-----------|---------------|
+| Sensor | 1/2.8" CMOS |
+| Resolution | 1920×1080 @ 60fps |
+| FOV | 90° × 60° |
+| Weight | 35g only |
+| Focus | 8cm ~ ∞ autofocus |
+| Interface | USB 3.0 Type-C |
+
+**Highlights**
+- Only 35g — no payload compromise
+- 60fps for dynamic grasping scenarios
+- 8cm close-range autofocus
+- ROS2 `sensor_msgs` driver included
+
+---
+
+## 📌 Fixed Camera
+
+High-resolution global perception camera for workspace scene understanding.
+
+| Parameter | Specification |
+|-----------|---------------|
+| Sensor | 1/2.3" CMOS |
+| Resolution | 2560×1440 @ 30fps |
+| FOV | 120° × 80° |
+| Weight | 85g |
+| Mount | 1/4" standard + magnetic base |
+| Interface | USB 3.0 / GigE |
+
+**Highlights**
+- 2K resolution captures fine scene details
+- 120° ultra-wide FOV covers large work areas
+- Multiple mounting options for flexible deployment
+- GigE support for long-distance transmission
+
+---
+
+## 👁️ Dual Camera
+
+Stereo vision module providing real-time depth maps and point clouds.
+
+| Parameter | Specification |
+|-----------|---------------|
+| Sensors | 2× 1/2.8" CMOS |
+| Resolution | 2× 1920×1080 @ 30fps |
+| Baseline | 65mm |
+| Depth Range | 0.3m ~ 10m |
+| Weight | 120g |
+| Interface | USB 3.0 Type-C |
+
+**Highlights**
+- Real-time depth estimation at 30fps
+- 65mm baseline, human-like stereo layout
+- Calibration toolkit for one-click stereo calibration
+- Ideal for SLAM, 3D reconstruction, and depth-guided grasping
+
+---
+
+:::tip Documentation
+For detailed installation guides, SDK manuals, and calibration tutorials, see the [Tutorials →](/docs/cameras/wrist/overview)
+:::

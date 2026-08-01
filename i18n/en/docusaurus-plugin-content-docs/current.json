@@ -1,0 +1,30 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.productSidebar.category.🤖 LeRobot 开源硬件": {
+    "message": "🤖 LeRobot Open Hardware",
+    "description": "The label for category '🤖 LeRobot 开源硬件' in sidebar 'productSidebar'"
+  },
+  "sidebar.productSidebar.category.🦾 SO-ARM101 机械臂": {
+    "message": "🦾 SO-ARM101 Robotic Arm",
+    "description": "The label for category '🦾 SO-ARM101 机械臂' in sidebar 'productSidebar'"
+  },
+  "sidebar.productSidebar.category.🔧 Lekiwi 底盘": {
+    "message": "🔧 Lekiwi Chassis",
+    "description": "The label for category '🔧 Lekiwi 底盘' in sidebar 'productSidebar'"
+  },
+  "sidebar.productSidebar.category.🤖 Xlerobot 家务机器人": {
+    "message": "🤖 Xlerobot Home Robot",
+    "description": "The label for category '🤖 Xlerobot 家务机器人' in sidebar 'productSidebar'"
+  },
+  "sidebar.productSidebar.category.📷 相机产品": {
+    "message": "📷 Camera Products",
+    "description": "The label for category '📷 相机产品' in sidebar 'productSidebar'"
+  },
+  "sidebar.productSidebar.category.⚙️ 舵机产品": {
+    "message": "⚙️ Servo Products",
+    "description": "The label for category '⚙️ 舵机产品' in sidebar 'productSidebar'"
+  }
+}
