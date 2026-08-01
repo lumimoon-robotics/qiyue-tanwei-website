@@ -4,36 +4,33 @@ import NavbarNavLink from '@theme/NavbarItem/NavbarNavLink';
 import NavbarItem from '@theme/NavbarItem';
 import type {Props} from '@theme/NavbarItem/DropdownNavbarItem/Desktop';
 
-function SubMenu({item}: {item: any}) {
-  const [show, setShow] = useState(false);
-  const {children, ...rest} = item;
-
+function MegaMenu({items}: {items: any[]}) {
   return (
-    <li
-      className="dropdown__submenu"
-      onMouseEnter={() => setShow(true)}
-      onMouseLeave={() => setShow(false)}>
-      <NavbarNavLink
-        className="dropdown__link dropdown__link--with-submenu"
-        {...rest}
-        label={
-          <span style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%'}}>
-            {item.label}
-            <span style={{marginLeft: '1.5rem', opacity: 0.5}}>›</span>
-          </span>
-        }
-      />
-      <ul className={clsx('dropdown__menu', 'dropdown__menu--sub', show && 'dropdown__menu--show')}>
-        {item.children.map((child: any, j: number) => (
-          <NavbarItem
-            isDropdownItem
-            activeClassName="dropdown__link--active"
-            {...child}
-            key={j}
-          />
-        ))}
-      </ul>
-    </li>
+    <ul className="dropdown__menu dropdown__mega">
+      {items.map((cat: any, i: number) => {
+        const {children, ...rest} = cat;
+        return (
+          <li key={i} className="dropdown__mega-col">
+            <NavbarNavLink
+              className="dropdown__link dropdown__link--category"
+              {...rest}
+            />
+            {children && (
+              <ul className="dropdown__mega-sub">
+                {children.map((child: any, j: number) => (
+                  <NavbarItem
+                    isDropdownItem
+                    activeClassName="dropdown__link--active"
+                    {...child}
+                    key={j}
+                  />
+                ))}
+              </ul>
+            )}
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
@@ -46,6 +43,8 @@ export default function DropdownNavbarItemDesktop({
 }: Props): ReactNode {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [showDropdown, setShowDropdown] = useState(false);
+
+  const hasMega = items.some((item: any) => item.children);
 
   useEffect(() => {
     const handleClickOutside = (
@@ -77,6 +76,7 @@ export default function DropdownNavbarItemDesktop({
       className={clsx('navbar__item', 'dropdown', 'dropdown--hoverable', {
         'dropdown--right': position === 'right',
         'dropdown--show': showDropdown,
+        'dropdown--mega': hasMega,
       })}>
       <NavbarNavLink
         aria-haspopup="true"
@@ -94,22 +94,20 @@ export default function DropdownNavbarItemDesktop({
         }}>
         {props.children ?? props.label}
       </NavbarNavLink>
-      <ul className="dropdown__menu">
-        {items.map((childItemProps: any, i: number) => {
-          if (childItemProps.children) {
-            return <SubMenu key={i} item={childItemProps} />;
-          }
-          const {children: _, ...rest} = childItemProps;
-          return (
+      {hasMega ? (
+        <MegaMenu items={items} />
+      ) : (
+        <ul className="dropdown__menu">
+          {items.map((childItemProps: any, i: number) => (
             <NavbarItem
               isDropdownItem
               activeClassName="dropdown__link--active"
-              {...rest}
+              {...childItemProps}
               key={i}
             />
-          );
-        })}
-      </ul>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

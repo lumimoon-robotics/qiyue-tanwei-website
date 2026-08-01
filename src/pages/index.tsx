@@ -1,7 +1,8 @@
-import {type ReactNode, useEffect, useRef, useState} from 'react';
+import {type ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
@@ -47,9 +48,9 @@ const categories = [
 ];
 
 const leRobotProducts = [
-  {name: 'SO-ARM101', desc: '桌面级开源机械臂', img: '/img/so-arm101.png', to: '/docs/lerobot/so-arm101/overview'},
-  {name: 'Lekiwi', desc: '全向移动底盘', img: '/img/lekiwi.png', to: '/docs/lerobot/lekiwi/overview'},
-  {name: 'Xlerobot', desc: 'AI 家务机器人', img: '/img/xlerobot.png', to: '/docs/lerobot/xlerobot/overview'},
+  {name: 'SO-ARM101', desc: '桌面级开源机械臂', img: 'img/so-arm101.png', to: '/docs/lerobot/so-arm101/overview'},
+  {name: 'Lekiwi', desc: '全向移动底盘', img: 'img/lekiwi.png', to: '/docs/lerobot/lekiwi/overview'},
+  {name: 'Xlerobot', desc: 'AI 家务机器人', img: 'img/xlerobot.png', to: '/docs/lerobot/xlerobot/overview'},
 ];
 
 const advantages = [
@@ -260,7 +261,7 @@ function ProductsShowcase() {
           {leRobotProducts.map((p, i) => (
             <Link key={i} to={p.to} className={styles.showcaseCard}>
               <div className={styles.showcaseImgWrap}>
-                <img src={p.img} alt={p.name} className={styles.showcaseImg} />
+                <img src={useBaseUrl(p.img)} alt={p.name} className={styles.showcaseImg} />
               </div>
               <div className={styles.showcaseInfo}>
                 <h3 className={styles.showcaseName}>{p.name}</h3>
