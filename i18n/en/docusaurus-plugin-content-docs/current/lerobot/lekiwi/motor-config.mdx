@@ -1,0 +1,134 @@
+---
+sidebar_position: 6
+title: Motor Configuration
+keywords:
+  - LeKiwi
+  - motor configuration
+  - servo ID
+  - USB port
+description: Motor ID assignment and USB port configuration guide for LeKiwi
+---
+
+# Motor Configuration
+
+## Motor Connection Topology
+
+```mermaid
+flowchart TB
+    subgraph Laptop
+        L[LeRobot Teleop Client]
+    end
+    subgraph Raspberry_Pi_5 ["Raspberry Pi 5"]
+        R[LeRobot Robot Server]
+    end
+    subgraph Leader ["Leader Arm"]
+        L1[ID 1: Shoulder Pan]
+        L2[ID 2: Shoulder Lift]
+        L3[ID 3: Elbow Flex]
+        L4[ID 4: Wrist Flex]
+        L5[ID 5: Wrist Roll]
+        L6[ID 6: Gripper]
+    end
+    subgraph Follower_Base ["Follower Arm + Base"]
+        F1[ID 1-6: Arm Servos]
+        F2[ID 7: Left-Front Wheel]
+        F3[ID 8: Rear Wheel]
+        F4[ID 9: Right-Front Wheel]
+    end
+    L <-->|TCP :5555| R
+    R -->|USB| Leader
+    R -->|USB| Follower_Base
+```
+
+## Find USB Ports
+
+Run the following script to find the ports for each control board:
+
+```bash
+lerobot-find-port
+```
+
+**Example output**:
+- `/dev/tty.usbmodem575E0031751` (leader control board)
+- `/dev/tty.usbmodem575E0032081` (follower control board)
+- Linux: `/dev/ttyACM0`, `/dev/ttyACM1`
+
+> [!WARNING]
+> On Linux, you may need to grant USB port access permissions:
+> ```bash
+> sudo chmod 666 /dev/ttyACM0
+> sudo chmod 666 /dev/ttyACM1
+> ```
+
+## Configure Motor IDs
+
+Plug in each motor one at a time and run the following script:
+
+```bash
+lerobot-setup-motors \
+  --robot.type=lekiwi \
+  --robot.port=/dev/tty.usbmodem58760431551   # ← Replace with actual port
+```
+
+### Motor ID Assignment
+
+#### Arm Servos
+
+| Servo Name | ID | Model |
+|---------|:--:|------|
+| shoulder_pan | 1 | sts3215 |
+| shoulder_lift | 2 | sts3215 |
+| elbow_flex | 3 | sts3215 |
+| wrist_flex | 4 | sts3215 |
+| wrist_roll | 5 | sts3215 |
+| gripper | 6 | sts3215 |
+
+#### Base Servos
+
+| Servo Name | ID | Position |
+|---------|:--:|------|
+| left_wheel | 7 | Left-front |
+| back_wheel | 8 | Rear |
+| right_wheel | 9 | Right-front |
+
+## Find Raspberry Pi IP Address
+
+Run on the Raspberry Pi:
+
+```bash
+hostname -I
+```
+
+Note the IP address displayed — you will need it for subsequent configuration.
+
+## Software Communication Architecture
+
+```mermaid
+sequenceDiagram
+    participant L as Laptop
+    participant P as Raspberry Pi 5
+    participant C as Servo Control Board
+    participant M as Servos (ID 1-9)
+
+    L->>P: TCP :5555 Control Commands
+    L->>P: TCP :5556 Video Stream
+    P->>C: USB Serial Communication
+    C->>M: UART Bus Control
+    M-->>C: Encoder Feedback
+    C-->>P: Status Return
+    P-->>L: Telemetry Data
+```
+
+## Wired Version
+
+In the wired version, all devices are connected to the same laptop. Set the IP address to:
+```
+ip: str = "127.0.0.1"
+```
+
+> [!IMPORTANT]
+> Ensure that the configuration files on both devices are kept consistent!
+
+## Next Steps
+
+Go to [Calibration](/06-calibration) to complete arm calibration!

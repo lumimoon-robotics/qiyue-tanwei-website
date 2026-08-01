@@ -1,0 +1,84 @@
+---
+sidebar_position: 7
+title: Calibration
+keywords:
+  - LeKiwi
+  - calibration
+  - servo
+  - leader arm
+  - follower arm
+description: Calibration guide for LeKiwi leader and follower arms
+---
+
+# Calibration
+
+Both the **Leader Arm** and **Follower Arm** need to be calibrated. The wheel motors do not require calibration.
+
+## Calibration Flow
+
+```mermaid
+flowchart LR
+    A[Calibrate Leader Arm] --> B[Calibrate Follower Arm]
+    B --> C[Save Calibration Parameters]
+
+    style A fill:#6366f1,color:#fff
+    style B fill:#6366f1,color:#fff
+    style C fill:#22c55e,color:#fff
+```
+
+## Calibration Steps
+
+Each arm needs to be positioned sequentially into 4 poses:
+
+| Step | Position | Description |
+|:--:|------|------|
+| 1 | **Middle Position** | Arm extended naturally in a horizontal position |
+| 2 | **Zero Position** | The mechanical zero position of the arm |
+| 3 | **Rotation Position** | Each joint rotated to its limit position |
+| 4 | **Rest Position** | Arm naturally hanging down in a rest pose |
+
+## Calibrate the Leader Arm
+
+Run on the **laptop** connected to the leader arm:
+
+```bash
+conda activate lerobot
+
+python lerobot/scripts/control_robot.py \
+  --robot.type=lekiwi \
+  --robot.cameras='{}' \
+  --control.type=calibrate \
+  --control.arms='["main_leader"]'
+```
+
+## Calibrate the Follower Arm
+
+Run on the **Raspberry Pi**:
+
+```bash
+conda activate lerobot
+
+python lerobot/scripts/control_robot.py \
+  --robot.type=lekiwi \
+  --robot.cameras='{}' \
+  --control.type=calibrate \
+  --control.arms='["main_follower"]'
+```
+
+## Calibration Parameters
+
+Once calibration is complete, the data is automatically saved to the `.cache/calibration/lekiwi` directory. To recalibrate, simply overwrite the existing files.
+
+> [!TIP]
+> If servos do not respond during calibration:
+> 1. Check that USB cables are connected correctly
+> 2. On Linux, run `sudo chmod 666 /dev/ttyACM0`
+> 3. Ensure the control board is receiving power
+
+## Wired Version
+
+For the wired version, both calibration commands are run on the **laptop**.
+
+## Next Steps
+
+Go to [Teleoperation](/07-teleoperation) to start controlling the robot!

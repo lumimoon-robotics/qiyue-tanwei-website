@@ -1,0 +1,80 @@
+---
+sidebar_position: 9
+title: Camera Setup
+keywords:
+  - LeKiwi
+  - camera
+  - Arducam
+  - webcam
+description: Camera setup and configuration guide for LeKiwi, covering Arducam and USB webcam options
+---
+
+# Camera Setup
+
+LeKiwi supports two camera options, each with corresponding 3D-printed mounts.
+
+## Supported Cameras
+
+| Model | Type | Mount Files |
+|------|------|---------|
+| Arducam 5MP Wide Angle | USB Camera Module | `base_camera_mount.stl` + `wrist_camera_mount.stl` |
+| Standard USB Webcam | USB Webcam | `webcam_mount/` series |
+
+## Option 1: Arducam 5MP Wide Angle Camera
+
+For the [Arducam 5MP](https://www.amazon.com/Arducam-Camera-Computer-Without-Microphone/dp/B0972KK7BC).
+
+On Linux, the camera typically maps to `/dev/video0` and `/dev/video2`.
+
+## Option 2: USB Webcam
+
+For [USB Webcams](https://www.amazon.fr/Vinmooog-equipement-Microphone-Enregistrement-conférences/dp/B0BG1YJWFN/).
+
+## Verify Camera
+
+### Check on Raspberry Pi
+```bash
+# List all camera devices
+ls /dev/video*
+
+# Test with ffmpeg
+ffmpeg -f v4l2 -list_formats all -i /dev/video0
+```
+
+### Test in LeRobot
+```bash
+conda activate lerobot
+python -c "
+import cv2
+cap = cv2.VideoCapture(0)
+ret, frame = cap.read()
+if ret:
+    print(f'Camera resolution: {frame.shape[1]}x{frame.shape[0]}')
+else:
+    print('Unable to read from camera')
+cap.release()
+"
+```
+
+## Camera Configuration Parameters
+
+| Parameter | Default | Description |
+|------|--------|------|
+| `camera_index` | `/dev/video0` or numeric index | Camera device path |
+| `fps` | 30 | Frame rate |
+| `width` | 640 | Image width |
+| `height` | 480 | Image height |
+| `rotation` | 0 | Rotation angle (0/90/180/270) |
+
+## Troubleshooting
+
+| Issue | Solution |
+|------|---------|
+| Camera shows no image | Run `ls /dev/video*` to check the device |
+| Black screen | Try `/dev/video0` through `/dev/video3` |
+| Permission denied (Linux) | `sudo chmod 666 /dev/video*` |
+| Image upside down | Set `rotation=180` |
+
+## Next Steps
+
+Go to [Data Collection & Recording](/09-data-collection) to start recording data!

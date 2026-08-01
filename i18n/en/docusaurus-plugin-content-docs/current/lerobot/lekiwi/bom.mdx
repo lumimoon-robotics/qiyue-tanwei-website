@@ -1,0 +1,106 @@
+---
+sidebar_position: 2
+title: Bill of Materials (BOM)
+keywords:
+  - LeKiwi
+  - BOM
+  - parts list
+description: Complete parts list for building the LeKiwi mobile manipulator robot
+---
+
+# Bill of Materials (BOM)
+
+Complete parts list required to build the LeKiwi mobile manipulator. **The 12V version is recommended**, providing more powerful performance at a modest budget increase.
+
+## Version Selection
+
+LeKiwi offers two power supply options:
+
+| Version | Target Audience | Features |
+|------|---------|------|
+| **🔵 12V Version** (Recommended) | All users | Lithium battery powered, high torque, can carry heavier items |
+| **🟡 Wired Version** | Fixed workstation R&D | Connects to laptop via USB-C cable, no battery or Raspberry Pi needed |
+
+## Common Parts (All Versions)
+
+### Mobile Base Structure
+
+| Part | Qty | Purchase (CN) |
+|------|:---:|-----------|
+| 4" Omni Wheels | 3 | [Pinduoduo](https://mobile.yangkeduo.com/goods.html?ps=kKWPC7xuzw) |
+| M2 M3 M4 Mixed Screw Set | 1 | [Taobao](https://e.tb.cn/h.64O1J2A9Is4pIJd) |
+
+### Sensors & Computing
+
+| Part | Qty | Purchase (CN) |
+|------|:---:|-----------|
+| Raspberry Pi 5 (4GB) | 1 | [Taobao](https://e.tb.cn/h.64IIvlisvAL15g8) |
+| USB Camera | 2 | [Taobao](https://e.tb.cn/h.64ILq3suMKATfUx) |
+| microSD Card | 1 | [Taobao](https://e.tb.cn/h.64DMZzLz5h26s12) |
+
+### Other Tools
+
+| Part | Qty | Purchase (CN) |
+|------|:---:|-----------|
+| Desk Clamps (4-pack) | 1 | [Taobao](https://e.tb.cn/h.64r5eomI6L59tBE) |
+| Screwdriver Set | 1 | [Taobao](https://e.tb.cn/h.6ReL0wwgtPuSmNV) |
+| USB-C to USB-A Cables (2-pack) | 1 | [Taobao](https://e.tb.cn/h.64HOv24RLmYC4Yh) |
+
+---
+
+## 12V Version (Recommended)
+
+### Mobile Base Electronics (12V)
+
+| Part | Qty | Purchase (CN) |
+|------|:---:|-----------|
+| 12V 5A Battery | 1 | [Taobao](https://e.tb.cn/h.64IJNTnXwhn44BS) |
+| Quick Connect Terminal Block | 1 | [Taobao](https://e.tb.cn/h.64r0Z6Y5jZczq5q) |
+| 12V 5A DC Plug Connector | 1 | [Taobao](https://e.tb.cn/h.64IFOvrMdUVoQQX) |
+| 12V to 5V 5A USB-C Converter | 1 | [1688](https://qr.1688.com/s/Eb6ykv4y) |
+| 12V STS3215 Servo | 3 | [Taobao](https://e.tb.cn/h.64H9u3maGWzIp5Q) |
+
+### SO-101 Dual-Arm Teleoperation Kit (12V)
+
+| Part | Qty | Purchase (CN) |
+|------|:---:|-----------|
+| 12V STS3215 Servo | 12 | [Taobao](https://e.tb.cn/h.64H9u3maGWzIp5Q) |
+| Motor Control Board | 2 | [Taobao](https://e.tb.cn/h.64DOUpLpB5crVdH) |
+| Power Adapter | 1 | [Taobao](https://e.tb.cn/h.64D9xUuAdpkswUx) |
+
+> [!TIP]
+> **Why the 12V version?** The 12V version delivers higher torque output and greater payload capacity. While it requires an additional battery and DC converter, the modest budget increase significantly improves robot performance, making it suitable for a wider range of tasks.
+
+---
+
+## Wired Version
+
+The wired version does not require a Raspberry Pi or battery. It connects directly to a laptop via a USB-C extension cable for both power and communication.
+
+| Part | Qty | Purchase (CN) |
+|------|:---:|-----------|
+| 4" Omni Wheels | 3 | [Pinduoduo](https://mobile.yangkeduo.com/goods.html?ps=kKWPC7xuzw) |
+| M2 M3 M4 Mixed Screw Set | 1 | [Taobao](https://e.tb.cn/h.64O1J2A9Is4pIJd) |
+| USB Camera | 2 | [Taobao](https://e.tb.cn/h.64ILq3suMKATfUx) |
+| USB-C to USB-A Cables (2-pack) | 1 | [Taobao](https://e.tb.cn/h.64HOv24RLmYC4Yh) |
+| USB-C to DC Cable | 1 | [Taobao](https://e.tb.cn/h.6R21AdjEPDkfw2R) |
+| STS3215 Servo | 3 | [Taobao](https://e.tb.cn/h.6RhJCXsXFrqIabq) |
+| Motor Control Board | 1 | [Taobao](https://e.tb.cn/h.64DOUpLpB5crVdH) |
+| Power Adapter | 1 | [Taobao](https://e.tb.cn/h.64D9xUuAdpkswUx) |
+| USB Hub | 1 | [Taobao](https://e.tb.cn/h.6R2AeZgsSjchx0Z) |
+| USB-C Extension Cable | 1 | [Taobao](https://e.tb.cn/h.6RdbxakOTokPM0X) |
+
+> [!NOTE]
+> In the wired version, all commands are executed on the laptop — no need to SSH into a Raspberry Pi. Ideal for fixed-workstation R&D and debugging scenarios.
+
+---
+
+## Optional Alternative Camera
+
+Another supported camera is the [Arducam 5MP Wide Angle Camera](https://www.amazon.com/Arducam-Camera-Computer-Without-Microphone/dp/B0972KK7BC), which requires printing the corresponding base mount and wrist mount.
+
+---
+
+## Next Steps
+
+Go to the [3D Printing Guide](/02-3d-printing) to start printing parts!

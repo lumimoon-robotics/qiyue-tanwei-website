@@ -1,0 +1,80 @@
+---
+sidebar_position: 3
+title: 3D Printing Guide
+keywords:
+  - LeKiwi
+  - 3D printing
+  - STL
+description: 3D printing guide for all LeKiwi robot structural parts, including STL file list and print parameters
+---
+
+# 3D Printing Guide
+
+> **Estimated time: ~34 hours**
+
+All STL files are located in the `Code/3DPrintMeshes/` directory. They can be printed using generic PLA filament on a consumer-grade FDM printer, and have been tested and verified on the Bambu Lab P1S.
+
+## STL Parts List
+
+### Standard Version (12V / Wired Common)
+
+| Part | File Path | Qty | Notes |
+|------|----------|:---:|------|
+| Base Plate Top Layer | `base_plate_layer2.stl` | 1 | |
+| Base Plate Bottom Layer | `base_plate_layer1.stl` | 1 | |
+| Drive Motor Mount | `drive_motor_mount_v2.stl` | 3 | |
+| Servo Wheel Hub | `servo_wheel_hub.stl` | 3 | ⚠️ Requires supports |
+| Servo Controller Mount | `servo_controller_mount.stl` | 1 | |
+| Battery Mount (12V) | `battery_mount.stl` | 1 | 12V version |
+| Battery Mount (12V EU) | `battery_mount_eu.stl` | 1 | 12V EU version |
+| Raspberry Pi Case Top | `pi_case_top.stl` | 1 | |
+| Raspberry Pi Case Bottom | `pi_case_bottom.stl` | 1 | |
+| Camera Base Mount | `base_camera_mount.stl` | 1 | Arducam option |
+| Camera Wrist Mount | `wrist_camera_mount.stl` | 1 | Arducam option |
+| Webcam Base Mount | `webcam_mount/webcam_mount.stl` | 1 | USB webcam option |
+| Webcam Gripper Insert | `webcam_mount/so100_gripper_cam_mount_insert.stl` | 1 | USB webcam option |
+| Webcam Wrist Mount | `webcam_mount/webcam_mount_wrist.stl` | 1 | USB webcam option |
+| Modified Follower Base | `modified_base_arm.stl` | 1 | ⚠️ Tree supports |
+
+### Wired Version Additional Parts
+
+| Part | File Path | Qty |
+|------|----------|:---:|
+| Cable Holder | `wired_specific/cable_holder v0.stl` | 1 |
+| USB Connector Case | `wired_specific/usb_connector_case v1.stl` | 1 |
+
+### SO-ARM100 Arm Parts (External)
+
+Print from the [SO-ARM100 repository](https://github.com/TheRobotStudio/SO-ARM100):
+- Follower Arm x1
+- Leader Arm x1
+
+## Print Parameters
+
+| Parameter | Recommended | Notes |
+|------|--------|------|
+| Material | PLA / PLA+ | Generic is fine |
+| Nozzle Diameter | 0.2 mm | |
+| Layer Height | 0.2 mm | |
+| Infill Density | 15% | |
+| Print Speed | 150 mm/s | |
+| Supports | Enable as needed | Only for parts marked "Requires supports" |
+
+## Printing Steps
+
+1. Import STL files into your slicer (Bambu Studio, PrusaSlicer, etc.)
+2. Enable supports for parts marked "Requires supports"
+3. Slice with recommended parameters and upload G-code to the printer
+
+### Post-Processing
+- Remove printed parts from the build plate
+- Remove support structures
+- Check that screw holes are clear (use a drill bit to clean if needed)
+
+## No 3D Printer?
+
+Consider using an online 3D printing service, or purchase an off-the-shelf kit if available.
+
+## Next Steps
+
+Go to the [Assembly Guide](/03-assembly) to start assembling!

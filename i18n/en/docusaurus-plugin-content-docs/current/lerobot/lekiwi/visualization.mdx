@@ -1,0 +1,68 @@
+---
+sidebar_position: 11
+title: Visualization & Playback
+keywords:
+  - LeKiwi
+  - visualization
+  - replay
+  - dataset inspection
+description: Guide for visualizing and replaying recorded LeKiwi datasets
+---
+
+# Visualization & Playback
+
+## Online Visualization
+
+If you used `--control.push_to_hub=true` when recording, the dataset has been uploaded to the Hugging Face Hub and can be viewed online directly.
+
+## Local Visualization
+
+For datasets not uploaded, or to view locally:
+
+```bash
+python lerobot/scripts/visualize_dataset_html.py \
+  --repo-id ${HF_USER}/lekiwi_test \
+  --local-files-only 1
+```
+
+Open `http://127.0.0.1:9090` in your browser to access the visualization tool.
+
+## Visualization Features
+
+| Feature | Description |
+|------|------|
+| 🎥 **Video Playback** | View recorded camera frames frame by frame |
+| 📊 **Joint Angles** | View the angle curves for each servo |
+| 🗺️ **Base Trajectory** | View the movement trajectory of the mobile base |
+| 🔍 **Frame-by-Frame Analysis** | Inspect data quality frame by frame |
+| 🏷️ **Episode Selection** | Switch between different recorded episodes |
+
+## Replay an Episode
+
+Replay a recorded action sequence on the robot:
+
+```bash
+python lerobot/scripts/control_robot.py \
+  --robot.type=lekiwi \
+  --control.type=replay \
+  --control.fps=30 \
+  --control.repo_id=${HF_USER}/lekiwi_test \
+  --control.episode=0
+```
+
+> [!WARNING]
+> Replay will physically drive the robot! Ensure the robot has sufficient space and there are no obstacles nearby.
+
+## Data Quality Checklist
+
+Before training, check the following:
+
+- [ ] Camera images are clear and unobstructed
+- [ ] Joint angle changes are smooth with no jumps
+- [ ] The task in each episode is fully executed
+- [ ] Action sequence durations are reasonable
+- [ ] There are no failed episodes in the dataset
+
+## Next Steps
+
+Go to [Training Strategy & Deployment](/11-training) to start training an AI model!

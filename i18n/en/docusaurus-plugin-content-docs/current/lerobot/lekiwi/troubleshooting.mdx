@@ -1,0 +1,118 @@
+---
+sidebar_position: 13
+title: Troubleshooting
+keywords:
+  - LeKiwi
+  - troubleshooting
+  - FAQ
+  - debugging
+description: Troubleshooting guide for common issues with LeKiwi, including communication, USB, servo, camera, and training problems
+---
+
+# Troubleshooting
+
+## Communication Issues
+
+### Cannot Connect to the Robot
+
+**1. Verify IP Address**
+```bash
+hostname -I  # Run on the Raspberry Pi
+```
+
+**2. Ping Test**
+```bash
+ping <Raspberry Pi IP address>
+```
+If ping fails: confirm the Raspberry Pi is powered on and both devices are on the same network.
+
+**3. SSH Test**
+```bash
+ssh <username>@<Raspberry Pi IP address>
+```
+If SSH login fails, enable SSH:
+```bash
+sudo raspi-config
+# Interfacing Options -> SSH -> Enable
+```
+
+**4. Configuration File Consistency**: Ensure the configuration files on the laptop and Raspberry Pi are exactly the same.
+
+## USB / Port Issues
+
+### Insufficient USB Port Permissions (Linux)
+```bash
+sudo chmod 666 /dev/ttyACM0
+sudo chmod 666 /dev/ttyACM1
+sudo chmod 666 /dev/video*
+```
+
+### USB Device Not Found
+```bash
+ls /dev/tty*      # List serial port devices
+ls /dev/video*    # List camera devices
+lsusb             # View USB devices
+```
+
+### macOS Keyboard Permissions
+If the keyboard is unresponsive during teleoperation: go to "System Preferences > Security & Privacy > Privacy > Input Monitoring" and enable your terminal application.
+
+## Servo Issues
+
+| Symptom | Solution |
+|------|---------|
+| Servo not responding | Check that cables are firmly connected; verify servo ID configuration is correct; check control board power supply |
+| Servo jitter / abnormal noise | Recalibrate that servo; check for mechanical obstruction |
+| Servo overheating | Reduce continuous operation time; check for mechanical binding; verify the supply voltage is correct |
+
+## Camera Issues
+
+| Symptom | Solution |
+|------|---------|
+| No image | `ls /dev/video*` to check the device |
+| Black screen | Try `/dev/video0` through `/dev/video3` |
+| Permission denied | `sudo chmod 666 /dev/video*` |
+| Image upside down | Set `rotation=90` or `180` in the configuration |
+
+## Training Issues
+
+### GPU Out of Memory
+Reduce image resolution or batch size.
+
+### Training Loss Not Decreasing
+Check dataset quality, adjust the learning rate, increase training epochs.
+
+## Wired Version Specific Issues
+
+### USB Devices Intermittently Disconnecting
+Use high-quality USB-C extension cables and check the USB hub power supply.
+
+### USB-C Orientation Issue
+Flip the USB-C connector 180 degrees and reinsert.
+
+## URDF Simulation (Appendix)
+
+LeKiwi provides URDF model files exported from CAD, located in the `Code/URDF/` directory.
+
+### Using in PyBullet
+
+```python
+import pybullet as p
+robot_id = p.loadURDF("Code/URDF/LeKiwi.urdf", useFixedBase=False)
+```
+
+### Supported Simulators
+- **PyBullet**: Rapid prototyping and validation
+- **MuJoCo**: Higher physics accuracy
+- **Isaac Sim / Gazebo**: Native URDF import support
+
+> [!TIP]
+> Recommended workflow: **Simulation validation → Real data collection → Hybrid training → Real-world deployment**
+
+## Getting Help
+
+| Channel | Description |
+|------|------|
+| 💬 [LeRobot Discord](https://discord.gg/Jtz5TJtb2u) | `#mobile-so100-arm` channel |
+| 🐙 [GitHub Issues](https://github.com/SIGRobotics-UIUC/LeKiwi/issues) | Submit bug reports |
+| 📖 [LeRobot Official Documentation](https://huggingface.co/docs/lerobot/lekiwi) | Official usage guide |

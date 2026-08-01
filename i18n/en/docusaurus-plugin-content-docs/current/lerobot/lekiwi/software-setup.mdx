@@ -1,0 +1,97 @@
+---
+sidebar_position: 5
+title: Software Setup
+keywords:
+  - LeKiwi
+  - software setup
+  - conda
+  - LeRobot
+description: Software environment installation guide for LeKiwi, covering both Raspberry Pi and laptop setup
+---
+
+# Software Setup
+
+The following installation steps need to be performed on both the **Raspberry Pi** and the **laptop** separately.
+
+## System Requirements
+
+| Platform | Python | Notes |
+|------|--------|------|
+| **Raspberry Pi 5** | 3.10 | Raspberry Pi OS |
+| **Ubuntu x86** | 3.10 | CUDA 12+, Torch 2.6 |
+| **macOS** | 3.10 | MPS (Apple Silicon) |
+| **Jetson Orin** | 3.10 | JetPack 6.0, Torch 2.3+ |
+
+## Installation Steps
+
+### 1. Install Miniconda
+
+**Raspberry Pi:**
+```bash
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm ~/miniconda3/miniconda.sh
+```
+
+**Linux Laptop:**
+```bash
+mkdir -p ~/miniconda3
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm ~/miniconda3/miniconda.sh
+```
+
+**macOS:**
+```bash
+mkdir -p ~/miniconda3
+curl https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh -o ~/miniconda3/miniconda.sh
+bash ~/miniconda3/miniconda.sh -b -u -p ~/miniconda3
+rm ~/miniconda3/miniconda.sh
+```
+
+### 2. Restart Shell
+```bash
+# Linux / Raspberry Pi
+source ~/.bashrc
+
+# macOS
+source ~/.zshrc
+```
+
+### 3. Create and Activate Conda Environment
+```bash
+conda create -y -n lerobot python=3.10
+conda activate lerobot
+```
+
+### 4. Clone and Install LeRobot
+```bash
+git clone https://github.com/huggingface/lerobot.git ~/lerobot
+conda install ffmpeg -c conda-forge
+cd ~/lerobot && pip install -e ".[lekiwi]"
+```
+
+> [!IMPORTANT]
+> You need to run `conda activate lerobot` every time you open a new terminal to activate the environment.
+
+## Verify Installation
+
+```bash
+conda activate lerobot
+python -c "import lerobot; print('LeRobot installed successfully!')"
+```
+
+If you see "LeRobot installed successfully!", the installation is complete.
+
+## Command Reference
+
+| Command | Description |
+|------|------|
+| `conda activate lerobot` | Activate the LeRobot environment |
+| `source ~/.bashrc` | Reload shell configuration |
+| `Ctrl+C` | Terminate the running program |
+
+## Next Steps
+
+Go to [Motor Configuration](/05-motor-config) to configure the servos!
