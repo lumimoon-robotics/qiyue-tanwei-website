@@ -18,6 +18,7 @@ const config: Config = {
   projectName: 'qiyue-tanwei-website',
 
   onBrokenLinks: 'warn',
+  onBrokenAnchors: 'warn',
 
   i18n: {
     defaultLocale: 'zh-Hans',

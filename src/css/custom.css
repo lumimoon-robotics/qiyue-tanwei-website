@@ -1,130 +1,79 @@
 /**
- * 启月探微 — 品牌定制样式
- * 现代科技蓝 + 绿松石强调色
- * 风格参考：Seeed Studio / Vercel / Linear
+ * 启月探微 · 品牌样式
+ * 靛蓝-紫罗兰渐变系，设计参考 WowRobo / Seeed Studio
  */
 
-/* ---- Infima 色板覆写 ---- */
+/* ---- Infima 色板 ---- */
 :root {
-  --ifm-color-primary: #2563eb;
-  --ifm-color-primary-dark: #1d4ed8;
-  --ifm-color-primary-darker: #1e40af;
-  --ifm-color-primary-darkest: #1e3a5f;
-  --ifm-color-primary-light: #3b82f6;
-  --ifm-color-primary-lighter: #60a5fa;
-  --ifm-color-primary-lightest: #93c5fd;
-  --ifm-color-primary-contrast-background: #eff6ff;
-  --ifm-color-primary-contrast-foreground: #1e3a5f;
+  --ifm-color-primary: #6366f1;
+  --ifm-color-primary-dark: #4f46e5;
+  --ifm-color-primary-darker: #4338ca;
+  --ifm-color-primary-darkest: #3730a3;
+  --ifm-color-primary-light: #818cf8;
+  --ifm-color-primary-lighter: #a5b4fc;
+  --ifm-color-primary-lightest: #c7d2fe;
+  --ifm-color-primary-contrast-background: #eef2ff;
+  --ifm-color-primary-contrast-foreground: #312e81;
 
   --ifm-color-secondary: #10b981;
   --ifm-color-accent: #f59e0b;
 
   --ifm-code-font-size: 95%;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.06);
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.05);
   --ifm-font-family-base: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
   --ifm-heading-font-family: 'Inter', 'Noto Sans SC', system-ui, -apple-system, sans-serif;
   --ifm-heading-font-weight: 700;
-  --ifm-navbar-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06);
+  --ifm-navbar-shadow: 0 1px 2px rgba(0,0,0,0.04);
   --ifm-global-radius: 0.5rem;
 }
 
-/* ---- 暗色模式 ---- */
 [data-theme='dark'] {
-  --ifm-color-primary: #3b82f6;
-  --ifm-color-primary-dark: #2563eb;
-  --ifm-color-primary-darker: #1d4ed8;
-  --ifm-color-primary-darkest: #1e40af;
-  --ifm-color-primary-light: #60a5fa;
-  --ifm-color-primary-lighter: #93c5fd;
-  --ifm-color-primary-lightest: #bfdbfe;
+  --ifm-color-primary: #818cf8;
+  --ifm-color-primary-dark: #6366f1;
+  --ifm-color-primary-darker: #4f46e5;
+  --ifm-color-primary-darkest: #4338ca;
+  --ifm-color-primary-light: #a5b4fc;
+  --ifm-color-primary-lighter: #c7d2fe;
+  --ifm-color-primary-lightest: #e0e7ff;
   --ifm-color-primary-contrast-background: #0f172a;
-  --ifm-color-primary-contrast-foreground: #dbeafe;
-
+  --ifm-color-primary-contrast-foreground: #e0e7ff;
   --ifm-color-secondary: #34d399;
   --ifm-color-accent: #fbbf24;
-  --docusaurus-highlighted-code-line-bg: rgba(255, 255, 255, 0.06);
+  --docusaurus-highlighted-code-line-bg: rgba(255,255,255,0.05);
 }
 
-/* ---- 全局 ---- */
 html { scroll-behavior: smooth; }
 
-/* ---- 导航栏 ---- */
+/* Navbar */
 .navbar {
   backdrop-filter: blur(12px);
-  background: rgba(255,255,255,0.85);
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  background: rgba(255,255,255,0.82);
+  border-bottom: 1px solid rgba(0,0,0,0.04);
 }
-
 [data-theme='dark'] .navbar {
-  background: rgba(15, 23, 42, 0.85);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(15,23,42,0.82);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
 }
+.navbar__title { font-weight: 800; }
+.navbar__link { font-weight: 500; font-size: 0.88rem; }
 
-.navbar__title {
-  font-weight: 800;
-  letter-spacing: 0.02em;
-}
-
-.navbar__link {
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-/* ---- 页脚 ---- */
+/* Footer */
 .footer--dark {
-  --ifm-footer-background-color: #0b1623;
+  --ifm-footer-background-color: #0b1120;
   --ifm-footer-color: #94a3b8;
   --ifm-footer-link-color: #cbd5e1;
-  --ifm-footer-link-hover-color: #3b82f6;
+  --ifm-footer-link-hover-color: #818cf8;
   --ifm-footer-title-color: #f1f5f9;
 }
 
-/* ---- 文档 ---- */
-.markdown h1 {
-  font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  border-bottom: 2px solid #e2e8f0;
-  padding-bottom: 0.5rem;
-  margin-bottom: 1.5rem;
-}
+/* Docs */
+.markdown h1 { font-size: 2.25rem; font-weight: 800; letter-spacing: -0.03em; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-bottom: 1.5rem; }
+.markdown h2 { font-size: 1.6rem; font-weight: 700; margin-top: 2.5rem; padding-bottom: 0.35rem; border-bottom: 1px solid #f1f5f9; }
+.markdown h3 { font-size: 1.25rem; font-weight: 700; margin-top: 2rem; }
+.markdown table { border-radius: 8px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+.markdown th { background: #f8fafc; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.04em; }
+code { border-radius: 4px; font-size: 0.9em; }
 
-.markdown h2 {
-  font-size: 1.6rem;
-  font-weight: 700;
-  margin-top: 2.5rem;
-  padding-bottom: 0.35rem;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.markdown h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin-top: 2rem;
-}
-
-/* ---- 表格 ---- */
-.markdown table {
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-}
-
-.markdown th {
-  background: #f8fafc;
-  font-weight: 700;
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-/* ---- 代码块 ---- */
-code {
-  border-radius: 4px;
-  font-size: 0.9em;
-}
-
-/* ---- 响应式 ---- */
 @media screen and (max-width: 996px) {
   .markdown h1 { font-size: 1.75rem; }
   .markdown h2 { font-size: 1.35rem; }
