@@ -43,12 +43,11 @@ export default function About(): ReactNode {
           <h2 style={{fontSize: '1.5rem', fontWeight: 800, margin: '3rem 0 1rem', letterSpacing: '-0.02em'}}>
             📦 产品矩阵
           </h2>
-          <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem'}}>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem'}}>
             {[
-              {name: 'SO-ARM101 机械臂', desc: '6+1 自由度开源机械臂，面向教育科研', to: '/docs/so-arm101/overview', color: '#6366f1'},
-              {name: 'Lekiwi 底盘', desc: '全向移动机器人底盘，模块化扩展设计', to: '/docs/lekiwi/overview', color: '#10b981'},
-              {name: 'Xlerobot 家务机器人', desc: 'AI 驱动的家用服务机器人', to: '/docs/xlerobot/overview', color: '#8b5cf6'},
-              {name: 'AmazingHand 灵巧手', desc: '五指触觉灵巧手，精密抓取操作', to: '/docs/amazinghand/overview', color: '#f97316'},
+              {name: 'LeRobot 开源硬件', desc: 'SO-ARM101 · Lekiwi · Xlerobot — 具身智能全栈硬件', to: '/docs/lerobot/overview', color: '#6366f1'},
+              {name: '相机产品', desc: '腕部相机 · 固定相机 · 双相机 — 机器人视觉模组', to: '/docs/cameras/overview', color: '#10b981'},
+              {name: '舵机产品', desc: 'ST3215 C018/C001/C044/C046 · SCS0009 — 智能总线舵机', to: '/docs/servos/overview', color: '#f59e0b'},
             ].map((p) => (
               <Link key={p.name} to={p.to} style={{
                 display: 'block', padding: '1rem 1.25rem', borderRadius: 12,

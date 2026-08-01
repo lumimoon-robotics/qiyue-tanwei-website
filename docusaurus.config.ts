@@ -59,22 +59,9 @@ const config: Config = {
           label: '产品',
           position: 'left',
           items: [
-            {
-              label: 'SO-ARM101 机械臂',
-              to: '/docs/so-arm101/overview',
-            },
-            {
-              label: 'Lekiwi 底盘',
-              to: '/docs/lekiwi/overview',
-            },
-            {
-              label: 'Xlerobot 家务机器人',
-              to: '/docs/xlerobot/overview',
-            },
-            {
-              label: 'AmazingHand 灵巧手',
-              to: '/docs/amazinghand/overview',
-            },
+            {label: '🤖 LeRobot 开源硬件', to: '/docs/lerobot/overview'},
+            {label: '📷 相机产品', to: '/docs/cameras/overview'},
+            {label: '⚙️ 舵机产品', to: '/docs/servos/overview'},
           ],
         },
         {
@@ -97,10 +84,9 @@ const config: Config = {
         {
           title: '产品',
           items: [
-            {label: 'SO-ARM101 机械臂', to: '/docs/so-arm101/overview'},
-            {label: 'Lekiwi 底盘', to: '/docs/lekiwi/overview'},
-            {label: 'Xlerobot 家务机器人', to: '/docs/xlerobot/overview'},
-            {label: 'AmazingHand 灵巧手', to: '/docs/amazinghand/overview'},
+            {label: 'LeRobot 开源硬件', to: '/docs/lerobot/overview'},
+            {label: '相机产品', to: '/docs/cameras/overview'},
+            {label: '舵机产品', to: '/docs/servos/overview'},
           ],
         },
         {

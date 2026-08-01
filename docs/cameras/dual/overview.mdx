@@ -1,0 +1,40 @@
+---
+sidebar_position: 3
+title: 双相机
+description: 双目立体视觉相机 — 深度估计、SLAM 与 3D 重建
+keywords: [双相机, 双目相机, 立体视觉, 深度估计, SLAM]
+---
+
+# 👁️ 双相机
+
+双目立体视觉模组，提供实时深度图与点云输出，
+适用于 SLAM、3D 重建与深度感知场景。
+
+## 技术规格
+
+| 参数 | 规格 |
+|------|------|
+| 传感器 | 2× 1/2.8" CMOS |
+| 分辨率 | 2× 1920×1080 @ 30fps |
+| 基线距离 | 65mm |
+| 深度范围 | 0.3m ~ 10m |
+| 视场角 | 85° (H) × 55° (V) |
+| 重量 | 120g |
+| 接口 | USB 3.0 Type-C |
+| 软件 | ROS2 / OpenCV / SDK（含标定工具） |
+
+## 应用场景
+
+- 🗺️ 视觉 SLAM 建图
+- 📐 3D 物体重建
+- 🎯 深度引导抓取
+- 🚗 自主导航避障
+
+## 快速开始
+
+```bash
+pip install qiyue-camera-sdk
+ros2 launch qiyue_camera dual.launch.py
+# 查看深度图
+ros2 topic echo /qiyue_camera/depth/image_raw
+```

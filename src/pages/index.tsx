@@ -7,48 +7,41 @@ import Heading from '@theme/Heading';
 import styles from './index.module.css';
 
 /* ================================================================
-   产品数据
+   产品类别数据
    ================================================================ */
-const products = [
+const categories = [
   {
-    id: 'so-arm101',
-    title: 'SO-ARM101',
-    subtitle: '桌面级开源机械臂',
-    desc: '6+1 自由度轻量机械臂，全开源 CAD 与 SDK。支持 ROS2 / Python，15 分钟上手，赋能机器人教育科研。',
-    specs: ['6+1 DoF', '500g 负载', '±0.5mm 精度', 'ROS2/Python'],
-    to: '/docs/so-arm101/overview',
-    gradient: 'from-blue-950 via-blue-900 to-indigo-950',
-    accent: '#3b82f6',
+    id: 'lerobot',
+    title: 'LeRobot 开源硬件',
+    subtitle: '具身智能研究平台',
+    desc: 'SO-ARM101 机械臂 + Lekiwi 底盘 + Xlerobot 家务机器人，全栈开源，模块化组合。',
+    specs: ['SO-ARM101', 'Lekiwi', 'Xlerobot', 'ROS2/Python'],
+    to: '/docs/lerobot/overview',
+    gradient: 'from-indigo-950 via-blue-900 to-violet-950',
+    accent: '#6366f1',
+    icon: '🤖',
   },
   {
-    id: 'lekiwi',
-    title: 'Lekiwi',
-    subtitle: '全向移动底盘平台',
-    desc: '麦克纳姆轮全向移动，SLAM 自主导航，50kg 负载。模块化上装接口，一底多用，灵活扩展。',
-    specs: ['全向移动', '50kg 负载', 'SLAM 导航', '8h 续航'],
-    to: '/docs/lekiwi/overview',
+    id: 'cameras',
+    title: '相机产品',
+    subtitle: '机器人视觉感知模组',
+    desc: '腕部相机 + 固定相机 + 双目相机，覆盖末端引导、场景感知与深度估计全场景。',
+    specs: ['1080P/2K', 'USB 3.0', 'ROS2 原生', 'SDK 完备'],
+    to: '/docs/cameras/overview',
     gradient: 'from-emerald-950 via-teal-900 to-cyan-950',
     accent: '#10b981',
+    icon: '📷',
   },
   {
-    id: 'xlerobot',
-    title: 'Xlerobot',
-    subtitle: 'AI 家务机器人',
-    desc: '双臂协作 + 端侧 AI，自然语言指令驱动。模仿学习框架加持，让机器人真正理解家庭环境。',
-    specs: ['双臂 14 DoF', '端侧 AI', '模仿学习', '语音交互'],
-    to: '/docs/xlerobot/overview',
-    gradient: 'from-violet-950 via-purple-900 to-fuchsia-950',
-    accent: '#8b5cf6',
-  },
-  {
-    id: 'amazinghand',
-    title: 'AmazingHand',
-    subtitle: '五指触觉灵巧手',
-    desc: '16 自由度仿生灵巧手，120 个触觉单元，力控精度 ±0.1N。兼容主流机械臂，即插即用。',
-    specs: ['16 DoF', '120 触觉点', '±0.1N 力控', 'CAN/RS485'],
-    to: '/docs/amazinghand/overview',
-    gradient: 'from-orange-950 via-red-900 to-rose-950',
-    accent: '#f97316',
+    id: 'servos',
+    title: '舵机产品',
+    subtitle: '飞特 ST3215 智能舵机系列',
+    desc: 'C018 / C001 / C044 / C046 / SCS0009，从标准到高精度，覆盖全场景关节需求。',
+    specs: ['RS485 总线', '5-20kg·cm', '0.1° 精度', '反馈完备'],
+    to: '/docs/servos/overview',
+    gradient: 'from-amber-950 via-orange-900 to-red-950',
+    accent: '#f59e0b',
+    icon: '⚙️',
   },
 ];
 
@@ -154,31 +147,30 @@ function ProductIllustration({id}: {id: string}) {
           <ellipse cx="90" cy="132" rx="45" ry="5" fill="rgba(255,255,255,0.05)"/>
         </svg>
       );
-    case 'amazinghand':
+    case 'cameras':
       return (
         <svg viewBox="0 0 180 140" className={styles.prodIllus}>
-          {/* 手腕 */}
-          <rect x="72" y="105" width="36" height="20" rx="5" fill="rgba(255,255,255,0.18)"/>
-          {/* 手掌 */}
-          <rect x="68" y="78" width="44" height="30" rx="8" fill="rgba(255,255,255,0.2)"/>
-          {/* 五指 */}
-          {[[-15,-30],[-5,-38],[5,-40],[15,-38],[25,-30]].map(([dx,dy],i) => {
-            const baseX = 90 + dx * 0.3;
-            const baseY = 78;
-            const tipX = 90 + dx;
-            const tipY = 78 + dy;
-            return (
-              <g key={i}>
-                <line x1={baseX} y1={baseY} x2={tipX} y2={tipY}
-                  stroke="rgba(255,255,255,0.3)" strokeWidth="6" strokeLinecap="round"/>
-                <circle cx={tipX} cy={tipY-3} r="4.5" fill="rgba(251, 146, 60, 0.5)"/>
-              </g>
-            );
-          })}
-          {/* 触觉点示意 */}
-          <circle cx="80" cy="52" r="1" fill="rgba(255,255,255,0.4)"/>
-          <circle cx="90" cy="42" r="1" fill="rgba(255,255,255,0.4)"/>
-          <circle cx="100" cy="52" r="1" fill="rgba(255,255,255,0.4)"/>
+          <rect x="50" y="45" width="80" height="50" rx="8" fill="rgba(255,255,255,0.15)"/>
+          <circle cx="90" cy="62" r="18" fill="rgba(255,255,255,0.2)"/>
+          <circle cx="90" cy="62" r="12" fill="rgba(16,185,129,0.25)"/>
+          <circle cx="90" cy="62" r="5" fill="#34d399"/>
+          <rect x="60" y="98" width="60" height="14" rx="4" fill="rgba(255,255,255,0.18)"/>
+          <circle cx="80" cy="105" r="2" fill="rgba(255,255,255,0.3)"/>
+          <circle cx="90" cy="105" r="2" fill="rgba(255,255,255,0.3)"/>
+          <circle cx="100" cy="105" r="2" fill="rgba(255,255,255,0.3)"/>
+        </svg>
+      );
+    case 'servos':
+      return (
+        <svg viewBox="0 0 180 140" className={styles.prodIllus}>
+          <rect x="65" y="50" width="50" height="40" rx="6" fill="rgba(255,255,255,0.15)"/>
+          <rect x="70" y="56" width="40" height="28" rx="3" fill="rgba(255,255,255,0.2)"/>
+          <circle cx="90" cy="70" r="8" fill="rgba(251,191,36,0.3)"/>
+          <circle cx="90" cy="70" r="4" fill="#fbbf24"/>
+          <line x1="90" y1="40" x2="90" y2="50" stroke="rgba(255,255,255,0.3)" strokeWidth="3"/>
+          <line x1="90" y1="90" x2="90" y2="100" stroke="rgba(255,255,255,0.3)" strokeWidth="3"/>
+          <line x1="65" y1="70" x2="55" y2="70" stroke="rgba(255,255,255,0.2)" strokeWidth="2"/>
+          <line x1="115" y1="70" x2="125" y2="70" stroke="rgba(255,255,255,0.2)" strokeWidth="2"/>
         </svg>
       );
     default:
@@ -215,13 +207,13 @@ function Hero() {
             </div>
           </div>
           <div className={styles.heroVisual}>
-            {/* 展示 4 个产品的小缩略图排列 */}
+            {/* 3 大产品类别 */}
             <div className={styles.heroProductGrid}>
-              {products.map((p) => (
+              {categories.map((p) => (
                 <Link key={p.id} to={p.to} className={styles.heroProductItem}
                   style={{'--accent': p.accent} as React.CSSProperties}>
                   <div className={clsx(styles.heroProductBg, `bg-gradient-to-br ${p.gradient}`)}>
-                    <ProductIllustration id={p.id} />
+                    <span style={{fontSize: '2rem'}}>{p.icon}</span>
                   </div>
                   <span className={styles.heroProductLabel}>{p.title}</span>
                 </Link>
@@ -263,7 +255,7 @@ function Products() {
         </div>
 
         <div className={styles.productGrid}>
-          {products.map((p) => (
+          {categories.map((p) => (
             <Link key={p.id} to={p.to} className={styles.prodCard}>
               <div className={clsx(styles.prodCardMedia, `bg-gradient-to-br ${p.gradient}`)}>
                 <ProductIllustration id={p.id} />
