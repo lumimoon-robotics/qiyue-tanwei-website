@@ -45,7 +45,7 @@ export default function About(): ReactNode {
           </h2>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem'}}>
             {[
-              {name: 'LeRobot 开源硬件', desc: 'SO-ARM101 · Lekiwi · Xlerobot — 具身智能全栈硬件', to: '/docs/lerobot/overview', color: '#6366f1'},
+              {name: 'LeRobot 开源硬件', desc: 'SO-ARM101 · Lekiwi · Xlerobot · AmazingHand', to: '/docs/lerobot/overview', color: '#6366f1'},
               {name: '相机产品', desc: '腕部相机 · 固定相机 · 双相机 — 机器人视觉模组', to: '/docs/cameras/overview', color: '#10b981'},
               {name: '舵机产品', desc: 'ST3215 C018/C001/C044/C046 · SCS0009 — 智能总线舵机', to: '/docs/servos/overview', color: '#f59e0b'},
             ].map((p) => (

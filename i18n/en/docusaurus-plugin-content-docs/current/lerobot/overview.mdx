@@ -7,7 +7,7 @@ keywords: [LeRobot, open hardware, robotic arm, chassis, home robot]
 
 # 🤖 LeRobot Open Hardware
 
-**LeRobot** is Qiyue Robotics' full-stack open-source hardware series for embodied AI research, featuring a desktop robotic arm, mobile chassis, and home service robot. All hardware is open-sourced under Apache 2.0, with complete CAD design files, BOM, assembly guides, and software SDKs.
+**LeRobot** is Qiyue Robotics' full-stack open-source hardware series for embodied AI research, featuring a desktop robotic arm, mobile chassis, home service robot, and dexterous hand. All hardware is open-sourced under Apache 2.0, with complete CAD design files, BOM, assembly guides, and software SDKs.
 
 ---
 
@@ -77,6 +77,29 @@ AI-powered dual-arm service robot.
 - Vision-language model for natural language interaction
 - Imitation learning framework — teach via teleoperation
 - Collision detection + torque limiting for safe collaboration
+
+---
+
+## ✋ AmazingHand Dexterous Hand
+
+Five-finger tactile dexterous hand for precision grasping and manipulation.
+
+![AmazingHand](/img/amazinghand.png)
+
+| Parameter | Value |
+|-----------|-------|
+| DOF | 16 (thumb 4 + index 3 + middle 3 + ring 3 + pinky 3) |
+| Fingertip Force | 0-15N |
+| Tactile Resolution | 24 pts/fingertip (120 total) |
+| Force Precision | ±0.1N |
+| Weight | ~1.1kg |
+| Interface | CAN / RS485 / USB |
+
+**Highlights**
+- 5-finger 16-DOF human-like kinematics
+- 120 tactile units with real-time force feedback
+- Compatible with SO-ARM101, UR, Kinova and more
+- Fully open-source CAD + drivers + control algorithms
 
 ---
 

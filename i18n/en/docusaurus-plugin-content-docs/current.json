@@ -26,5 +26,9 @@
   "sidebar.productSidebar.category.⚙️ 舵机产品": {
     "message": "⚙️ Servo Products",
     "description": "The label for category '⚙️ 舵机产品' in sidebar 'productSidebar'"
+  },
+  "sidebar.productSidebar.category.✋ AmazingHand 灵巧手": {
+    "message": "✋ AmazingHand Dexterous Hand",
+    "description": "The label for category '✋ AmazingHand 灵巧手' in sidebar 'productSidebar'"
   }
 }

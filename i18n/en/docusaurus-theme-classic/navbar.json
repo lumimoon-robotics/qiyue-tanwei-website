@@ -23,9 +23,9 @@
     "message": "About",
     "description": "Navbar item with label 关于我们"
   },
-  "item.label.🛒 商店": {
-    "message": "🛒 Store",
-    "description": "Navbar item with label 🛒 商店"
+  "item.label.商店": {
+    "message": "Store",
+    "description": "Navbar item with label 商店"
   },
   "item.label.GitHub": {
     "message": "GitHub",
@@ -86,5 +86,25 @@
   "item.label.SCS0009": {
     "message": "SCS0009",
     "description": "Navbar item with label SCS0009"
+  },
+  "item.label.AmazingHand 灵巧手": {
+    "message": "AmazingHand Dexterous Hand",
+    "description": "Navbar item with label AmazingHand 灵巧手"
+  },
+  "item.label.SO-ARM101 教程": {
+    "message": "SO-ARM101 Tutorial",
+    "description": "Navbar item with label SO-ARM101 教程"
+  },
+  "item.label.Lekiwi 教程": {
+    "message": "Lekiwi Tutorial",
+    "description": "Navbar item with label Lekiwi 教程"
+  },
+  "item.label.Xlerobot 教程": {
+    "message": "Xlerobot Tutorial",
+    "description": "Navbar item with label Xlerobot 教程"
+  },
+  "item.label.AmazingHand 教程": {
+    "message": "AmazingHand Tutorial",
+    "description": "Navbar item with label AmazingHand 教程"
   }
 }

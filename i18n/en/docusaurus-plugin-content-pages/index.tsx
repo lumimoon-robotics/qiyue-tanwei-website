@@ -12,8 +12,8 @@ const categories = [
     id: 'lerobot',
     title: 'LeRobot Open Hardware',
     subtitle: 'Embodied AI Research Platform',
-    desc: 'SO-ARM101 arm + Lekiwi chassis + Xlerobot home robot. Full-stack open source, modular combination.',
-    specs: ['SO-ARM101', 'Lekiwi', 'Xlerobot', 'ROS2/Python'],
+    desc: 'SO-ARM101 arm + Lekiwi chassis + Xlerobot home robot + AmazingHand dexterous hand. Full-stack open source.',
+    specs: ['SO-ARM101', 'Lekiwi', 'Xlerobot', 'AmazingHand'],
     to: '/docs/lerobot/overview',
     gradient: 'from-indigo-950 via-blue-900 to-violet-950',
     accent: '#6366f1',
@@ -44,9 +44,10 @@ const categories = [
 ];
 
 const leRobotProducts = [
-  {name: 'SO-ARM101', desc: 'Desktop Robotic Arm', img: 'img/so-arm101.png', to: '/docs/lerobot/so-arm101/overview'},
-  {name: 'Lekiwi', desc: 'Omnidirectional Chassis', img: 'img/lekiwi.png', to: '/docs/lerobot/lekiwi/overview'},
-  {name: 'Xlerobot', desc: 'AI Home Robot', img: 'img/xlerobot.png', to: '/docs/lerobot/xlerobot/overview'},
+  {name: 'SO-ARM101', desc: 'Desktop Robotic Arm', img: 'img/so-arm101.png', to: '/products/so-arm101'},
+  {name: 'Lekiwi', desc: 'Omnidirectional Chassis', img: 'img/lekiwi.png', to: '/products/lekiwi'},
+  {name: 'Xlerobot', desc: 'AI Home Robot', img: 'img/xlerobot.png', to: '/products/xlerobot'},
+  {name: 'AmazingHand', desc: 'Dexterous Hand', img: 'img/amazinghand.png', to: '/products/amazinghand'},
 ];
 
 const advantages = [
@@ -92,7 +93,6 @@ function Hero() {
       <div className="container">
         <div className={styles.heroInner}>
           <div className={styles.heroText}>
-            <span className={styles.heroChip}>Open Source Robotics</span>
             <h1 className={styles.heroH1}>
               Exploring the Micro
               <span className={styles.heroH1Grad}>Enlightening the Future</span>
@@ -102,7 +102,7 @@ function Hero() {
             </p>
             <div className={styles.heroBtns}>
               <Link to="/docs/intro" className={styles.btnFill}>Quick Start →</Link>
-              <Link to="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" className={styles.btnStore}>🛒 Store</Link>
+              <Link to="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" className={styles.btnStore}>Store</Link>
               <Link to="https://github.com/lumimoon-robotics" className={styles.btnStroke}>GitHub</Link>
             </div>
           </div>
@@ -258,7 +258,7 @@ function Cta() {
           <p className={styles.ctaP}>Whether you're a researcher, startup team, or individual developer — you'll find the right tools and partners here.</p>
           <div className={styles.ctaBtns}>
             <Link to="/docs/intro" className={styles.btnFill}>📖 Get Started</Link>
-            <Link to="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" className={styles.btnStore}>🛒 Store</Link>
+            <Link to="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" className={styles.btnStore}>Store</Link>
             <Link to="/about" className={styles.btnStrokeLight}>About Us</Link>
           </div>
         </div>

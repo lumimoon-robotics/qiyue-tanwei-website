@@ -21,8 +21,9 @@ const sidebars: SidebarsConfig = {
         {
           type: 'category',
           label: '🔧 Lekiwi 底盘',
-          link: {type: 'doc', id: 'lerobot/lekiwi/bom'},
+          link: {type: 'doc', id: 'lerobot/lekiwi/overview'},
           items: [
+            'lerobot/lekiwi/overview',
             'lerobot/lekiwi/bom',
             'lerobot/lekiwi/3d-printing',
             'lerobot/lekiwi/assembly',
@@ -44,6 +45,14 @@ const sidebars: SidebarsConfig = {
           items: [
             'lerobot/xlerobot/overview',
             'lerobot/xlerobot/quickstart',
+          ],
+        },
+        {
+          type: 'category',
+          label: '✋ AmazingHand 灵巧手',
+          link: {type: 'doc', id: 'lerobot/amazinghand/overview'},
+          items: [
+            'lerobot/amazinghand/overview',
           ],
         },
       ],

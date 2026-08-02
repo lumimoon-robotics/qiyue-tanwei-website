@@ -15,8 +15,8 @@ const categories = [
     id: 'lerobot',
     title: 'LeRobot 开源硬件',
     subtitle: '具身智能研究平台',
-    desc: 'SO-ARM101 机械臂 + Lekiwi 底盘 + Xlerobot 家务机器人，全栈开源，模块化组合。',
-    specs: ['SO-ARM101', 'Lekiwi', 'Xlerobot', 'ROS2/Python'],
+    desc: 'SO-ARM101 机械臂 + Lekiwi 底盘 + Xlerobot 家务机器人 + AmazingHand 灵巧手，全栈开源，模块化组合。',
+    specs: ['SO-ARM101', 'Lekiwi', 'Xlerobot', 'AmazingHand'],
     to: '/docs/lerobot/overview',
     gradient: 'from-indigo-950 via-blue-900 to-violet-950',
     accent: '#6366f1',
@@ -48,9 +48,10 @@ const categories = [
 ];
 
 const leRobotProducts = [
-  {name: 'SO-ARM101', desc: '桌面级开源机械臂', img: 'img/so-arm101.png', to: '/docs/lerobot/so-arm101/overview'},
-  {name: 'Lekiwi', desc: '全向移动底盘', img: 'img/lekiwi.png', to: '/docs/lerobot/lekiwi/overview'},
-  {name: 'Xlerobot', desc: 'AI 家务机器人', img: 'img/xlerobot.png', to: '/docs/lerobot/xlerobot/overview'},
+  {name: 'SO-ARM101', desc: '桌面级开源机械臂', img: 'img/so-arm101.png', to: '/products/so-arm101'},
+  {name: 'Lekiwi', desc: '全向移动底盘', img: 'img/lekiwi.png', to: '/products/lekiwi'},
+  {name: 'Xlerobot', desc: 'AI 家务机器人', img: 'img/xlerobot.png', to: '/products/xlerobot'},
+  {name: 'AmazingHand', desc: '五指触觉灵巧手', img: 'img/amazinghand.png', to: '/products/amazinghand'},
 ];
 
 const advantages = [
@@ -200,7 +201,6 @@ function Hero() {
       <div className="container">
         <div className={styles.heroInner}>
           <div className={styles.heroText}>
-            <span className={styles.heroChip}>开源机器人平台</span>
             <h1 className={styles.heroH1}>
               探微知著
               <span className={styles.heroH1Grad}>启智未来</span>
@@ -211,7 +211,7 @@ function Hero() {
             </p>
             <div className={styles.heroBtns}>
               <Link to="/docs/intro" className={styles.btnFill}>快速入门 →</Link>
-              <Link to="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" className={styles.btnStore}>🛒 淘宝店铺</Link>
+              <Link to="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" className={styles.btnStore}>淘宝店铺</Link>
               <Link to="https://github.com/lumimoon-robotics" className={styles.btnStroke}>GitHub</Link>
             </div>
           </div>

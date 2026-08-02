@@ -42,7 +42,7 @@ export default function About(): ReactNode {
           </h2>
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem'}}>
             {[
-              {name: 'LeRobot Open Hardware', desc: 'SO-ARM101 · Lekiwi · Xlerobot — Embodied AI hardware', to: '/docs/lerobot/overview', color: '#6366f1'},
+              {name: 'LeRobot Open Hardware', desc: 'SO-ARM101 · Lekiwi · Xlerobot · AmazingHand', to: '/docs/lerobot/overview', color: '#6366f1'},
               {name: 'Camera Products', desc: 'Wrist · Fixed · Dual — Robot vision modules', to: '/docs/cameras/overview', color: '#10b981'},
               {name: 'Servo Products', desc: 'ST3215 Series — Smart bus servos', to: '/docs/servos/overview', color: '#f59e0b'},
             ].map((p) => (

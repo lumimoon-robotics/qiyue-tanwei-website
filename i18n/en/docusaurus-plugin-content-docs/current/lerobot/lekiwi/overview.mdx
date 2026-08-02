@@ -1,33 +1,37 @@
 ---
-sidebar_position: 1
-title: Lekiwi Overview
-description: Lekiwi — Omnidirectional mobile robot chassis, Mecanum wheels, SLAM navigation
+sidebar_position: 0
+title: Lekiwi Chassis
+description: Lekiwi — Omnidirectional modular robot chassis, Mecanum wheels, SLAM navigation
 keywords: [Lekiwi, chassis, omnidirectional, Mecanum, SLAM, ROS2]
 ---
 
-# 🔧 Lekiwi Chassis
+# 🔧 Lekiwi Omnidirectional Chassis
 
-An omnidirectional mobile robot chassis with Mecanum wheels, designed as a versatile base platform.
+**Lekiwi** is an omnidirectional modular robot chassis with Mecanum wheels,
+offering flexible omnidirectional movement and a rich top-plate interface.
 
-## Highlights
-
-- **Omnidirectional** — Forward, strafe, diagonal, zero-radius turn
-- **50kg Payload** — Powerful hub motors
-- **Modular Top Plate** — Quick-swap payloads
-- **SLAM Navigation** — LiDAR + IMU, Gmapping/Cartographer/Toolbox
-- **8h+ Battery Life** — Large capacity Li-ion
+![Lekiwi](/img/lekiwi.png)
 
 ## Specifications
 
 | Parameter | Value |
 |-----------|-------|
-| Drive | 4× independent Mecanum wheel |
+| Drive | 4× independent Mecanum wheels |
 | Max Payload | 50kg |
 | Max Speed | 1.5 m/s |
-| Battery | 24V / 20Ah Li-ion |
-| Main Controller | Raspberry Pi 5 / Jetson Orin NX |
-| Sensors | LiDAR + IMU + Encoders + Ultrasonic |
+| Battery Life | 8-12 hours |
+| Controller | Raspberry Pi 5 / Jetson Orin NX |
+| Sensors | LiDAR + IMU + Ultrasonic |
+| Weight | ~18kg |
+| Dimensions | 600 × 500 × 280 mm |
 | Software | ROS2 Humble + Nav2 |
+
+## Highlights
+
+- **Omnidirectional** — Forward, strafe, diagonal, zero-radius turn
+- **SLAM Navigation** — Cartographer / SLAM Toolbox
+- **Modular Top Plate** — Standard quick-swap interface
+- **Long Battery Life** — 8-12 hours standard
 
 ## Applications
 
@@ -36,6 +40,6 @@ An omnidirectional mobile robot chassis with Mecanum wheels, designed as a versa
 - 🍽️ Food & hotel service
 - 🔬 Mobile robotics research
 
-## Next Steps
-
-- [Quick Start](./quickstart) — Power up, teleop, and navigation
+:::tip Tutorials
+For detailed assembly guides, BOM, 3D printing and software setup, see [📖 Tutorials →](/docs/lerobot/lekiwi/bom)
+:::
