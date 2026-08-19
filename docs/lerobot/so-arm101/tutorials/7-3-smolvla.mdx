@@ -1,0 +1,79 @@
+---
+sidebar_position: 26
+title: 7.3 SmolVLA 训练（推荐进阶）
+description: 7.3 SmolVLA 训练（推荐进阶）
+---
+
+## 概述
+
+SmolVLA 是一个轻量级的视觉-语言-动作（VLA）模型，相比 Pi0 显存需求更低，同时具备语言条件控制能力，是 ACT 之后的进阶推荐选择。
+## 算法特点
+
+| 特性 | 说明 |
+| --- | --- |
+| 模型类型 | 视觉-语言-动作（VLA） |
+| 显存需求 | ≥16GB（相比 Pi0 的≥24GB 更低） |
+| 语言条件 | 支持自然语言指令 |
+| 推理速度 | 较快（轻量级设计） |
+| 适用场景 | 需要语言理解的灵活任务 |
+
+## 训练命令
+
+### 基础训练命令
+
+```text
+conda activate lerobot
+cd ~/lerobot
+lerobot-train \
+    --policy.type=smolvla \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \
+    --training.num_epochs=100 \
+    --training.batch_size=16 \
+    --output_dir=outputs/train/smolvla_my_task
+```
+### 完整训练命令
+
+```text
+lerobot-train \
+    --policy.type=smolvla \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \
+    --policy.pretrained_model_name_or_path=HuggingFaceTB/SmolVLA-Manipulation-7B \
+    --training.num_epochs=100 \
+    --training.batch_size=16 \
+    --training.lr=2e-5 \
+    --training.save_checkpoint=true \
+    --training.use_wandb=true \
+    --output_dir=outputs/train/smolvla_my_task
+```
+## 关键参数
+
+| 参数 | 说明 | 推荐值 |
+| --- | --- | --- |
+| `--policy.type` | 算法类型 | `smolvla` |
+| `--policy.pretrained_model_name_or_path` | 基础模型路径 | HuggingFace 模型 ID |
+| `--training.batch_size` | 批次大小 | 16（16GB）/ 32（24GB） |
+| `--training.lr` | 学习率 | 2e-5（微调推荐） |
+| `--training.num_epochs` | 训练轮数 | 100（快速验证）/ 500（正式训练） |
+
+## 语言条件训练
+
+SmolVLA 支持在数据采集时指定任务语言描述，训练后模型可以响应自然语言指令：
+```text
+# 采集时加入任务描述
+lerobot-record \
+    --dataset.single_task="从桌子左侧拾取红色积木并放置到右侧盒子中"
+    ...
+# 训练时模型自动学习语言-动作对应关系
+```
+## 训练时长参考
+
+| 硬件 | 数据集规模 | 参考时间 |
+| --- | --- | --- |
+| RTX 3090（24GB） | 50 episodes | ~4 小时 |
+| RTX 4090（24GB） | 100 episodes | ~6 小时 |
+| A100（40GB） | 200 episodes | ~8 小时 |
+
+## 参考资料
+
+- [HuggingFace LeRobot SmolVLA 文档](https://huggingface.co/docs/lerobot/smolvla)
+- [SmolVLA 模型主页](https://huggingface.co/lerobot/smolvla_base)

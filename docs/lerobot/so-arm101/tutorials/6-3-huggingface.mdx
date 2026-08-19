@@ -1,0 +1,140 @@
+---
+sidebar_position: 23
+title: 6.3 HuggingFace 数据集上传与管理
+description: 6.3 HuggingFace 数据集上传与管理
+---
+
+## 概述
+
+将数据集上传到 HuggingFace Hub 后，可以在云端存储和版本管理，并与社区分享，同时也便于在云 GPU 服务器上直接拉取训练。
+## 注册 HuggingFace 账号
+
+[1. 访问 huggingface.co 注册免费账号](https://huggingface.co/)
+
+2. 进入账号设置，创建访问令牌（Access Token）：
+### [◦地址：https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+
+- 类型选择 Write（写入权限）
+- 复制保存 Token
+## 配置本地 HuggingFace 登录
+
+```text
+# 安装 huggingface_hub
+pip install huggingface_hub
+# 登录（输入 Token 后按 Enter）
+huggingface-cli login
+# 或
+python -c "from huggingface_hub import login; login()"
+```
+
+验证登录：
+```text
+huggingface-cli whoami
+# 输出用户名说明登录成功
+```
+## 采集时直接上传
+
+在 lerobot-record 命令中加入 HuggingFace 账号信息即可自动上传：
+```text
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \   # 替换为你的 HuggingFace 用户名
+    --dataset.num_episodes=50 \
+    --dataset.single_task="任务描述" \
+    --dataset.push_to_hub=true    # 采集完成后自动上传
+```
+## 手动上传已有数据集
+
+如果已有本地数据集，可以手动上传：
+```text
+python -c "
+from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
+dataset = LeRobotDataset('local/my_dataset')
+dataset.push_to_hub(repo_id='YOUR_HF_USERNAME/my_dataset', private=False)
+print('上传完成！')
+"
+```
+## 数据集命名规范
+
+| 命名维度 | 建议格式 | 示例 |
+| --- | --- | --- |
+| 用户名/任务 | `username/task_description` | `amy/pick_and_place` |
+| 包含数量 | 加入 episode 数 | `amy/pick_and_place_100_eps` |
+| 包含硬件信息 | 加入机器人型号 | `amy/so101_pick_and_place` |
+
+## 数据集格式说明
+
+上传的 LeRobot 数据集包含以下结构：
+```text
+HuggingFace 数据集仓库：
+├── meta/
+│   └── info.json          # 元数据：关节名称、摄像头名称、FPS、总帧数等
+├── data/
+│   └── chunk-000/
+│       ├── episode_000000.parquet   # 时间序列数据（关节角度、时间戳）
+│       └── ...
+└── videos/
+    └── chunk-000/
+        ├── observation.images.overhead_episode_000000.mp4
+        └── observation.images.wrist_episode_000000.mp4
+```
+
+Parquet 文件内容示例：
+
+| 字段 | 说明 |
+| --- | --- |
+| timestamp  | 时间戳（秒） |
+| observation.state  | 关节角度（6维向量） |
+| action  | 动作指令（6维向量） |
+| episode index _ | episode 编号 |
+| frame index _ | 帧编号 |
+
+## 从 HuggingFace 下载数据集
+
+```text
+from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
+# 下载并加载数据集
+dataset = LeRobotDataset("lerobot/aloha_mobile_cabinet")
+# 查看数据集信息
+print(f"Episodes: {dataset.num_episodes}")
+print(f"Total frames: {len(dataset)}")
+print(f"Robot type: {dataset.meta.robot_type}")
+# 访问某一帧数据
+frame = dataset[0]
+print(frame.keys())  # dict_keys(['observation', 'action', ...])
+```
+## 查看社区公开数据集
+
+LeRobot 社区提供了大量公开数据集：
+```text
+# 搜索 SO-101 相关数据集
+from huggingface_hub import HfApi
+api = HfApi()
+datasets = api.list_datasets(search="so101", task_categories=["robotics"])
+for ds in datasets:
+    print(ds.id)
+```
+
+推荐公开数据集：
+
+- lerobot - HuggingFace 官方数据集合集
+- 社区成员分享的 SO-101 数据集（在 HuggingFace 搜索 so101 ）
+## 数据集版本管理
+
+HuggingFace Hub 使用 Git LFS 进行版本管理：
+```text
+# 查看数据集历史版本
+huggingface-cli repo-info YOUR_HF_USERNAME/my_dataset
+# 下载特定版本
+dataset = LeRobotDataset(
+    "YOUR_HF_USERNAME/my_dataset",
+    revision="v1.0"  # 指定版本号
+)
+```
+## 参考资料
+
+- [HuggingFace Hub 文档](https://huggingface.co/docs/hub)
+- [LeRobot 数据集官方文档](https://huggingface.co/docs/lerobot)

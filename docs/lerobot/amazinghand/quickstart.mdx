@@ -1,0 +1,133 @@
+---
+sidebar_position: 2
+title: 快速开始
+description: AmazingHand 灵巧手快速入门 — 环境搭建与第一个抓取 Demo
+keywords: [AmazingHand, 快速开始, 灵巧手, Python, 力控]
+last_update:
+  date: 2026-08-17
+  author: Qiyue Team
+---
+
+# ⚡ 快速开始
+
+按照以下步骤，在 15 分钟内让 AmazingHand 动起来。
+
+## 1. 环境要求
+
+- **操作系统**: Ubuntu 22.04 / macOS 14+ / Windows 11 (WSL2)
+- **Python**: 3.10 或更高版本
+- **ROS2**: Humble Hawksbill（可选，用于高级功能）
+- **供电**: 24V DC 电源（务必使用配套电源适配器）
+
+## 2. 硬件连接
+
+```
+┌──────────────┐      USB Type-C       ┌──────────────┐
+│  AmazingHand │ ◄────────────────────► │    电脑      │
+│   灵巧手      │                        │  (PC/Laptop) │
+└──────┬───────┘                        └──────────────┘
+       │
+       │ 24V DC
+       ▼
+┌──────────────┐
+│   电源适配器  │
+└──────────────┘
+```
+
+1. 将 24V 电源适配器连接到灵巧手底座
+2. 使用 USB Type-C 线连接灵巧手与电脑
+3. 上电自检：五指依次轻微开合，指尖 LED 亮起表示正常
+
+## 3. 安装 SDK
+
+```bash
+# 创建虚拟环境（推荐）
+python3 -m venv amazinghand-env
+source amazinghand-env/bin/activate
+
+# 安装 AmazingHand Python SDK
+pip install amazinghand-sdk
+
+# 验证安装
+python -c "import amazinghand; print(amazinghand.__version__)"
+```
+
+## 4. 第一个 Demo
+
+创建一个 Python 脚本 `hello_hand.py`：
+
+```python
+#!/usr/bin/env python3
+""" AmazingHand Hello World — 让灵巧手动起来 """
+
+from amazinghand import HandController
+import time
+
+# 初始化灵巧手（自动检测串口）
+hand = HandController(auto_connect=True)
+
+print(f"已连接: {hand.get_device_info()}")
+
+# 张开五指
+print("张开手掌...")
+hand.open_all()
+time.sleep(2)
+
+# 握拳
+print("握拳...")
+hand.close_all()
+time.sleep(2)
+
+# 单独控制拇指
+print("拇指演示...")
+hand.move_finger("thumb", angle=45, speed=30)
+time.sleep(1)
+
+# 力控抓取（设置目标力 5N）
+print("力控抓取演示...")
+hand.grasp_with_force(target_force=5.0)
+time.sleep(2)
+
+# 读取触觉数据
+tactile = hand.read_tactile()
+print(f"触觉读数（前 5 个单元）: {tactile[:5]}")
+
+# 复位并断开
+hand.open_all()
+time.sleep(1)
+hand.disconnect()
+print("✅ Demo 完成！")
+```
+
+运行：
+
+```bash
+python hello_hand.py
+```
+
+## 5. ROS2 环境（可选）
+
+```bash
+# 创建工作空间
+mkdir -p ~/amazinghand_ws/src
+cd ~/amazinghand_ws/src
+
+# 克隆 ROS2 包
+git clone https://github.com/lumimoon-robotics/amazinghand_ros2.git
+
+# 编译
+cd ~/amazinghand_ws
+colcon build --symlink-install
+source install/setup.bash
+
+# 启动灵巧手驱动节点
+ros2 launch amazinghand_bringup hand.launch.py
+
+# 查看触觉话题
+ros2 topic echo /amazinghand/tactile
+```
+
+## 📖 下一步
+
+- [产品概述](./overview) — 了解完整技术规格
+- 遇到问题？查看 [常见问题](/docs/intro) 或提交 GitHub Issue

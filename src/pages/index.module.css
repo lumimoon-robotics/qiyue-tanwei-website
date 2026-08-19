@@ -61,7 +61,7 @@
    ================================================================ */
 .hero {
   position: relative;
-  min-height: 420px;
+  min-height: 440px;
   display: flex;
   align-items: center;
   background: #fafbfd;
@@ -105,14 +105,15 @@
 .heroInner {
   position: relative;
   z-index: 2;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
   align-items: center;
-  justify-content: center;
 }
 
 .heroText {
-  max-width: 600px;
-  text-align: center;
+  max-width: 560px;
+  text-align: left;
 }
 
 .heroChip {
@@ -152,13 +153,11 @@
   line-height: 1.65;
   margin-bottom: 2rem;
   max-width: 520px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .heroBtns {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 0.75rem;
   flex-wrap: wrap;
 }
@@ -306,6 +305,145 @@
 }
 
 /* ================================================================
+   首屏产品轮播图
+   ================================================================ */
+.heroCarouselWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.carousel {
+  width: 100%;
+  max-width: 520px;
+  overflow: hidden;
+}
+
+.carouselTrack {
+  display: flex;
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.carouselSlide {
+  flex: 0 0 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.carouselImgWrap {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 1px solid #eef2f7;
+  border-radius: 18px;
+  padding: 0.75rem;
+}
+
+.carouselImg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.carouselInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.9rem 0.3rem 0;
+}
+
+.carouselInfoTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.carouselName {
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #0f172a;
+  margin: 0;
+}
+
+.carouselTag {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #6366f1;
+  background: rgba(99, 102, 241, 0.08);
+  padding: 0.24rem 0.7rem;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.carouselDesc {
+  font-size: 0.9rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 底部指示点 */
+.carouselDots {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.9rem 0 0;
+}
+
+.carouselDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(15, 23, 42, 0.16);
+  cursor: pointer;
+  transition: all 0.25s;
+}
+
+.carouselDotActive {
+  width: 20px;
+  border-radius: 100px;
+  background: #6366f1;
+}
+
+/* 轮播图深色模式 */
+[data-theme='dark'] .carouselImgWrap {
+  background: #fff;
+}
+
+[data-theme='dark'] .carouselName {
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .carouselDesc {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .carouselTag {
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.16);
+}
+
+[data-theme='dark'] .carouselDot {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme='dark'] .carouselDotActive {
+  background: #818cf8;
+}
+
+/* ================================================================
    产品图片展示
    ================================================================ */
 .showcase {
@@ -351,7 +489,7 @@
   height: 100%;
   object-fit: contain;
   transition: transform 0.3s;
-  background: #f8fafc;
+  background: #fff;
 }
 
 .showcaseCard:hover .showcaseImg {
@@ -692,8 +830,8 @@
   }
 
   .heroInner {
-    flex-direction: column;
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
     padding: 3rem 0;
   }
 
@@ -716,10 +854,10 @@
     justify-content: center;
   }
 
-  .heroVisual {
-    flex: 0 0 auto;
+  .heroCarouselWrap {
     width: 100%;
-    max-width: 400px;
+    max-width: 440px;
+    margin: 0 auto;
   }
 
   .productGrid {
@@ -765,4 +903,137 @@
   .ctaH2 {
     font-size: 1.5rem;
   }
+}
+
+/* ================================================================
+   深色模式
+   ================================================================ */
+[data-theme='dark'] .sec {
+  background: #0b1220;
+}
+
+[data-theme='dark'] .secAlt {
+  background: #0f172a;
+}
+
+[data-theme='dark'] .secH2,
+[data-theme='dark'] .prodCardTitle,
+[data-theme='dark'] .advTitle,
+[data-theme='dark'] .scTitle,
+[data-theme='dark'] .showcaseName {
+  color: #e2e8f0;
+}
+
+[data-theme='dark'] .secP,
+[data-theme='dark'] .prodCardDesc,
+[data-theme='dark'] .advDesc,
+[data-theme='dark'] .scDesc,
+[data-theme='dark'] .showcaseDesc {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .secChip,
+[data-theme='dark'] .heroChip {
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.12);
+  border-color: rgba(99, 102, 241, 0.22);
+}
+
+/* Hero */
+[data-theme='dark'] .hero {
+  background: #0b1220;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme='dark'] .heroGrid {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+[data-theme='dark'] .heroH1 {
+  color: #f1f5f9;
+}
+
+[data-theme='dark'] .heroP {
+  color: #94a3b8;
+}
+
+[data-theme='dark'] .btnStroke {
+  background: #111827;
+  color: #cbd5e1 !important;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+[data-theme='dark'] .btnStroke:hover {
+  border-color: #818cf8;
+  background: #111827;
+}
+
+/* 产品图片展示 */
+[data-theme='dark'] .showcase {
+  background: #0b1220;
+}
+
+[data-theme='dark'] .showcaseCard {
+  background: #111827;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* 实物照片自带白底，深色模式下图片区仍保持白色，避免双层背景 */
+[data-theme='dark'] .showcaseImg {
+  background: #fff;
+}
+
+/* 跑马灯 */
+[data-theme='dark'] .marquee {
+  background: #0f172a;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme='dark'] .marqueeItem {
+  background: #111827;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+}
+
+/* 产品卡片 */
+[data-theme='dark'] .prodCard {
+  background: #111827;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .prodCard:hover {
+  border-color: #6366f1;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme='dark'] .prodCardSub {
+  color: #a5b4fc;
+}
+
+[data-theme='dark'] .prodCardSpec {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+}
+
+/* 优势 */
+[data-theme='dark'] .advCard {
+  background: #111827;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme='dark'] .advCard:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* 场景 */
+[data-theme='dark'] .scCard {
+  background: #111827;
+}
+
+[data-theme='dark'] .scCard:hover {
+  background: #0f172a;
+  border-color: rgba(255, 255, 255, 0.14);
 }

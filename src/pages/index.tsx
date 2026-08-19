@@ -1,4 +1,5 @@
-import {type ReactNode} from 'react';
+import {useState, useEffect} from 'react';
+import type {ReactNode} from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -21,7 +22,6 @@ const categories = [
     gradient: 'from-indigo-950 via-blue-900 to-violet-950',
     accent: '#6366f1',
     icon: '🤖',
-    image: '/img/lerobot-showcase.png',
   },
   {
     id: 'cameras',
@@ -52,6 +52,14 @@ const leRobotProducts = [
   {name: 'Lekiwi', desc: '全向移动底盘', img: 'img/lekiwi.png', to: '/products/lekiwi'},
   {name: 'Xlerobot', desc: 'AI 家务机器人', img: 'img/xlerobot.png', to: '/products/xlerobot'},
   {name: 'AmazingHand', desc: '五指触觉灵巧手', img: 'img/amazinghand.png', to: '/products/amazinghand'},
+];
+
+/* 首屏轮播图数据 */
+const heroSlides = [
+  {name: 'SO-ARM101', tag: '桌面机械臂', desc: '6+1 自由度，全开源 CAD 与 SDK，15 分钟快速上手。', img: 'img/so-arm101.png', to: '/products/so-arm101'},
+  {name: 'Lekiwi', tag: '全向移动底盘', desc: '麦克纳姆轮全向移动，SLAM 自主导航，50kg 负载。', img: 'img/lekiwi.png', to: '/products/lekiwi'},
+  {name: 'Xlerobot', tag: '家务机器人', desc: '双臂协作 + 端侧 AI，自然语言指令驱动。', img: 'img/xlerobot.png', to: '/products/xlerobot'},
+  {name: 'AmazingHand', tag: '触觉灵巧手', desc: '16 自由度，120 触觉单元，力控精度 ±0.1N。', img: 'img/amazinghand.png', to: '/products/amazinghand'},
 ];
 
 const advantages = [
@@ -188,7 +196,61 @@ function ProductIllustration({id}: {id: string}) {
 }
 
 /* ================================================================
-   Hero — 大标题 + 渐变词 + 产品视觉区
+   首屏产品轮播图
+   ================================================================ */
+function HeroCarousel() {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return;
+    const t = setInterval(() => setIndex((i) => (i + 1) % heroSlides.length), 4500);
+    return () => clearInterval(t);
+  }, [paused]);
+
+  const go = (i: number) => setIndex((i + heroSlides.length) % heroSlides.length);
+
+  return (
+    <div
+      className={styles.carousel}
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}>
+      <div
+        className={styles.carouselTrack}
+        style={{transform: `translateX(-${index * 100}%)`}}>
+        {heroSlides.map((s, i) => (
+          <Link key={i} to={s.to} className={styles.carouselSlide}>
+            <div className={styles.carouselImgWrap}>
+              <img src={useBaseUrl(s.img)} alt={s.name} className={styles.carouselImg} />
+            </div>
+            <div className={styles.carouselInfo}>
+              <div className={styles.carouselInfoTop}>
+                <h3 className={styles.carouselName}>{s.name}</h3>
+                <span className={styles.carouselTag}>{s.tag}</span>
+              </div>
+              <p className={styles.carouselDesc}>{s.desc}</p>
+            </div>
+          </Link>
+        ))}
+      </div>
+
+      <div className={styles.carouselDots}>
+        {heroSlides.map((s, i) => (
+          <button
+            key={i}
+            type="button"
+            className={clsx(styles.carouselDot, i === index && styles.carouselDotActive)}
+            onClick={() => go(i)}
+            aria-label={s.name}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ================================================================
+   Hero — 左文字 + 右产品轮播图
    ================================================================ */
 function Hero() {
   return (
@@ -201,6 +263,7 @@ function Hero() {
       <div className="container">
         <div className={styles.heroInner}>
           <div className={styles.heroText}>
+            <span className={styles.heroChip}>开源机器人生态</span>
             <h1 className={styles.heroH1}>
               探微知著
               <span className={styles.heroH1Grad}>启智未来</span>
@@ -214,6 +277,9 @@ function Hero() {
               <Link to="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" className={styles.btnStore}>淘宝店铺</Link>
               <Link to="https://github.com/lumimoon-robotics" className={styles.btnStroke}>GitHub</Link>
             </div>
+          </div>
+          <div className={styles.heroCarouselWrap}>
+            <HeroCarousel />
           </div>
         </div>
       </div>
@@ -237,7 +303,7 @@ function Marquee() {
 }
 
 /* ================================================================
-   LeRobot 产品图片展示
+   LeRobot 开源硬件产品展示
    ================================================================ */
 function ProductsShowcase() {
   return (

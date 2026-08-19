@@ -1,0 +1,180 @@
+---
+sidebar_position: 21
+title: 6.1 采集数据集
+description: 6.1 采集数据集
+---
+
+## 概述
+
+数据集采集是模仿学习的核心步骤。通过遥操作主动臂执行任务，系统同步记录关节角度和摄像头图像，形成用于训练模型的示教数据集。
+## 数据集格式
+
+LeRobot 采用统一的数据集格式：
+```text
+数据集结构：
+dataset_name/
+├── meta/
+│   └── info.json          # 数据集元信息（关节名称、摄像头名称、帧率等）
+├── data/
+│   └── chunk-000/
+│       ├── episode_000000.parquet  # 关节角度、时间戳等结构化数据
+│       ├── episode_000001.parquet
+│       └── ...
+└── videos/
+    └── chunk-000/
+        ├── observation.images.overhead_episode_000000.mp4
+        ├── observation.images.wrist_episode_000000.mp4
+        └── ...
+```
+## 采集命令
+
+### 基础采集命令
+
+```text
+conda activate lerobot
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \
+    --dataset.num_episodes=50 \
+    --dataset.single_task="从桌子左侧拾取红色积木并放置到右侧"
+```
+### 带摄像头的采集命令（推荐）
+
+```text
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480},
+        "wrist": {"type": "opencv", "index_or_path": 2, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \
+    --dataset.num_episodes=50 \
+    --dataset.single_task="拾取放置任务"
+```
+### 本地保存（不上传 HuggingFace）
+
+```text
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --dataset.repo_id=local/my_dataset \
+    --dataset.num_episodes=50 \
+    --dataset.single_task="任务描述" \
+    --dataset.push_to_hub=false
+```
+## 关键参数说明
+
+| 参数 | 说明 | 推荐值 |
+| --- | --- | --- |
+| `--dataset.repo_id` | 数据集 ID（用户名/数据集名） | 自定义 |
+| `--dataset.num_episodes` | 总采集次数（episode 数） | 50-200 |
+| `--dataset.single_task` | 任务描述（中文或英文均可） | 简洁描述 |
+| `--dataset.fps` | 录制帧率 | 60 |
+| `--dataset.push_to_hub` | 是否上传 HuggingFace | true / false |
+
+## 采集流程
+
+### 单次 Episode 流程
+
+```text
+1. 程序提示"准备好后按 Enter 开始录制..."
+   ↓
+2. 按 Enter，录制开始
+   ↓
+3. 操控主动臂执行完整任务（约 3-15 秒）
+   ↓
+4. 任务完成后，程序自动进入"重置"环节
+   ↓
+5. 将场景（积木位置等）重置到初始状态
+   ↓
+6. 按 Enter，开始下一次录制
+```
+### 快捷键控制
+
+| 快捷键 | 功能 |
+| --- | --- |
+| Enter  | 开始/确认录制 |
+| → （右箭头） | 保存当前 episode，继续下一个 |
+| ← （左箭头） | 丢弃当前 episode，重新录制 |
+| q  | 退出录制（保存已采集的数据） |
+
+## 数据采集质量指南
+
+### 建议采集数量
+
+| 任务难度 | 推荐 Episode 数 | 说明 |
+| --- | --- | --- |
+| 简单（固定位置拾取） | 50-100 | 入门任务 |
+| 中等（动态目标） | 100-200 | 标准任务 |
+| 复杂（多步骤操作） | 200-500 | 需要更多数据 |
+
+### 提升数据质量的建议
+
+1. 保持一致性：每次 episode 的起始状态尽量相同
+2. 动作流畅：避免频繁停顿或抖动，动作要连贯自然
+3. 任务完整：每个 episode 都完整执行完任务（包括最终状态）
+4. 适当多样性：可以从略微不同的初始位置执行任务，增加泛化性
+5. 光照稳定：整个采集过程中保持相同光线条件
+### 采集环境设置
+
+```text
+推荐工作区域布置：
+    [顶置摄像头]（俯视整个工作台）
+    ┌─────────────────────────────┐
+    │  任务目标区（固定区域）         │
+    │  ○ 积木/物体放置区域           │
+    │                             │
+    │  从动臂工作范围               │
+    └─────────────────────────────┘
+注意：
+- 背景尽量简洁，避免反光
+- 工作台面颜色与任务目标有明显区分
+- 固定所有不参与任务的物体
+```
+## 示例：采集 200 次握手数据集
+
+```text
+# 示例任务：机械臂"握手"动作
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --dataset.repo_id=YOUR_HF_USERNAME/handshake_200 \
+    --dataset.num_episodes=200 \
+    --dataset.single_task="机械臂执行握手动作"
+```
+## 回看与回放数据集
+
+### 查看已采集的数据
+
+```text
+# 在线可视化（HuggingFace 数据集页面）
+# 将数据集上传后，在 HuggingFace 数据集页面可直接查看视频
+# 本地可视化
+lerobot-dataset-viz --repo_id local/my_dataset
+```
+### 回放单个 Episode
+
+```text
+# 回放第一个 episode
+lerobot-replay \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --dataset.repo_id=local/my_dataset \
+    --dataset.episode=0
+```
+## 参考资料
+
+- [HuggingFace LeRobot 数据集文档](https://huggingface.co/docs/lerobot)

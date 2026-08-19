@@ -1,0 +1,92 @@
+---
+sidebar_position: 6
+title: 2.3 购买渠道
+description: 2.3 购买渠道
+---
+
+## 2.3.1 概述
+
+本文主要给出 SO-101 购买渠道，涵盖整机套件和散件采购两种方式。
+## 2.3.2 整机套件购买渠道
+
+购买整机套件无需自行 3D 打印和采购零件，适合快速上手：
+
+<div style={{ background: "linear-gradient(135deg, #f97316 0%, #ef4444 100%)", borderRadius: "12px", padding: "1.25rem 1.5rem", margin: "1rem 0", color: "#fff", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", boxShadow: "0 4px 20px rgba(239, 68, 68, 0.3)" }}>
+  <div style={{ fontSize: "1.05rem", lineHeight: "1.6" }}>
+    <strong style={{ fontSize: "1.2rem" }}>🛒 购买 SO-101 套件</strong><br/>
+    适配本教程的完整套件，省去采购与组装时间
+  </div>
+  <a href="https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/" target="_blank" style={{ background: "#fff", color: "#ef4444", padding: "0.6rem 1.5rem", borderRadius: "8px", fontWeight: 700, fontSize: "1rem", textDecoration: "none", whiteSpace: "nowrap", boxShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>🔗 前往淘宝店铺 →</a>
+</div>
+
+| 供应商 | 适用地区 | 特点 | 官网 |
+| --- | --- | --- | --- |
+| 启月科技（LumiMoon） | 国际/中国/美欧英澳 | 文档完善、有中文客服 | [启月探微官方店铺](https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/) |
+| PartaBot | 美国 | 美国本土发货，快速 | [partabot.com](https://partabot.com) |
+| Autodiscovery | 欧洲 | 欧盟内发货 |  |
+
+推荐中国用户：启月科技或矽递科技，有中文客服支持且售后方便。
+## 2.3.3 散件采购渠道
+
+如果希望自行采购零件并 3D 打印，以下是各主要零件的推荐采购平台：
+### STS3215 舵机
+
+| 平台 | 地区 | 说明 |
+| --- | --- | --- |
+| 淘宝/京东 | 中国大陆 | 搜索"STS3215 飞特舵机"或"总线舵机" |
+| 飞特官方店 | 中国大陆 | 品牌直供，质量有保障 |
+| AliExpress | 国际 | 适合海外买家 |
+
+启月科技也有对应的 STS3215 舵机套件销售：
+
+[启月探微官方店铺](https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/)
+### 控制板（Motor Control Board）
+
+| 平台 | 型号推荐 |
+| --- | --- |
+| 淘宝/京东 | 搜索"飞特总线舵机控制板"或"STS3215 控制板" |
+| Waveshare 官方 | waveshare.com（推荐型号之一） |
+| 飞特官方 | 飞特品牌配套控制板 |
+| AliExpress | 搜索"Feetech STS3215control board" |
+
+注意：购买时需确认控制板支持 STS3215 串行总线舵机（飞特协议）。部分控制板（如Waveshare）跳线帽需插入到 B 通道（USB 模式）才能被电脑识别，请以所购控制板说明书为准。
+### 电源适配器
+
+- 要求：5V 输出，功率建议 ≥ 2A
+### 桌面固定夹
+
+- 普通 C/F 型夹，五金店或网购均可
+- 建议最大开口 ≥ 5cm，以适应不同桌面厚度
+## 2.3.4 摄像头选购建议
+
+数据采集和模型推理均需要摄像头：
+
+| 相机类型 | 推荐型号 | 用途 |
+| --- | --- | --- |
+| 通用 USB 摄像头 | 罗技 C920/C930e | 顶置/侧置视角 |
+| 小型 UVC 模组 | 32×32mm USB 模组 | 腕部相机 |
+| 深度相机 | Intel RealSense D405 | 3D感知（进阶） |
+| 深度相机 | Intel RealSense D435 | 广角3D感知 |
+
+入门建议：两个普通 USB 摄像头即可（一顶置+一腕部），无需购买深度相机，也可以只要一个腕部相机，是最划算的入门方案。启月有购买的套件链接，包括对应的安装支架。后续也会把支架的stl上传，降低大家的DIY成本。
+
+[启月探微官方店铺](https://aozldimvsb4qk5ct-x1oeddvzwb01u.taobao.com/)
+
+## 2.3.5 购买清单速查
+
+### 最小化入门配置
+
+1. 成品双臂套装（或按BOM自行采购）
+2. USB摄像头 * 1
+3. 有 NVIDIA GPU 的电脑（训练用）或 Mac/普通电脑（仅遥操作）
+### 完整研究配置
+
+除了以上，还可以增加
+
+1. USB 摄像头 × 2-3（顶置 + 腕部）
+2. NVIDIA GPU（RTX 3080 及以上，训练推荐）
+3. Intel RealSense 深度相机（可选）
+4. 触觉传感器（可选，研究用）
+## 参考资料
+
+- [TheRobotStudio SO-ARM100 GitHub（BOM 和购买链接）](https://github.com/TheRobotStudio/SO-ARM100)

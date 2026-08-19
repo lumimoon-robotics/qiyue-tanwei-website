@@ -1,39 +1,47 @@
 import React from 'react';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import ProductPage from '@site/src/components/ProductPage';
 
 export default function Lekiwi() {
   return (
-    <Layout title="Lekiwi 底盘" description="Lekiwi — 全向移动模块化机器人底盘">
-      <main className="container margin-vert--lg" style={{maxWidth: 800}}>
-        <img src={useBaseUrl('img/lekiwi.png')} alt="Lekiwi" style={{width: '100%', maxHeight: 360, objectFit: 'contain', borderRadius: 12, marginBottom: '2rem'}} />
-        <span style={{fontSize: '0.75rem', fontWeight: 700, color: '#6366f1', textTransform: 'uppercase', letterSpacing: '0.12em'}}>LeRobot 开源硬件</span>
-        <h1 style={{fontSize: '2.25rem', fontWeight: 900, letterSpacing: '-0.03em', marginTop: '0.5rem'}}>Lekiwi 全向移动底盘</h1>
-        <p style={{fontSize: '1.05rem', color: '#64748b', lineHeight: 1.7}}>麦克纳姆轮全向移动，SLAM 自主导航，50kg 负载，模块化上装接口。</p>
-
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>技术规格</h2>
-        <table><tbody>
-          <tr><td>驱动方式</td><td>四轮独立麦克纳姆轮</td></tr>
-          <tr><td>最大负载</td><td>50kg</td></tr>
-          <tr><td>最大速度</td><td>1.5 m/s</td></tr>
-          <tr><td>续航</td><td>8-12 小时</td></tr>
-          <tr><td>主控</td><td>Raspberry Pi 5 / Jetson Orin NX</td></tr>
-          <tr><td>软件</td><td>ROS2 Humble + Nav2</td></tr>
-        </tbody></table>
-
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>亮点</h2>
-        <ul style={{lineHeight: 2}}>
-          <li>全向移动：前行、横移、斜行、原地旋转</li>
-          <li>SLAM 导航：Cartographer / SLAM Toolbox 自主建图</li>
-          <li>模块化上装：标准快拆接口，一底多用</li>
-          <li>长续航：8-12 小时标配电池</li>
-        </ul>
-
-        <div style={{textAlign: 'right', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0'}}>
-          <Link to="/docs/lerobot/lekiwi/bom" className="button button--primary">📖 查看教程 →</Link>
-        </div>
-      </main>
-    </Layout>
+    <ProductPage
+      title="Lekiwi 全向移动底盘"
+      description="Lekiwi — 全向移动模块化机器人底盘，麦克纳姆轮，SLAM 自主导航"
+      category="LeRobot 开源硬件"
+      categoryTo="/docs/lerobot/overview"
+      accent="#6366f1"
+      tagline="麦克纳姆轮全向移动 · SLAM 自主导航"
+      intro="四轮独立麦克纳姆轮布局，支持前行、横移、斜行与原地旋转；集成激光雷达、IMU 与超声波传感器，模块化上装快拆接口一底多用。"
+      image="img/lekiwi.png"
+      keySpecs={[
+        {label: '最大负载', value: '50kg'},
+        {label: '最大速度', value: '1.5 m/s'},
+        {label: '续航', value: '8-12h'},
+        {label: '软件', value: 'ROS2 + Nav2'},
+      ]}
+      highlights={[
+        {icon: '🧭', title: 'SLAM 导航', desc: '兼容 Cartographer / SLAM Toolbox，自主建图与路径规划。'},
+        {icon: '⚡', title: '全向移动', desc: '前行、横移、斜行、原地旋转，窄空间灵活穿梭。'},
+        {icon: '🧩', title: '模块化上装', desc: '标准快拆接口，机械臂、传感器、储物箱自由组合。'},
+        {icon: '🔋', title: '长续航', desc: '8-12 小时标配电池，满足全天候任务需求。'},
+      ]}
+      specs={[
+        {label: '驱动方式', value: '四轮独立麦克纳姆轮'},
+        {label: '最大负载', value: '50kg'},
+        {label: '最大速度', value: '1.5 m/s'},
+        {label: '续航', value: '8-12 小时'},
+        {label: '主控', value: 'Raspberry Pi 5 / Jetson Orin NX'},
+        {label: '传感器', value: '激光雷达 + IMU + 超声波'},
+        {label: '自重', value: '~18kg'},
+        {label: '尺寸', value: '600 × 500 × 280 mm'},
+        {label: '软件', value: 'ROS2 Humble + Nav2'},
+      ]}
+      docsUrl="/docs/lerobot/lekiwi/bom"
+      docsLabel="查看教程"
+      related={[
+        {name: 'SO-ARM101 机械臂', desc: '桌面级开源机械臂，可搭载于 Lekiwi 上装平台', to: '/products/so-arm101'},
+        {name: 'Xlerobot 家务机器人', desc: '基于 Lekiwi 底盘打造的双臂服务机器人', to: '/products/xlerobot'},
+        {name: '固定相机', desc: '2K 全局感知相机，用于移动机器人场景理解', to: '/products/fixed-camera'},
+      ]}
+    />
   );
 }

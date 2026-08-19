@@ -1,0 +1,118 @@
+---
+sidebar_position: 19
+title: 5.1 基础遥操作
+description: 5.1 基础遥操作
+---
+
+## 概述
+
+遥操作（Teleoperation）是通过操控主动臂来实时控制从动臂的技术，是数据采集的核心环节。本文介绍无摄像头的基础遥操作启动方式。
+## 前提条件
+
+已完成主从臂组装已完成舵机 ID 配置已完成机械臂校准已知主从臂各自的串口端口号LeRobot 已安装（pip install -e ".[feetech]" ）
+## 遥操作命令
+
+以下命令中串口号均需要替换成自己实际的串口号
+### macOS
+
+```text
+conda activate lerobot
+lerobot-teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/cu.usbmodem58760431551 \           #从动臂串口号
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/cu.usbmodem575E0031751            #主动臂串口号
+```
+
+退出遥操作时，直接按control+c
+### Linux（Ubuntu）
+
+```text
+conda activate lerobot
+lerobot-teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \                     #从动臂串口号
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1                      #主动臂串口号
+```
+### Windows（WSL）
+
+```text
+# 在 WSL2 终端中运行
+conda activate lerobot
+lerobot-teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \                 #从动臂串口号
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1                  #主动臂串口号
+```
+## 参数说明
+
+| 参数 | 说明 | 示例 |
+| --- | --- | --- |
+| --robot.type  | 从动臂类型 | so101 follower _ |
+| --robot.port  | 从动臂串口端口 | /dev/ttyACM0  |
+| --teleop.type  | 主动臂类型 | so101 leader _ |
+| --teleop.port  | 主动臂串口端口 | /dev/ttyACM1  |
+| --display data _ | 显示实时数据（可选） | --display data _ |
+
+## 遥操作启动后
+
+程序启动后：
+
+1. 从动臂会移动到当前主动臂位置 - 请确保周围无障碍物
+2. 实时同步：缓慢移动主动臂，从动臂会同步跟随
+3. 退出：按 `Ctrl+C` 停止遥操作
+```text
+终端输出示例：
+Connected to follower arm at /dev/ttyACM0
+Connected to leader arm at /dev/ttyACM1
+Calibration loaded.
+Teleoperation started. Press Ctrl+C to stop.
+[00:00:01] Position: base=0.0°, shoulder=45.2°, elbow=-32.1°, ...
+```
+## 安全操作规范
+
+> ⚠️ 首次遥操作注意事项
+
+1. 先小范围测试：首次遥操作只做小幅度动作（±5°），确认响应正常后再做大幅度动作
+2. 保持安全距离：从动臂工作区域内不要放置易碎物品或手
+3. 避免超出范围：不要把主动臂强行移到极限位置，可能导致从动臂电机堵转
+4. 缓慢操作：动作过快会导致从动臂追不上，产生抖动甚至报错
+5. 停止前归位：在按 `Ctrl+C` 前，先将主动臂缓慢移回零位
+## 遥操作质量优化
+
+### 减少延迟
+
+```text
+# 增加控制频率（默认 30Hz，可尝试提高）
+lerobot-teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --control_hz=50
+```
+### 调整运动平滑度
+
+主动臂移动过快时，从动臂可能产生震荡。适当减慢操作速度或增加阻尼参数可改善效果。
+## 遥操作数据可视化
+
+运行时添加 --display_data 参数可以看到实时关节位置数据：
+```text
+lerobot-teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --display_data
+```
+## 仿真遥操作（LeIsaac）
+
+如果没有真实机械臂，可以通过光轮智能 LeIsaac 仿真平台进行虚拟遥操作，参考网站：[LeIsaac 仿真平台](https://lightwheelai.github.io/leisaac)
+
+- 在仿真环境中采集的数据集格式与真实机械臂完全兼容
+- 适合在购买硬件前验证算法效果
+## 参考资料
+
+- [HuggingFace LeRobot 官方文档](https://huggingface.co/docs/lerobot)

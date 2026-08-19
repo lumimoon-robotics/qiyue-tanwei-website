@@ -1,0 +1,139 @@
+---
+sidebar_position: 22
+title: 6.2 数据集管理工具
+description: 6.2 数据集管理工具
+---
+
+## 概述
+
+LeRobot 提供了一套完整的数据集管理工具（lerobot-edit-dataset ），支持删除、分割、合并、特征过滤和格式转换等操作，方便对采集的数据集进行后处理。
+## 工具说明
+
+### 删除特定 Episodes
+
+采集时如果某些 episode 质量不佳（机械臂抖动、任务失败），可以删除：
+```text
+lerobot-edit-dataset \
+    --repo_id YOUR_HF_USERNAME/my_dataset \
+    --operation.type delete_episodes \
+    --operation.episode_indices "[3, 7, 15]"   # 删除第 3、7、15 个 episode（从 0 开始计数）
+```
+### 参数说明
+
+| 参数 | 说明 |
+| --- | --- |
+| --repo_id | 数据集 ID |
+| --operation.type | 操作类型：delete_episodes |
+| --operation.episode_indices | 要删除的 episode 编号列表 |
+
+### 分割数据集
+
+将一个大数据集按比例或按指定索引分割为训练集/测试集：
+### 按比例分割
+
+```text
+lerobot-edit-dataset \
+    --repo_id YOUR_HF_USERNAME/my_dataset \
+    --operation.type split_dataset \
+    --operation.train_fraction 0.8   # 80% 训练集，20% 测试集
+```
+### 按指定 episode 分割
+
+```text
+lerobot-edit-dataset \
+    --repo_id YOUR_HF_USERNAME/my_dataset \
+    --operation.type split_dataset \
+    --operation.split_indices "[0, 40]"   # 前 40 个 episode 为训练集
+```
+### 合并多个数据集
+
+将多次采集的数据集合并为一个：
+```text
+lerobot-edit-dataset \
+    --repo_id YOUR_HF_USERNAME/merged_dataset \
+    --operation.type merge_datasets \
+    --operation.source_repo_ids '["user/dataset_a", "user/dataset_b", "user/dataset_c"]'
+```
+
+使用场景：
+
+- 分批采集数据后合并
+- 合并不同日期采集的数据集
+- 合并不同初始位置的数据集以增加多样性
+### 删除特定特征（摄像头/数据通道）
+
+如果数据集中某个摄像头质量不佳或不需要，可以单独删除：
+```text
+# 删除某个摄像头数据
+lerobot-edit-dataset \
+    --repo_id YOUR_HF_USERNAME/my_dataset \
+    --operation.type remove_features \
+    --operation.features_to_remove '["observation.images.wrist"]'
+# 删除多个特征
+lerobot-edit-dataset \
+    --repo_id YOUR_HF_USERNAME/my_dataset \
+    --operation.type remove_features \
+    --operation.features_to_remove '["observation.images.overhead", "observation.depth"]'
+```
+### 图像转视频压缩
+
+将帧式图像数据集转换为 MP4 视频格式，大幅减少存储空间：
+```text
+lerobot-edit-dataset \
+    --repo_id YOUR_HF_USERNAME/my_dataset \
+    --operation.type convert_to_video \
+    --operation.fps 60
+```
+
+压缩效果参考：
+
+- 图像格式（PNG）：100 个 episode × 60fps × 640×480 ≈ 5-10 GB
+- 视频格式（MP4）：同等内容 ≈ 0.5-2 GB（约减少 90%）
+### 数据集可视化
+
+### 在线可视化（HuggingFace）
+
+上传到 HuggingFace 后，可以在数据集页面直接查看视频回放：
+```text
+https://huggingface.co/datasets/YOUR_HF_USERNAME/my_dataset
+```
+### 本地可视化
+
+```text
+# 启动本地可视化工具
+lerobot-dataset-viz \
+    --repo_id YOUR_HF_USERNAME/my_dataset \
+    --episode 0   # 查看第 0 个 episode
+```
+### 命令行查看数据集信息
+
+```text
+python -c "
+from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
+dataset = LeRobotDataset('YOUR_HF_USERNAME/my_dataset')
+print(f'Episode 数量: {dataset.num_episodes}')
+print(f'总帧数: {len(dataset)}')
+print(f'摄像头: {list(dataset.meta.camera_keys)}')
+print(f'关节: {dataset.meta.motor_names}')
+"
+```
+## 数据集质量检查
+
+在训练前建议进行以下质量检查：
+```text
+# 1. 统计各 episode 的帧数（帧数异常说明录制出问题）
+python -c "
+from lerobot.common.datasets.lerobot_dataset import LeRobotDataset
+dataset = LeRobotDataset('local/my_dataset')
+for i in range(dataset.num_episodes):
+    ep_data = dataset.hf_dataset.filter(lambda x: x['episode_index'] == i)
+    print(f'Episode {i}: {len(ep_data)} 帧')
+"
+# 2. 可视化前 5 个 episode 抽查质量
+for i in $(seq 0 4); do
+    lerobot-dataset-viz --repo_id local/my_dataset --episode $i
+done
+```
+## 参考资料
+
+- [HuggingFace 数据集工具官方文档](https://huggingface.co/docs/lerobot/using_dataset_tools)

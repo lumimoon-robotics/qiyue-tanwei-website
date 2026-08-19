@@ -1,0 +1,255 @@
+---
+sidebar_position: 34
+title: 9.1 XLeRobot 双臂移动平台
+description: 9.1 XLeRobot 双臂移动平台
+---
+
+### 概述
+
+XLeRobot 是在 SO-101 基础上构建的完整双臂移动机器人系统，整合了两条 SO-101 机械臂、LeKiwi移动底盘和多种传感器，是目前最具性价比的全功能移动操作机器人方案之一。
+### 系统组成
+
+```text
+XLeRobot 完整配置：
+┌─────────────────────────────────────┐
+│                                     │
+│   [深度摄像头（2DOF云台）]             │
+│                                     │
+│   [SO-101 左臂]    [SO-101 右臂]      │
+│       └─[腕部RGB]      └─[腕部RGB]    │
+│                                     │
+│   [LeKiwi 全向移动底盘]               │
+│        └─[锂电池供电]                 │
+└─────────────────────────────────────┘
+```
+### 硬件清单
+
+模块规格数量
+
+| SO-101 从动臂 | 完整套件 | 2 条 |
+| --- | --- | --- |
+| SO-101 主动臂（遥操用） | 完整套件 | 2 条 |
+| LeKiwi 移动底盘 | 全向轮底盘 | 1 套 |
+| 腕部 RGB 摄像头 | 小型 UVC 模组 | 2 个 |
+| 深度摄像头 | RealSense D435 或同类 | 1 个 |
+| 2 自由度云台 | 用于深度摄像头 | 1 套 |
+| 锂电池组 | 供电系统 | 1 套 |
+| 计算平台 | 笔记本电脑 / Jetson AGXOrin | 1 台 |
+
+### 组装步骤概览
+
+### 1. 组装两条 SO-101 从动臂
+
+参照 [4.1 开箱清点](./4-1-unboxing) 完整组装两条从动臂，ID 编号独立（各自 1-6）。
+### 2. 安装 LeKiwi 底盘
+
+```text
+# LeKiwi 底盘连接配置
+# 详见 1-AI机器人教程/1-LeKiwi 指引教程-v0.4.pdf
+```
+### 3. 安装机械臂到底盘
+
+将两条 SO-101 从动臂通过支架安装到 LeKiwi 底盘的左右侧，调整高度和角度使工作空间最大化。
+### 4. 安装摄像头
+
+```text
+深度摄像头位置：云台安装在底盘顶部中央
+腕部摄像头位置：分别安装在左右臂腕部（ID5附近）
+```
+### 5. 连接电源和计算单元
+
+```text
+供电连接：
+锂电池 → LeKiwi 底盘电机
+锂电池 → 两个从动臂控制板（12V 稳压）
+锂电池 → 两个主动臂控制板（5V 稳压，遥操时使用）
+锂电池 → 计算平台（适配器转换）
+```
+### 软件配置
+
+### 配置双臂
+
+```text
+# 识别双臂串口
+lerobot-find-port  # 执行两次，分别识别左右臂
+# 配置左臂舵机 ID
+lerobot-setup-motors \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0  # 左臂端口
+# 配置右臂舵机 ID
+lerobot-setup-motors \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM1  # 右臂端口
+```
+### 双臂遥操作
+
+```text
+# 同时控制两条从动臂（需要两条主动臂）
+lerobot-teleoperate \
+    --robot.type=bimanual_so101_follower \
+    --robot.left_arm.port=/dev/ttyACM0 \
+    --robot.right_arm.port=/dev/ttyACM1 \
+    --teleop.type=bimanual_so101_leader \
+    --teleop.left_arm.port=/dev/ttyACM2 \
+    --teleop.right_arm.port=/dev/ttyACM3
+```
+### VR 遥操作
+
+XLeRobot 支持通过 VR 设备进行沉浸式遥操作：
+### VR 设备要求
+
+- Meta Quest 2/3 或同类 6DOF VR 手柄
+- VR 空间追踪精度 &lt; 5mm
+### 启动 VR 遥操作
+
+```text
+# 安装 VR 遥操作依赖（详见 XLeRobot 项目文档）
+# 参考：1-AI机器人教程/2-XLerobot项目指引-0.4/5-XLerobot-VR遥操作指引教程.pdf
+# 启动 VR 服务器
+python scripts/vr_teleop_server.py
+# 在 Quest 头显上打开 XLeRobot 客户端应用
+```
+
+VR 遥操作优势：
+
+- 6DOF 末端控制，操控更直观
+- 双手同时操控双臂，效率更高
+- 沉浸式视角，适合复杂任务演示
+### Jetson AGX Orin 版配置
+
+XLeRobot 支持将 Jetson AGX Orin 作为板载计算单元，实现完全独立的移动操作。本节适用于Jetson Orin Nano/NX 及与官方 Dev Kit 载板适配的第三方载板。
+
+安装顺序：先安装底座圆柱套，再安装手眼相机。安装手眼相机之后，无法再套入底座圆柱套。相机的线要绑在机械臂上。
+### Jetson Orin 安装固定
+
+1.1 安装天线
+
+将两根天线都拧在天线接口上，并调整折弯缺口朝上（折弯天线朝上）。
+
+1.2 固定在推车第二层
+
+用两颗底部固定螺丝，从底部将 Jetson Orin Nano 固定在推车第二层侧边，配合推车层板上的两个螺丝孔。
+### 供电接线
+
+绿联移动电池供电
+
+| 用途 | 连接 |
+| --- | --- |
+| 左/右 Follower 臂供电 | TypeC PD 12V → DC 5.5*2.1 连接线 |
+| Jetson Orin Nano 供电 | TypeC PD 15V → DC 5.5*2.5 连接线 |
+
+纽曼移动电池供电
+
+| 配对关系 | 用途 | 连接线 |
+| --- | --- | --- |
+| ①a ↔ ①b | Follower 臂供电 | TypeC PD 转 12V DC 连接线 |
+| ②a ↔ ②b | Follower 臂供电 | TypeC PD 转 12V DC 连接线 |
+| ③a ↔ ③b | Orin Nano 供电 | DC 5.5*2.5 公对公连接线 |
+
+### 信号接线
+
+| 配对关系 | 用途 | 连接线 | 备注 |
+| --- | --- | --- | --- |
+| ⑤a ↔ ④b | 左 Follower 臂通信 | USB TypeA-TypeC | ⑤a 中任意一口，也可接USB 3.0 Hub |
+| ⑤a ↔ ④c | 右 Follower 臂通信 | USB TypeA-TypeC | ⑤a 中任意一口，也可接USB 3.0 Hub |
+| ④a ↔ ④d | 左手眼相机信号 | USB TypeA-TypeC 3.0 | ④a 中任意一口，也可接USB 3.0 Hub |
+| ④a ↔ ④e | 右手眼相机信号 | USB TypeA-TypeC 3.0 | ④a 中任意一口，也可接USB 3.0 Hub |
+
+⑤a 和 ④a 一样，也可以通过 USB TypeC 3.0 Hub 扩展，等同于 ⑤a。
+### 启动登录
+
+给 Jetson Orin 通电后，按下前面板右侧的电源按钮，按钮 LED 变绿则系统开始启动。
+
+- 登录名（全小写）：joyandai
+- 登录密码（注意大小写）：JoyandAI Jetson Orin 内置 SSD 已烧录系统并配置好 LeRobot + XLeRobot 开发环境。
+
+更新最新代码：
+```text
+cd ~/lerobot && git pull
+cd ~/xlerobot && git pull
+```
+### 设备端口号配置
+
+选择 Jetson Orin 成品套件，发货时已配置好端口映射。不要随意更换 left/right 配置，也不要更换舵机驱动板与 leader/follower 的搭配关系。
+
+| 设备 | 端口符号链接 |
+| --- | --- |
+| 左从臂 | `/dev/so101_follower_left` |
+| 左引导臂 | `/dev/so101_leader_left` |
+| 右从臂 | `/dev/so101_follower_right` |
+| 右引导臂 | `/dev/so101_leader_right` |
+| 头部相机 | `/dev/camera_top` |
+| 左手眼相机 | `/dev/camera_left` |
+| 右手眼相机 | `/dev/camera_right` |
+
+手眼相机暂无序列号区分，若相机背后已贴好 left/right 标签则直接使用上述映射；否则需依赖find_cameras.py 抓取图像判断。
+
+校准文件路径（具体编号依机器而不同）：
+
+| 类型 | 路径 |
+| --- | --- |
+| SO-101 从臂 | `~/.cache/huggingface/lerobot/calibration/robots/so101_follower/R1225####.json` |
+| SO-101 引导臂 | `~/.cache/huggingface/lerobot/calibration/teleoperators/so101_leader/R0725####.json` |
+| XLeRobot 整体 | `~/.cache/huggingface/lerobot/calibration/robots/xlerobot/XLR25###.json` |
+
+### 注意事项
+
+- 训练推理时，PyTorch 和 CUDA 版本须匹配。镜像已安装版本：torch 2.8.0 / torchcodec 0.6.0 /torchvision 0.23.0 / CUDA 12.6
+- 请谨慎升级软件系统，升级可能导致 PyTorch 与 CUDA 不匹配
+- 在 Jetson 系统中，nvidia-smi 无法显示正确信息，请使用：
+```text
+sudo jtop
+# 若 jtop 不可用，则使用：
+sudo tegrastats
+```
+### 树莓派版配置
+
+XLeRobot 也支持使用树莓派 5 作为板载计算单元（推理能力有限，仅支持轻量模型）。
+### 树莓派安装
+
+1. 插入 MicroSD 卡
+
+将 MicroSD 卡取出，插入树莓派 5 的 MicroSD 卡插槽中。注意 MicroSD 卡金手指方向面向树莓派主板。
+
+2. 安装到外壳并配置网络
+
+将树莓派安装到盒子中，插上 MicroHDMI 线连接显示屏，配置 WiFi 连接，查看并记录 IP 地址（后续无线连接时使用）。
+
+3. 放置到支架底座
+
+将安装好树莓派的盒子放到支架底座中。
+### 供电接线
+
+绿联移动电源供电
+
+| 用途 | 连接 |
+| --- | --- |
+| 左/右 Follower 臂供电 | TypeC PD 12V → DC 5.5*2.1 连接线 |
+| 树莓派 5 供电 | PD 双 TypeC 公头线 |
+
+纽曼移动电源供电（P8pro 等型号）
+
+| 电源接口 | 用途 | 连接线 |
+| --- | --- | --- |
+| 100W PD 口 | 树莓派 5 供电 | PD 双 TypeC 线 |
+| 30W PD 口 | Follower 臂之一供电 | TypeC 转 DC 连接线 |
+| DC OUT | Follower 臂之二供电 | 公对公 DC-DC 线 + 12V 稳压模块 |
+
+注意：纽曼电池部分批次的 DC OUT 输出为 12~16.8V 宽压，接 12V 机械臂时须在中间加一个 12V 输出的稳压器。双臂版本只需其中一个臂通过稳压器供电，另一个臂可直接通过 PD 转 DC 供电。
+### 摄像头接线
+
+| 设备 | 接口 |
+| --- | --- |
+| 相机 USB 线 | 接蓝色 USB 3.0 口 |
+| 舵机控制板 USB 线 | 接其余 USB 口之一 |
+
+接多于 2 个 USB 摄像头时，可经由 USB Hub 扩展蓝色 USB 3.0 口。
+### R550 底盘补充说明
+
+若使用 XLeRobot R550 底盘版本，请参阅本地文件：
+
+- 本地文件：1-AI机器人教程/16-XLerobot-R550底盘补充说明文档.pdf
+### 参考资料
+
+- [XLeRobot GitHub（LeRobot 官方 README）](https://github.com/huggingface/lerobot)
+- [TheRobotStudio SO-ARM100（硬件资料）](https://github.com/TheRobotStudio/SO-ARM100)

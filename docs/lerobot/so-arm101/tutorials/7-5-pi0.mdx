@@ -1,0 +1,87 @@
+---
+sidebar_position: 28
+title: 7.5 Pi0 与 Pi0.5 训练（效果最优）
+description: 7.5 Pi0 与 Pi0.5 训练（效果最优）
+---
+
+## 概述
+
+Pi0 和 Pi0.5 是目前 LeRobot 框架下效果最好的模型，基于 Flow Matching 的 VLA 架构，但对硬件要求最高（≥24GB 显存）。
+## 算法背景
+
+- Pi0 论文：[π0: A Vision-Language-Action Flow Model (2024)](https://www.physicalintelligence.company/blog/pi0)
+- 核心技术：Flow Matching（流匹配）+ 大规模预训练 VLM 骨干网络
+- Pi0.5：Pi0 的改进版本，训练效率和效果进一步提升
+## 硬件要求
+
+> ⚠️ 重要：Pi0/Pi0.5 对显存要求较高
+
+| 配置 | 最低要求 | 推荐配置 |
+| --- | --- | --- |
+| GPU 显存 | 24GB | 40GB+ |
+| GPU 型号 | RTX 3090 | A100 / H100 |
+| 系统内存 | 32GB | 64GB+ |
+
+## Pi0 训练命令
+
+```text
+conda activate lerobot
+cd ~/lerobot
+lerobot-train \
+    --policy.type=pi0 \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \
+    --training.num_epochs=100 \
+    --training.batch_size=8 \
+    --output_dir=outputs/train/pi0_my_task
+```
+### 减少显存用量（针对 24GB GPU）
+
+```text
+lerobot-train \
+    --policy.type=pi0 \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \
+    --training.batch_size=4 \
+    --policy.no_tune_diffusion_model=true \   # 不微调扩散模型，大幅降低显存
+    --training.gradient_checkpointing=true \
+    --output_dir=outputs/train/pi0_my_task
+```
+## Pi0.5 训练命令
+
+```text
+lerobot-train \
+    --policy.type=pi0fast \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \
+    --training.num_epochs=100 \
+    --training.batch_size=8 \
+    --output_dir=outputs/train/pi0fast_my_task
+```
+## 关键参数
+
+| 参数 | 说明 | 建议值 |
+| --- | --- | --- |
+| `--policy.type` | Pi0 用 pi0，Pi0.5 用 pi0fast | — |
+| `--policy.no_tune_diffusion_model` | 禁止微调扩散模型（降低显存约 8GB） | true（显存不足时） |
+| `--training.batch_size` | 批次大小 | 4（24GB）/ 8（40GB） |
+| `--training.gradient_checkpointing` | 梯度检查点（降低显存） | true |
+
+## 云 GPU 训练推荐
+
+由于 Pi0 对显存要求高，推荐使用云 GPU 平台：
+
+- NVIDIA Brev（推荐）：RTX A6000（48GB）或 H100
+- 云服务器：AutoDL、阿里云 GPU 实例等
+- 不支持：V100（Volta 架构），必须使用 Ampere 架构及以上
+
+详情参见 [7.6 云 GPU 训练环境配置](./7-6-cloud-gpu)
+## 训练时长参考
+
+| 硬件 | 数据集规模 | 参考时间 |
+| --- | --- | --- |
+| RTX 3090（24GB，batch=4） | 50 episodes | ~8-16 小时 |
+| A100（40GB，batch=8） | 100 episodes | ~8-12 小时 |
+| H100（80GB，batch=16） | 200 episodes | ~8 小时 |
+
+## 参考资料
+
+- [Pi0 博客](https://www.physicalintelligence.company/blog/pi0)
+- [HuggingFace LeRobot Pi0 文档](https://huggingface.co/docs/lerobot/pi0)

@@ -1,0 +1,159 @@
+---
+sidebar_position: 13
+title: 4.4 配置舵机 ID
+description: 4.4 配置舵机 ID
+---
+
+## 4.4.1 概述
+
+所有新舵机出厂 ID 均为 1，在同一总线上不能有重复 ID，否则会冲突。因此需要为每个舵机分配唯一编号（1~6）。本文介绍使用三种配置舵机 ID 的方法。
+## 4.4.2 舵机编号方法
+
+### 方式一：lerobot 命令（组装后，需已安装 lerobot）
+
+1. 安装 LeRobot 并连接控制板，确保已完成环境安装（见 [3. 环境安装](./3-1-mac-install)），然后连接控制板到电脑。
+2. 运行舵机配置命令，每次只连接一个舵机到控制板，运行以下命令：
+```text
+# 配置从动臂舵机
+lerobot-setup-motors \
+    --robot.type=so101_follower \
+    --robot.port=/dev/cu.usbmodem585A0076841  # 替换为你的实际端口
+# 配置主动臂舵机
+lerobot-setup-motors \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/cu.usbmodem575E0031751  # 替换为你的实际端口
+```
+
+3. 按脚本提示逐一配置。脚本会提示你依次连接每个舵机并设置 ID：
+```text
+请连接关节1（底座）的舵机，按 Enter 继续...
+'base' 舵机 ID 已设置为 1 ✓
+请断开，连接关节2（肩部）的舵机，按 Enter 继续...
+'shoulder' 舵机 ID 已设置为 2 ✓
+...
+```
+
+视频演示：
+
+[setup_motors_so101_2.mp4](https://huggingface.co/datasets/huggingface/documentation-images/resolve/main/lerobot/setup_motors_so101_2.mp4)
+### 方式二：飞特调试软件（Feetech Debug Tool）
+
+除 LeRobot 命令外，也可用飞特官方调试工具进行中位校准和编号。
+
+- Windows 电脑：[下载 FD1.9.8.5(250729).7z](https://gitee.com/ftservo/fddebug/blob/master/FD1.9.8.5(250729).7z)，解压，运行里面的 exe 程序
+- Ubuntu 电脑：[FT_SCServo_Debug_Qt](https://github.com/Kotakku/FT_SCServo_Debug_Qt)
+
+![图](/img/tutorial/so-arm101/4-4-servo-id-p3-1.png)
+
+![图](/img/tutorial/so-arm101/4-4-servo-id-p4-2.png)
+
+### 方式三：Python 脚本（无需安装 lerobot或飞特调试软件）
+
+首先安装舵机SDK，然后运行脚本代码：
+```text
+# 前置：安装舵机 SDK
+pip install feetech-servo-sdk -i https://pypi.tuna.tsinghua.edu.cn/simple/
+# 运行 ID 编号脚本（每次只接一个舵机）
+python3 servo_set_id.py
+```
+
+servo_set_id.py 脚本代码如下：
+```text
+"""
+飞特 STS3215 舵机 ID 修改脚本（组装前逐个操作版）
+用法：每次只接一个舵机，修改 OLD_ID / NEW_ID 后运行
+      python3 servo_set_id.py
+"""
+from scservo_sdk import PortHandler, PacketHandler, COMM_SUCCESS
+DEVICE   = '/dev/cu.usbmodem5AE70493411'  # 按实际串口修改
+BAUDRATE = 1000000
+ADDR_ID     = 5   # EEPROM：舵机 ID 地址
+ADDR_TORQUE = 40  # 扭矩使能
+ADDR_LOCK   = 55  # EEPROM 锁（0=解锁，1=锁定）
+OLD_ID = 1   # 当前舵机 ID（出厂默认为 1）
+NEW_ID = 2   # 目标 ID
+portHandler   = PortHandler(DEVICE)
+packetHandler = PacketHandler(0)
+portHandler.openPort()
+portHandler.setBaudRate(BAUDRATE)
+# 确认舵机可通信
+pos, res, _ = packetHandler.read2ByteTxRx(portHandler, OLD_ID, 56)
+if res != COMM_SUCCESS:
+    print(f"❌ 未检测到 ID={OLD_ID} 的舵机，请检查接线")
+    portHandler.closePort()
+    exit(1)
+print(f"✅ 检测到舵机 ID={OLD_ID}，当前位置={pos}")
+# 释放扭矩
+packetHandler.write1ByteTxRx(portHandler, OLD_ID, ADDR_TORQUE, 0)
+# 解锁 EEPROM
+res, _ = packetHandler.write1ByteTxRx(portHandler, OLD_ID, ADDR_LOCK, 0)
+if res == COMM_SUCCESS:
+    print("✅ EEPROM 已解锁")
+else:
+    print(f"⚠️  解锁失败：{packetHandler.getTxRxResult(res)}")
+# 写入新 ID
+res, _ = packetHandler.write1ByteTxRx(portHandler, OLD_ID, ADDR_ID, NEW_ID)if res == COMM_SUCCESS:
+    print(f"✅ ID 已写入：{OLD_ID} → {NEW_ID}")
+else:
+    print(f"❌ ID 修改失败：{packetHandler.getTxRxResult(res)}")
+# 重新锁定 EEPROM
+packetHandler.write1ByteTxRx(portHandler, OLD_ID, ADDR_LOCK, 1)
+print("✅ EEPROM 已锁定（断电重启后生效）")
+portHandler.closePort()
+```
+## 4.4.3 舵机编号规范
+
+- 主动臂零阻尼舵机编号：6个C066舵机，编号1到6。
+- 主动臂有阻尼舵机编号：2个C044舵机，分别编号1和3；1个C001舵机，编号2；3个C046舵机，分别编号4、5、6。
+- 从动臂中等负载舵机编号：6个C001舵机，分别编号1到6；
+- 从动臂较大负载舵机编号：6个C018舵机，分别编号1到6。
+## 4.4.4 验证配置
+
+完成所有舵机编号后，可将全部 6 个舵机串联后，用以下脚本读取验证：
+```text
+from lerobot.motors import Motor, MotorNormMode
+from lerobot.motors.feetech import FeetechMotorsBus
+# ⚠️ Windows 下改成你的实际串口号，例如 COM3 / COM4 / COM5
+# 查询方法：设备管理器 → 端口(COM 和 LPT) → 找到 USB-SERIAL / CH340
+PORT = "/dev/ttyACM0"
+# SO-ARM101 的 6 个舵机（ID 1~5 为关节，ID 6 为夹爪 gripper）
+# Motor 参数为位置参数：Motor(id, model, norm_mode)
+motors = {
+    "shoulder_pan":  Motor(1, "sts3215", MotorNormMode.RANGE_M100_100),
+    "shoulder_lift": Motor(2, "sts3215", MotorNormMode.RANGE_M100_100),
+    "elbow_flex":    Motor(3, "sts3215", MotorNormMode.RANGE_M100_100),
+    "wrist_flex":    Motor(4, "sts3215", MotorNormMode.RANGE_M100_100),
+    "wrist_roll":    Motor(5, "sts3215", MotorNormMode.RANGE_M100_100),
+    "gripper":       Motor(6, "sts3215", MotorNormMode.RANGE_0_100),
+}
+bus = FeetechMotorsBus(port=PORT, motors=motors)
+try:
+    bus.connect()
+    print(f"已连接: {bus.is_connected}\n")
+    # 用电机名（字符串）逐个读取当前位置
+    for name in motors:
+        try:
+            pos = bus.read("Present_Position", name, normalize=False)
+            print(f"{name}: 当前位置 = {pos}")
+        except Exception as e:
+            print(f"{name}: 读取失败 - {e}")
+except Exception as e:
+    print(f"连接失败 - {e}")
+    print("排查：检查 6 个舵机是否全部串联上电、ID 是否已配为 1~6、串口号是否正确。")finally:
+    if bus.is_connected:
+        bus.disconnect()
+        print("\n已断开连接。")
+```
+
+配置完成后，将每个舵机按编号放回盒子并做好标记，避免混淆：其中F为follower，代表从动臂；L为leader，代表主动臂。
+
+![图](/img/tutorial/so-arm101/4-4-servo-id-p8-3.png)
+
+## 4.4.5 注意事项
+
+1. 每次只连接一个舵机进行 ID 设置，多个舵机同时连接会导致 ID 冲突
+2. ID 和波特率设置保存在舵机 EEPROM 中，断电不丢失，只需设置一次
+3. 设置过程中若断电，可能导致部分设置未保存，需重新进行
+## 参考资料
+
+- [HuggingFace SO-101 配置舵机文档](https://huggingface.co/docs/lerobot/so101)

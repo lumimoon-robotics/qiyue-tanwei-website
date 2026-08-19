@@ -1,0 +1,137 @@
+---
+sidebar_position: 32
+title: 8.3 Jetson Orin 部署
+description: 8.3 Jetson Orin 部署
+---
+
+## 概述
+
+NVIDIA Jetson AGX Orin 是适合边缘部署的高性能嵌入式计算平台，可以将训练好的模型直接部署到机器人本体上，实现脱离电脑的独立运行。
+## 支持的 Jetson 设备
+
+| 设备 | GPU | 内存 | 推荐用途 |
+| --- | --- | --- | --- |
+| Jetson AGX Orin（64GB） | 2048 CUDA 核 | 64GB | ACT、Diffusion 推理 |
+| Jetson AGX Orin（32GB） | 1792 CUDA 核 | 32GB | ACT 推理 |
+| Jetson Orin NX（16GB） | 1024 CUDA 核 | 16GB | ACT 小模型 |
+| Jetson Orin Nano | 512 CUDA 核 | 8GB | 轻量模型 |
+
+## Jetson 环境配置
+
+### CUDA 版本说明
+
+Jetson AGX Orin 使用 JetPack SDK，内置 CUDA：
+```text
+# 查看 JetPack 和 CUDA 版本
+cat /etc/nv_tegra_release
+nvcc --version
+```
+### 重装 PyTorch（Jetson 专用）
+
+Jetson 不能使用 pip 的标准 PyTorch，需要使用 NVIDIA 提供的 Jetson 专用版本：
+```text
+# 卸载可能已安装的标准版本
+pip uninstall torch torchvision torchaudio
+# 安装 Jetson 专用 PyTorch wheel
+# 从 NVIDIA 官方下载页面获取对应 JetPack 版本的 wheel
+# https://developer.nvidia.com/embedded/downloads#?search=pytorch
+# 示例（JetPack 6.x）
+pip install torch-2.x.x+nv24.xx-cp310-cp310-linux_aarch64.whl
+# 验证
+python -c "import torch; print(torch.cuda.is_available())"
+```
+### 安装 LeRobot
+
+```text
+# 安装系统依赖
+sudo apt-get install -y python3-dev portaudio19-dev libsndfile1
+# 创建虚拟环境
+python3 -m venv ~/lerobot_env
+source ~/lerobot_env/bin/activate
+# 安装 LeRobot（Jetson 上不需要重新克隆，使用相同方式）
+git clone https://github.com/huggingface/lerobot.git
+cd lerobot
+pip install -e ".[feetech]"
+```
+## Jetson 串口配置
+
+```text
+# 检查串口设备
+ls /dev/ttyACM* /dev/ttyUSB*
+# 设置权限
+sudo chmod 666 /dev/ttyACM0
+sudo chmod 666 /dev/ttyACM1
+# 永久权限
+sudo usermod -aG dialout $USER
+```
+## 在 Jetson 上运行推理
+
+```text
+# 激活环境
+source ~/lerobot_env/bin/activate
+# 运行 ACT 推理
+lerobot-record \
+    --policy.path=/home/jetson/models/act_my_task \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --control.n_episodes=5 \
+    --repo-id=YOUR_HF_USERNAME/eval_act_jetson
+```
+## 地瓜机器人 RDK S100 推理
+
+地瓜机器人 RDK S100 是国内自研 AI 边缘推理板，支持 LeRobot 推理：
+```text
+# RDK S100 专用推理命令（需安装地瓜推理 SDK）
+# 参考地瓜官方文档配置 BPU 推理环境
+lerobot-record \
+    --policy.path=/path/to/model \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --policy.device=cpu \   # 使用 BPU 推理需要额外配置
+    --control.n_episodes=5 \
+    --repo-id=YOUR_HF_USERNAME/eval_rdk_s100
+```
+## Jetson 性能优化
+
+### 设置最大性能模式
+
+```text
+# 设置 Jetson 到最高性能模式（MAXN）
+sudo nvpmodel -m 0
+sudo jetson_clocks
+# 查看当前性能模式
+sudo nvpmodel --query
+```
+### 监控 GPU 使用率
+
+```text
+# 查看 GPU 负载和温度
+sudo tegrastats
+# 或使用 jtop（需安装）
+sudo pip install jetson-stats
+jtop
+```
+### 推理速度参考
+
+| 模型 | Jetson AGX Orin 64GB | 说明 |
+| --- | --- | --- |
+| ACT（dim model=512）_ | ~50ms/step | ~20Hz |
+| Diffusion（10步） | ~100ms/step | ~10Hz |
+
+XLeRobot Jetson Orin 配置
+
+XLeRobot 项目特别提供了 Jetson Orin 的补充配置文档：参见本地文件 `1-AI机器人教程/2-XLerobot项目指引-0.4/1-XLeRobot项目指引（Jetson Orin版补充）.pdf`。
+
+关键步骤：
+
+1. 刷写 JetPack 系统
+2. 配置 CUDA 和 cuDNN
+3. 重装 Jetson 专用 PyTorch
+4. 安装 LeRobot
+5. 配置串口和摄像头 udev 规则
+## 参考资料
+
+- [NVIDIA Jetson 开发者页面](https://developer.nvidia.com/embedded/learn/get-started-jetson-agx-orin-devkit)

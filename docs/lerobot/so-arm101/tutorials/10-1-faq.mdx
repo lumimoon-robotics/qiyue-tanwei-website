@@ -1,0 +1,221 @@
+---
+sidebar_position: 36
+title: 10.1 常见问题与解决方案
+description: 10.1 常见问题与解决方案
+---
+
+### 概述
+
+本文汇总 SO-101 使用过程中最常见的问题及解决方法，按使用阶段分类整理。
+### 硬件与连接问题
+
+### 舵机上电后红灯闪烁
+
+现象：接通电源后，舵机红色指示灯持续闪烁（而非长亮）
+
+原因：电源电压与舵机型号不匹配
+
+解决步骤：
+
+1. 立即断电，不要继续通电
+2. 确认适配器规格：
+- 主动臂（Leader）→ 5V 适配器
+- 从动臂（Follower）升级版 → 12V 适配器
+- 从动臂（Follower）普通版 → 5V 适配器
+3. 检查是否将适配器接错（尤其注意升级版从动臂不可接 5V）
+4. 确认适配器电压后重新通电，指示灯应变为长亮红灯> 正常状态：上电后舵机红灯长亮，表示电源电压正常、舵机就绪。
+### 电脑识别不到控制板
+
+现象：运行 `lerobot-find-port` 或 `ls /dev/ttyACM*` 无输出
+
+排查步骤：
+```text
+# 1. 检查 USB 连接
+# 尝试更换 USB 端口，确认使用数据线（非纯充电线）
+# 2. macOS - 检查系统识别
+system_profiler SPUSBDataType | grep -A 3 "Serial"
+# 3. Linux - 检查 dmesg 日志
+dmesg | tail -20 | grep -E "tty|usb|ch34"
+```
+
+解决方案：
+
+- 确认控制板的跳线帽在 B 通道（USB 模式）（Waveshare 等控制板出厂默认可能在 A 通道）
+- macOS 安装 CH34x 驱动
+- Linux：sudo usermod -aG dialout $USER 后重新登录
+- Windows：安装 CH340 驱动
+### 舵机无法被读取（只能读到部分舵机）
+
+现象：运行配置命令时只读到 1-3 个舵机，其余报错
+
+原因：某段连接线接触不良
+
+解决步骤：
+
+1. 断电
+2. 从控制板开始，逐段检查每条 3 针连接线
+3. 轻轻拔出再插入每个接头，确保接触良好
+4. 特别注意最后一个舵机的连接（最容易松动）
+### 舵机 ID 冲突（编号损坏）
+
+现象：多个舵机返回相同 ID，导致控制混乱
+
+原因：同时连接多个舵机执行了 ID 配置命令
+
+解决方法：
+```text
+# 一次只连接一个舵机到控制板，然后重新运行配置命令
+# lerobot-setup-motors 会逐步引导你为该舵机分配正确 ID
+# 从动臂示例（替换端口号）：
+lerobot-setup-motors \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0
+# 主动臂示例：
+lerobot-setup-motors \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1
+```
+
+预防措施：每次配置 ID 时，确保只连接一个舵机到总线。
+### 校准问题
+
+### 校准后遥操作偏差大
+
+现象：移动主动臂后，从动臂运动角度与预期不符
+
+原因：主从臂校准不同步，或校准时参考姿态不准确
+
+解决步骤：
+
+1. 重新对主动臂和从动臂各自执行校准
+2. 确保两者都使用相同的参考零位姿态
+3. 校准时关节应严格处于中位（目测和感受）
+### 某关节校准时无法到达参考位置
+
+原因：组装时舵盘初始角度偏差过大
+
+解决方法：
+
+1. 断电，松开对应关节舵盘螺丝
+2. 手动移到尽量接近正确中位
+3. 重新拧紧舵盘螺丝
+4. 重新运行校准
+### 遥操作问题
+
+### 从动臂不跟随主动臂
+
+现象：运行遥操作后，从动臂不动
+
+排查：
+```text
+# 检查端口是否正确
+lerobot-find-port  # 重新识别端口
+# 确认校准文件存在
+ls ~/.lerobot/calibration/
+```
+### 从动臂运动抖动/震荡
+
+原因：操作速度过快，或校准有偏差
+
+解决：
+
+1. 放慢主动臂操作速度
+2. 确认校准是否正确
+3. 检查是否有关节螺丝松动（机械原因抖动）
+### 摄像头问题
+
+### 两个摄像头只有一个工作
+
+原因：使用了相同型号的两个摄像头，VID/PID 相同
+
+解决方案：
+
+- 使用不同型号的摄像头
+- 或将其中一个摄像头通过外置 Type-C USB Hub（不同芯片）连接
+### 摄像头画面延迟高
+
+解决：
+```text
+# 降低分辨率可减少延迟
+--robot.cameras='{"overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 320, "height": 240}}'
+# 或确认使用 USB 3.0 端口
+```
+### 训练/推理问题
+
+### 训练时 CUDA out of memory
+
+解决方案：
+```text
+# 方法1：减小 batch_size
+--training.batch_size=8  # 从 32 降到 8
+# 方法2：减小模型维度（仅 ACT）
+--policy.dim_model=256  # 从 512 降到 256
+# 方法3：开启梯度检查点
+--training.gradient_checkpointing=true
+# 方法4：Pi0 专用 - 不微调扩散模型
+--policy.no_tune_diffusion_model=true
+```
+### 推理时机械臂运动异常（乱动）
+
+原因：
+
+- 摄像头配置与训练时不一致
+- 推理时初始位置与训练数据分布差异过大解决：
+1. 核对推理时摄像头名称和分辨率与训练完全一致
+2. 将机械臂归到训练数据的初始姿态再开始推理
+3. 检查光照条件是否与训练时接近
+### 推理成功率低
+
+原因：
+
+- 训练数据不足
+- 数据质量差（有错误示教）
+- 光照/背景条件不一致改进措施：
+1. 增加训练数据数量（100+ episodes）
+2. 用可视化工具检查并删除低质量 episodes
+3. 保持推理环境与训练环境一致（光照、摆放位置）
+4. 使用数据增强（--dataset.image_transforms.enable=true ）
+### 环境问题
+
+### pip install 失败（依赖冲突）
+
+```text
+# 创建全新的 conda 环境（需 Python 3.12）
+conda create -n lerobot_clean python=3.12
+conda activate lerobot_clean
+cd ~/lerobot
+pip install -e ".[feetech]"
+```
+### HuggingFace 下载慢（国内网络）
+
+```text
+# 使用国内镜像
+export HF_ENDPOINT=https://hf-mirror.com
+# 或配置代理
+export https_proxy=http://your_proxy:port
+```
+### 常用诊断命令速查
+
+```text
+# 检查 LeRobot 安装
+lerobot-info
+# 查找串口端口
+lerobot-find-port
+# 检查摄像头
+python3 -c "
+import cv2
+for i in range(8):
+    cap = cv2.VideoCapture(i)
+    if cap.read()[0]:
+        print(f'摄像头 {i}: 可用')
+    cap.release()
+"
+# 检查 GPU
+python -c "import torch; print('GPU可用:', torch.cuda.is_available()); print('设备:', torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU')"
+# 查看校准文件
+ls -la ~/.lerobot/calibration/
+```
+### 参考资料
+
+- [LeRobot GitHub Issues](https://github.com/huggingface/lerobot/issues)
+- [HuggingFace LeRobot Discord](https://discord.gg/s3KuuzsPFb)

@@ -1,0 +1,140 @@
+---
+sidebar_position: 20
+title: 5.2 摄像头集成与遥操作
+description: 5.2 摄像头集成与遥操作
+---
+
+## 概述
+
+加入摄像头后，遥操作时能同步采集图像数据，这是训练视觉-动作模型的必要步骤。本文介绍摄像头的连接配置以及带摄像头的遥操作启动方式。
+## 摄像头选择建议
+
+### 常用摄像头类型
+
+| 类型 | 推荐用途 | 安装位置 |
+| --- | --- | --- |
+| USB 摄像头（广角） | 顶置全局视角 | 桌面顶置支架 |
+| 小型 UVC 摄像头 | 腕部第一视角 | 夹爪附近 |
+| RealSense D405 | 高精度近距深度 | 腕部 |
+| RealSense D435 | 广角深度 | 顶置 |
+
+入门推荐：2 个普通 USB 摄像头（1 顶置 + 1 腕部），性价比最高。
+
+## 查找摄像头 ID
+
+### Linux（Ubuntu）
+
+```text
+# 查看已连接的摄像头
+ls /dev/video*
+# 查看摄像头详情
+v4l2-ctl --list-devices
+# 测试特定摄像头
+v4l2-ctl --device=/dev/video0 --stream-mmap --stream-count=1
+```
+### macOS
+
+参考上方「macOS 摄像头接入完整流程」。快速扫描命令：
+```text
+conda activate lerobot
+python3 -c "
+import cv2
+for i in range(5):
+    cap = cv2.VideoCapture(i)
+    if cap.isOpened():
+        w = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+        h = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        print(f'摄像头 index={i}: {int(w)}x{int(h)}')
+        cap.release()
+"
+```
+## 带摄像头的遥操作命令
+
+### 单摄像头
+
+如果要显示实时摄像头画面，需要通过rerun来支持，那么我们先来安装rerun：
+```text
+pip install rerun-sdk
+```
+
+然后运行lerobot-teleoperate命令：
+```text
+lerobot-teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/tty.usbmodem5B141149011 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/tty.usbmodem5B141114621 \
+    --robot.cameras='{"front": {"type": "opencv", "index_or_path": 0, "fps": 30, "width": 640, "height": 480}}' \
+    --display_data=true
+```
+
+注意 ：如果用的不是套餐带带摄像头，需要根据摄像头的具体配置，修改fps、width、height为对应的值，并且index_or_path对应的是之前确定的摄像头的ID。
+### 双摄像头（推荐配置）
+
+如果需要实时显示，则需要带display_data参数，否则不需要。关于手眼摄像头的的index_or_path、fps、width、height要根据具体情况设定。这里设定的是我使用启月套件自带的相机参数。
+```text
+lerobot-teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/tty.usbmodem5B141149011 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/tty.usbmodem5B141114621 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 30, "width": 640, "height": 480},
+        "wrist": {"type": "opencv", "index_or_path": 2, "fps": 30, "width": 640, "height": 480}
+    }' \
+        --display_data=true
+```
+### 使用 RealSense 深度摄像头
+
+```text
+lerobot-teleoperate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0},
+        "wrist_depth": {"type": "realsense", "serial_number": "YOUR_SERIAL_NUM"}
+    }'
+```
+## 摄像头参数说明
+
+| 参数 | 说明 | 推荐值 |
+| --- | --- | --- |
+| type  | 摄像头类型 | opencv （USB）/realsense  |
+| index_or_path | 摄像头编号或路径 | 0 , 2 , /dev/video0  |
+| fps  | 帧率 | 60  |
+| width  | 图像宽度 | 640  |
+| height  | 图像高度 | 480  |
+
+## 摄像头绑定（Linux 设备固定）
+
+避免每次重插后摄像头编号变化：
+```text
+# 查看摄像头设备详情
+udevadm info -a -n /dev/video0 | grep -E "serial|id"
+# 创建 udev 规则固定摄像头路径
+sudo tee /etc/udev/rules.d/99-cameras.rules << 'EOF'
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="046d", ATTRS{serial}=="abc123", SYMLINK+="video_overhead"
+SUBSYSTEM=="video4linux", ATTRS{idVendor}=="046d", ATTRS{serial}=="def456", SYMLINK+="video_wrist"
+EOF
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+绑定后使用固定路径：
+```text
+--robot.cameras='{"overhead": {"type": "opencv", "index_or_path": "/dev/video_overhead"}}'
+```
+## 图像质量优化
+
+```text
+# 调整摄像头曝光（避免过暗或过曝）
+v4l2-ctl --device=/dev/video0 --set-ctrl=exposure_auto=1
+v4l2-ctl --device=/dev/video0 --set-ctrl=exposure_absolute=200
+# 调整白平衡
+v4l2-ctl --device=/dev/video0 --set-ctrl=white_balance_temperature_auto=0
+v4l2-ctl --device=/dev/video0 --set-ctrl=white_balance_temperature=4500
+```
+## 参考资料
+
+- [HuggingFace LeRobot 官方文档](https://huggingface.co/docs/lerobot)

@@ -1,0 +1,78 @@
+---
+sidebar_position: 15
+title: 4.6 组装主动臂（Leader）
+description: 4.6 组装主动臂（Leader）
+---
+
+![图](/img/tutorial/so-arm101/4-6-assemble-leader-p2-1.png)
+
+## 4.6.1 概述
+
+主动臂由人手持操控，其结构与从动臂大体相同，但腕部使用特殊手柄设计替代夹爪，方便人手握持。本文重点说明主动臂与从动臂的差异部分。
+## 4.6.2 主动臂 vs 从动臂对比
+
+| 部位 | 从动臂 | 主动臂 |
+| --- | --- | --- |
+| 关节 1-5 | 相同结构 | 相同结构，但使用不同齿轮比舵机 |
+| 末端执行器 | 夹爪（Gripper） | 手柄+扳机（Handle +Trigger） |
+| 使用方式 | 固定工作区域 | 人手持操控 |
+
+## 4.6.3 组装前准备
+
+- 6 个主动臂舵机已配置 ID（1-6），齿轮比正确（见 [4.2 认识与准备舵机](./4-2-servo-prep)）
+- Leader 特有打印件齐全：Leader Handle、Leader Holder、Follower Trigger
+- 关节 1-5 的组装与从动臂相同，参考 [4.5 组装从动臂（Follower）](./4-5-assemble-follower)
+
+## 4.6.4 关节 1-5：与从动臂相同
+
+主动臂关节 1 到关节 5 的组装步骤与从动臂完全相同，请参见 [4.5 组装从动臂（Follower）](./4-5-assemble-follower) 中关节 1-5 的步骤。
+
+关键差异：
+
+- 主动臂使用更小齿轮比的舵机（ID1、3 用 1/191，ID4、5、6 用 1/147）
+- 请确保安装的是主动臂专用舵机，不要与从动臂舵机混用。如果是零阻尼版，那么这里用的就是6个C066舵机
+## 4.6.5 主动臂特有：腕部 + 手柄组装
+
+### 安装 Leader Holder（手柄底座）
+
+1. 将 Leader Holder（手柄底座打印件）对准 ID6 舵机的舵盘
+2. 使用 4 个 M3 螺丝 固定到 ID6 舵机
+
+| 6号舵机支架（拆除残留3D打印支撑） | 6号舵机安装（4个M3螺柱） |
+| --- | --- |
+| ![图](/img/tutorial/so-arm101/4-6-assemble-leader-p4-2.png) | ![图](/img/tutorial/so-arm101/4-6-assemble-leader-p4-3.png) |
+
+### 安装扳机（Follower Trigger）
+
+扳机用于控制从动臂的夹爪开合，人用手指拨动扳机即可控制夹爪。
+
+1. 将扳机（Follower Trigger）打印件对准 ID6 舵盘安装孔
+2. 使用 4 个 M3 螺丝 固定
+
+| 扳机（活动部分）安装 | 握把（固定部分）安装 |
+| --- | --- |
+| ![图](/img/tutorial/so-arm101/4-6-assemble-leader-p5-4.png) | ![图](/img/tutorial/so-arm101/4-6-assemble-leader-p5-5.png) |
+
+主动臂组装完成效果（因减速比小，关节会轻松一些；如果是零阻尼版，就会基本无阻力，主要用来反馈关节位置）：
+
+| 主动臂正面 | 主动臂反面 |
+| --- | --- |
+| ![图](/img/tutorial/so-arm101/4-6-assemble-leader-p6-6.png) | ![图](/img/tutorial/so-arm101/4-6-assemble-leader-p6-7.png) |
+
+## 4.6.6 操作手感测试
+
+主动臂组装完成后，手持测试：
+
+1. 握持测试：手握手柄，感受是否舒适，无尖锐突出部位
+2. 扳机测试：用手指拨动扳机，检查 ID6 是否能自由转动
+3. 各关节阻力：手动活动每个关节，确认阻力适中（不能太紧，但也不能完全无阻力）
+4. 平衡感：主动臂在竖直位时，应能较容易维持姿态（由齿轮比设计保证）
+## 4.6.7 主动臂与从动臂配对
+
+将主从臂都固定到桌面后，进行空间位置配对：
+
+![图](/img/tutorial/so-arm101/4-6-assemble-leader-p7-8.png)
+
+## 参考资料
+
+- [HuggingFace SO-101 主动臂组装文档](https://huggingface.co/docs/lerobot/so101#joint-1)

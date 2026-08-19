@@ -1,0 +1,131 @@
+---
+sidebar_position: 12
+title: 4.3 查找串口设备端口号
+description: 4.3 查找串口设备端口号
+---
+
+## 4.3.1 概述
+
+在运行任何 LeRobot 命令前，需要先确定控制板对应的串口端口号，并分别识别主动臂和从动臂各自连接的端口。
+## 4.3.2 安装串口驱动（一般已自带，不需要安装）
+
+当舵机控制板连接电脑、树莓派、Jetson等上位机后，上位机会将其识别为串口设备。大部分电脑应该已自带CH340串口驱动，能够识别到舵机控制板。如果识别不到，则需要安装串口驱动。可以在这个链接下载CH340的串口驱动并安装：Mac电脑：[下载](https://www.wch.cn/downloads/CH341SER_MAC_ZIP.html) Linux：[下载](https://www.wch.cn/downloads/CH341SER_LINUX_ZIP.html) Windows：[下载](https://www.wch.cn/downloads/CH341SER_EXE.html)
+## 4.3.3 查找串口设备的方法
+
+- Mac电脑：
+```text
+ls /dev/cu.*
+```
+
+- Linux电脑（包括树莓派、Jetson）：
+```text
+ls /dev/ttyACM*
+```
+
+- Windows电脑：设备管理器是Windows系统中用于管理各种硬件设备的工具，可以轻松地通过它查看串口设备信息。
+
+操作步骤
+
+1. 打开设备管理器：右键点击“开始”菜单（或按 Win+X），选择“设备管理器”。或者，通过“控制面板” -> “系统和安全” -> “系统” -> “设备管理器”打开。
+2. 查看端口：在设备管理器窗口中，找到并展开“端口（COM和LPT）”选项
+3. 查找串口设备：在列表中，会看到已安装的串口设备以及对应的COM口号，如“COM1”、“USB-SERIAL CH340(COM4)”等
+- 通用方法：使用 LeRobot 自动识别工具LeRobot 提供了专用工具，通过"插拔对比法"自动识别端口：
+```text
+lerobot-find-port
+```
+
+操作步骤
+```text
+1. 运行命令后，程序列出当前所有可用串口
+2. 按提示拔掉舵机控制板的 USB 线，按 Enter
+3. 程序对比前后差异，确定该控制板的端口号
+4. 按提示重新插入 USB 线
+5. 记录输出的端口号
+```
+
+macOS 示例输出
+```text
+Finding all available ports for the MotorBus.
+['/dev/cu.usbmodem575E0032081', '/dev/cu.usbmodem575E0031751']
+Remove the USB cable from your MotorsBus and press Enter when done.
+[用户拔掉从动臂 USB 线，按 Enter]
+The port of this MotorsBus is /dev/cu.usbmodem575E0032081
+Reconnect the USB cable.
+```
+
+Linux（Ubuntu）示例输出
+```text
+Finding all available ports for the MotorBus.
+['/dev/ttyACM0', '/dev/ttyACM1']
+Remove the usb cable from your MotorsBus and press Enter when done.
+[用户拔掉从动臂 USB 线，按 Enter]
+The port of this MotorsBus is /dev/ttyACM1
+Reconnect the USB cable.
+```
+## 4.3.4 两路端口识别（主从臂同时连接）
+
+主从双臂需要识别两个端口，建议按以下顺序操作：第一步：识别从动臂端口
+```text
+lerobot-find-port
+# 按提示拔掉"从动臂"控制板的 USB 线
+# 记录输出的端口：FOLLOWER_PORT
+```
+
+第二步：识别主动臂端口
+```text
+lerobot-find-port
+# 按提示拔掉"主动臂"控制板的 USB 线
+# 记录输出的端口：LEADER_PORT
+```
+
+第三步：记录端口对应关系
+```text
+# 示例（macOS）
+FOLLOWER_PORT=/dev/cu.usbmodem575E0032081  # 从动臂
+LEADER_PORT=/dev/cu.usbmodem575E0031751    # 主动臂
+# 示例（Linux）
+FOLLOWER_PORT=/dev/ttyACM0                  # 从动臂
+LEADER_PORT=/dev/ttyACM1                    # 主动臂
+```
+## 4.3.5 设置 Linux 串口权限
+
+Linux 默认只有 root 用户可以访问串口设备，需要设置权限：临时权限（单次有效）
+```text
+# 替换为实际端口
+sudo chmod 666 /dev/ttyACM0
+sudo chmod 666 /dev/ttyACM1
+```
+
+永久权限（推荐）
+```text
+# 将当前用户加入 dialout 组
+sudo usermod -aG dialout $USER
+# 注销重新登录后生效
+# 验证
+groups | grep dialout
+```
+## 4.3.6 端口固定绑定（高级配置，可选）
+
+每次重启或重新插拔后，Linux 可能分配不同的端口号（ACM0/ACM1 顺序可能变化）。使用 udev 规则可以固定端口名称：
+```text
+# 查看设备序列号
+udevadm info -a -n /dev/ttyACM0 | grep serial
+# 创建规则文件
+sudo tee /etc/udev/rules.d/99-lerobot.rules << 'EOF'
+# 从动臂（替换 ATTRS{serial} 为实际序列号）
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{serial}=="your_follower_serial", SYMLINK+="ttyFollower"
+# 主动臂
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{serial}=="your_leader_serial", SYMLINK+="ttyLeader"
+EOF
+# 重新加载规则
+sudo udevadm control --reload-rules && sudo udevadm trigger
+```
+
+绑定后可以使用固定路径：
+```text
+FOLLOWER_PORT=/dev/ttyFollower
+LEADER_PORT=/dev/ttyLeader
+```
+## 参考资料
+
+- [HuggingFace SO-101 配置文档](https://huggingface.co/docs/lerobot/so101)

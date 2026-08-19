@@ -1,37 +1,44 @@
 import React from 'react';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
+import ProductPage from '@site/src/components/ProductPage';
 
 export default function WristCamera() {
   return (
-    <Layout title="腕部相机" description="腕部相机 — 1080P轻量视觉模组，灵巧操作视觉引导">
-      <main className="container margin-vert--lg" style={{maxWidth: 800}}>
-        <span style={{fontSize: '0.75rem', fontWeight: 700, color: '#10b981', textTransform: 'uppercase', letterSpacing: '0.12em'}}>相机产品</span>
-        <h1 style={{fontSize: '2.25rem', fontWeight: 900, letterSpacing: '-0.03em', marginTop: '0.5rem'}}>腕部相机</h1>
-        <p style={{fontSize: '1.05rem', color: '#64748b', lineHeight: 1.7}}>超轻量末端集成相机，仅重35g，用于灵巧操作视觉引导。</p>
-
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>技术规格</h2>
-        <table><tbody>
-          <tr><td>传感器</td><td>1/2.8" CMOS</td></tr>
-          <tr><td>分辨率</td><td>1920×1080 @ 60fps</td></tr>
-          <tr><td>视场角</td><td>90° × 60°</td></tr>
-          <tr><td>重量</td><td>仅 35g</td></tr>
-          <tr><td>对焦</td><td>8cm ~ ∞ 自动对焦</td></tr>
-          <tr><td>接口</td><td>USB 3.0 Type-C</td></tr>
-        </tbody></table>
-
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>亮点</h2>
-        <ul style={{lineHeight: 2}}>
-          <li>仅重 35g，不影响机械臂末端负载</li>
-          <li>60fps 高帧率，适配动态抓取场景</li>
-          <li>8cm 近距离自动对焦</li>
-          <li>标配 ROS2 sensor_msgs 驱动</li>
-        </ul>
-
-        <div style={{textAlign: 'right', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0'}}>
-          <Link to="/docs/cameras/wrist/overview" className="button button--primary">📖 查看教程 →</Link>
-        </div>
-      </main>
-    </Layout>
+    <ProductPage
+      title="腕部相机"
+      description="腕部相机 — 1080P 超轻量末端视觉模组，35g，灵巧操作视觉引导"
+      category="相机产品"
+      categoryTo="/docs/cameras/overview"
+      accent="#10b981"
+      tagline="超轻量末端集成视觉模组"
+      intro="仅重 35g，1080P 60fps 高帧率，8cm 近距离自动对焦，为灵巧操作与抓取提供末端视觉引导，标配 ROS2 驱动即插即用。"
+      illustration="wrist-camera"
+      keySpecs={[
+        {label: '重量', value: '仅 35g'},
+        {label: '分辨率', value: '1080P@60fps'},
+        {label: '视场角', value: '90° × 60°'},
+        {label: '接口', value: 'USB 3.0'},
+      ]}
+      highlights={[
+        {icon: '🪶', title: '超轻设计', desc: '仅 35g，几乎不影响机械臂末端负载。'},
+        {icon: '🎬', title: '高帧率', desc: '60fps 流畅画面，适配动态抓取场景。'},
+        {icon: '🔍', title: '微距对焦', desc: '8cm 近距离自动对焦，看清操作细节。'},
+        {icon: '🐍', title: 'ROS2 驱动', desc: '标配 sensor_msgs 驱动，开箱即用。'},
+      ]}
+      specs={[
+        {label: '传感器', value: '1/2.8" CMOS'},
+        {label: '分辨率', value: '1920×1080 @ 60fps'},
+        {label: '视场角', value: '90° × 60°'},
+        {label: '重量', value: '仅 35g'},
+        {label: '对焦', value: '8cm ~ ∞ 自动对焦'},
+        {label: '接口', value: 'USB 3.0 Type-C'},
+      ]}
+      docsUrl="/docs/cameras/wrist/overview"
+      docsLabel="查看教程"
+      related={[
+        {name: 'SO-ARM101 机械臂', desc: '腕部相机的推荐搭载平台', to: '/products/so-arm101'},
+        {name: '固定相机', desc: '2K 全局感知相机，覆盖工作区场景', to: '/products/fixed-camera'},
+        {name: '双相机', desc: '双目立体视觉，提供实时深度图', to: '/products/dual-camera'},
+      ]}
+    />
   );
 }

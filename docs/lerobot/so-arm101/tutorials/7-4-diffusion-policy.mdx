@@ -1,0 +1,76 @@
+---
+sidebar_position: 27
+title: 7.4 Diffusion Policy 训练
+description: 7.4 Diffusion Policy 训练
+---
+
+## 概述
+
+Diffusion Policy（扩散策略）将动作生成建模为扩散去噪过程，能够捕捉多峰分布的动作，适合处理有多种可行解决方案的任务。
+## 算法背景
+
+- 论文：[Diffusion Policy: Visuomotor Policy Learning via Action Diffusion (2023)](https://arxiv.org/abs/2303.04137)
+- 核心思路：从噪声中逐步去噪生成动作序列，类似图像扩散模型（DDPM/DDIM）
+- 优势：能处理多模态动作分布（即同一观测可以有多种合理动作）
+## 训练命令
+
+### 基础训练命令
+
+```text
+conda activate lerobot
+cd ~/lerobot
+lerobot-train \
+    --policy.type=diffusion \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \
+    --training.num_epochs=200 \
+    --training.batch_size=32 \
+    --output_dir=outputs/train/diffusion_my_task
+```
+### 完整训练命令
+
+```text
+lerobot-train \
+    --policy.type=diffusion \
+    --dataset.repo_id=YOUR_HF_USERNAME/my_dataset \
+    --policy.n_action_steps=100 \
+    --policy.horizon=16 \
+    --policy.n_obs_steps=2 \
+    --policy.num_train_timesteps=100 \
+    --policy.num_inference_steps=10 \
+    --training.num_epochs=200 \
+    --training.batch_size=32 \
+    --training.lr=1e-4 \
+    --training.use_wandb=true \
+    --output_dir=outputs/train/diffusion_my_task
+```
+## 关键参数
+
+| 参数 | 说明 | 推荐值 |
+| --- | --- | --- |
+| `--policy.type` | 算法类型 | `diffusion` |
+| `--policy.horizon` | 预测动作序列长度 | 16（标准） |
+| `--policy.n_obs_steps` | 观测历史步数 | 2 |
+| `--policy.num_train_timesteps` | 训练时扩散步数 | 100 |
+| `--policy.num_inference_steps` | 推理时扩散步数 | 10（DDIM 加速） |
+| `--training.batch_size` | 批次大小 | 32 |
+
+## ACT vs Diffusion 选择参考
+
+| 场景 | 推荐算法 | 原因 |
+| --- | --- | --- |
+| 精确放置（唯一解） | ACT | 确定性任务效果好 |
+| 绕行障碍（多种路径） | Diffusion | 多模态动作优势 |
+| 训练速度要求高 | ACT | Diffusion 推理更慢 |
+| 显存有限 | 两者相近 | 均支持 8GB |
+
+## 训练时长参考
+
+| 硬件 | 数据集规模 | 参考时间 |
+| --- | --- | --- |
+| RTX 3090（24GB） | 100 episodes | ~4-8 小时 |
+| RTX 4090（24GB） | 200 episodes | ~6-10 小时 |
+
+## 参考资料
+
+- [Diffusion Policy 原始论文](https://arxiv.org/abs/2303.04137)
+- [HuggingFace LeRobot 文档](https://huggingface.co/docs/lerobot)

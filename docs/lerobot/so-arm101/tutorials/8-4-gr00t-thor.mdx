@@ -1,0 +1,177 @@
+---
+sidebar_position: 33
+title: 8.4 GR00T N1.5 微调与 Jetson AGX Thor 部署
+description: 8.4 GR00T N1.5 微调与 Jetson AGX Thor 部署
+---
+
+## 概述
+
+本文介绍如何基于 SO-101 机械臂采集的数据集微调 NVIDIA GR00T N1.5 模型，并将其部署到 Jetson AGX Thor 边缘设备上进行推理。
+## Jetson AGX Thor 硬件规格
+
+| 规格 | 参数 |
+| --- | --- |
+| GPU 架构 | NVIDIA Blackwell |
+| 内存 | 128GB（统一内存） |
+| AI 算力 | 最高 2,070 TOPS (FP4) |
+| 功耗 | 40-130W |
+| 接口 | PCIe 5.0、USB 4、MIPI CSI |
+
+## 系统烧录
+
+### 准备工作
+
+- 下载 JetPack ISO 镜像（v38.2）
+- 准备 USB 存储设备（≥16GB）
+- 准备有线键盘（烧录过程不支持蓝牙）
+### 烧录步骤
+
+```text
+# 使用 Balena Etcher 创建可启动 USB
+# 下载地址：https://www.balena.io/etcher/
+# 将 ISO 镜像写入 USB
+# 烧录完成后插入 Jetson AGX Thor，按 USB 启动
+```
+
+烧录时间参考：约 15 分钟，需要约 25GB 磁盘空间。
+## Docker 环境（推荐）
+
+NVIDIA 提供预配置 Docker 镜像，包含所有依赖：
+```text
+# 拉取 GR00T 官方 Docker 镜像（约 40GB）
+docker pull johnnync/isaac-gr00t:r38.2.arm64-sbsa-cu130-24.04
+# 启动容器（挂载数据集和模型目录）
+docker run -it \
+    --gpus all \
+    --privileged \
+    -v /dev:/dev \
+    -v /path/to/dataset:/workspace/dataset \
+    -v /path/to/models:/workspace/models \
+    johnnync/isaac-gr00t:r38.2.arm64-sbsa-cu130-24.04
+```
+
+系统要求：CUDA 13（Jetson AGX Thor 专用）
+## USB 摄像头配置（重要）
+
+> ⚠️ Jetson 双摄像头冲突问题
+
+与 PC 相同，型号完全相同的两个 USB 摄像头无法同时在同一 USB Hub 上使用。
+
+解决方案：
+
+- 使用外接 Type-C USB Hub 连接第二个摄像头
+- 将 Type-C Hub 插入距 QSFP28 接口最近的 Type-C 端口
+```text
+# 验证摄像头连接
+ls /dev/video*
+v4l2-ctl --list-devices
+```
+## 数据采集（与 PC 端相同流程）
+
+在 Jetson 上直接采集数据或从 PC 端迁移数据集：
+```text
+# 在 Jetson 上安装 LeRobot
+source /opt/conda/bin/activate
+git clone https://github.com/huggingface/lerobot.git
+cd lerobot
+pip install -e ".[feetech]"
+# 配置舵机 ID（参见第4章）
+lerobot-setup-motors \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0
+# 校准
+lerobot-calibrate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0
+# 采集数据集
+lerobot-record \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/ttyACM1 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0},
+        "wrist": {"type": "opencv", "index_or_path": 2}
+    }' \
+    --dataset.repo_id=local/so101_groot \
+    --dataset.num_episodes=50
+```
+## GR00T N1.5 微调
+
+### 云端微调（NVIDIA Brev 推荐）
+
+由于 GR00T N1.5 微调需要大显存，推荐在云端进行：
+```text
+# 推荐 GPU：RTX A6000（48GB）或 H100
+# 不支持：V100（不支持所需 CUDA 版本）
+# 安装 isaac-groot
+git clone https://github.com/NVIDIA/Isaac-GR00T.git
+cd Isaac-GR00T
+pip install -e ".[gr00t]"
+# 微调命令
+python scripts/gr00t_finetune.py \
+    --dataset_path /workspace/dataset \
+    --output_dir /workspace/models/so101-checkpoints \
+    --embodiment_tag new_embodiment \
+    --num_epochs=100 \
+    --batch_size=8 \
+    --no-tune_diffusion_model    # 显存不足时开启此选项（约减少8GB显存）
+```
+## Jetson AGX Thor 推理部署
+
+### 启动推理服务
+
+```text
+# 推理服务启动脚本（在 Jetson 上运行）
+python scripts/inference_service.py \
+    --server \
+    --model_path ./so101-checkpoints \
+    --embodiment-tag new_embodiment
+```
+### 连接机器人执行推理
+
+```text
+# Python API 调用推理服务
+import requests
+# 假设推理服务运行在本机 8000 端口
+def run_inference(observation):
+    response = requests.post(
+        "http://localhost:8000/infer",
+        json={"observation": observation}
+    )
+    return response.json()["action"]
+```
+## 故障排除
+
+### CH34x 串口驱动安装
+
+Jetson 如果无法识别舵机控制板，安装 CH34x 驱动：
+```text
+# 下载驱动
+git clone https://github.com/WCHSoftGroup/ch341ser_linux.git
+cd ch341ser_linux
+make
+sudo make install
+# 验证
+modinfo ch341
+```
+### GPU 使用监控
+
+```text
+# 实时监控 GPU 负载
+nvidia-smi dmon -s puc
+# 或使用 tegrastats
+sudo tegrastats --interval 1000
+```
+### Python 3.12 兼容性问题
+
+> ⚠️ GR00T 在 Python 3.12 上进行 ACT 推理时不可靠，推荐使用 Python 3.10
+```text
+# 确认 Python 版本
+python --version
+# 应显示 Python 3.10.x
+```
+## 参考资料
+
+- [NVIDIA Isaac GR00T GitHub](https://github.com/NVIDIA/Isaac-GR00T)
+- [NVIDIA Jetson AGX Thor 开发者页面](https://www.nvidia.com/en-us/autonomous-machines/embedded-systems/jetson-thor/)

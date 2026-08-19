@@ -1,0 +1,159 @@
+---
+sidebar_position: 8
+title: 3.2 Ubuntu 环境安装
+description: 3.2 Ubuntu 环境安装
+---
+
+## 3.2.1 概述
+
+Ubuntu 是运行 LeRobot 的推荐系统，支持 NVIDIA GPU 加速训练，是数据采集和模型训练的首选平台。本文涵盖从 Python 环境到 CUDA 的完整安装流程。
+## 3.2.2 系统要求
+
+项目要求：
+
+| 项目 | 要求 |
+| --- | --- |
+| Ubuntu 版本 | 20.04 LTS 或 22.04 LTS（推荐） |
+| Python 版本 | 3.12 及以上（lerobot 最新版要求） |
+| NVIDIA 驱动 | ≥ 520（训练时需要） |
+| CUDA 版本 | 11.8 或 12.1（与 PyTorch 版本对应） |
+| GPU 显存 | ≥ 8GB（ACT/Diffusion）；≥ 24GB（Pi0/GR00T） |
+| 磁盘空间 | ≥ 50GB |
+## 3.2.3 安装步骤
+
+### 第一步：安装 Python 环境
+
+### 使用 conda（推荐）
+
+```text
+# 下载 Miniconda
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+# 安装
+bash Miniconda3-latest-Linux-x86_64.sh
+# 重新加载 shell
+source ~/.bashrc
+# 创建 lerobot 环境
+conda create -n lerobot python=3.12
+conda activate lerobot
+```
+### 第二步：安装 NVIDIA 驱动和 CUDA
+
+### 安装 NVIDIA 驱动
+
+```text
+# 查看推荐驱动版本
+ubuntu-drivers devices
+# 自动安装推荐驱动
+sudo ubuntu-drivers autoinstall
+# 重启系统
+sudo reboot
+# 验证安装
+nvidia-smi
+```
+### 安装 CUDA Toolkit
+
+LeRobot 推荐的 CUDA/PyTorch 版本组合：
+
+| PyTorch 版本 | CUDA 版本 | 说明 |
+| --- | --- | --- |
+| 2.3.x | 12.1 | 主流推荐 |
+| 2.1.x | 11.8 | 旧版兼容 |
+
+```text
+# 安装 PyTorch（CUDA 12.1 版本）
+pip install torch torchvision torchaudio --index-url 
+https://download.pytorch.org/whl/cu121
+# 验证 GPU 可用
+python -c "import torch; print(torch.cuda.is_available())"
+# 应输出：True
+```
+### 第三步：安装 LeRobot
+
+```text
+# 激活环境
+conda activate lerobot
+# 克隆 LeRobot 仓库
+git clone https://github.com/huggingface/lerobot.git
+cd lerobot
+# 安装 LeRobot 及飞特舵机支持
+pip install -e ".[feetech]"
+# 验证安装
+lerobot-info
+```
+### 第四步：配置串口权限
+
+Linux 下串口设备需要额外授权，否则无法访问：
+### 方式一：临时授权（每次重启后需要重新执行）
+
+```text
+sudo chmod 666 /dev/ttyACM0
+sudo chmod 666 /dev/ttyACM1
+```
+### 方式二：永久授权（推荐）
+
+```text
+# 将当前用户加入 dialout 组
+sudo usermod -aG dialout $USER
+# 注销并重新登录（或重启）使设置生效
+# 验证
+groups $USER
+# 输出中应包含 dialout
+```
+### 验证串口识别
+
+```text
+# 连接控制板后检查
+ls /dev/ttyACM*
+# 预期输出：/dev/ttyACM0  /dev/ttyACM1
+```
+### 第五步：设备文件绑定（可选）
+
+如果同时连接多个设备（机械臂 + 摄像头），建议配置 udev 规则固定设备路径：
+```text
+# 查看设备 ID
+udevadm info -a -n /dev/ttyACM0 | grep -E "idVendor|idProduct|serial"
+# 创建 udev 规则文件
+sudo nano /etc/udev/rules.d/99-lerobot.rules
+# 添加规则（示例，替换实际 ID）
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", ATTRS{idProduct}=="7523", SYMLINK+="ttyARMfollower"
+# 重新加载规则
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+```
+
+之后可以使用固定路径 /dev/ttyARMfollower 代替 /dev/ttyACM0 。
+### 第六步：摄像头配置
+
+```text
+# 检查已连接摄像头
+ls /dev/video*
+# 测试摄像头
+sudo apt install v4l-utils
+v4l2-ctl --list-devices
+```
+
+多摄像头注意事项：如果使用两个相同型号的 USB 摄像头，它们可能有相同的 VID/PID，导致每次连接端口随机分配，建议也创建 udev 规则绑定。
+## 3.2.4 完整验证
+
+```text
+# 激活环境
+conda activate lerobot
+# 查找端口
+lerobot-find-port
+# 测试舵机连接（替换端口）
+lerobot-setup-motors \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0
+```
+## 3.2.5 CUDA 环境与 PyTorch 版本参考
+
+| 用途 | 推荐配置 |
+| --- | --- |
+| ACT / Diffusion 训练 | PyTorch 2.3 + CUDA 12.1，≥8GB GPU |
+| SmolVLA 训练 | PyTorch 2.3 + CUDA 12.1，≥16GB GPU |
+| Pi0 / Pi0.5 训练 | PyTorch 2.3 + CUDA 12.1，≥24GB GPU |
+| GR00T N1.5 | CUDA 13（Jetson AGX Thor特供） |
+
+## 参考资料
+
+- [LeRobot GitHub 安装说明](https://github.com/huggingface/lerobot)

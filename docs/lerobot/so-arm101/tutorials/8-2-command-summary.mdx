@@ -1,0 +1,156 @@
+---
+sidebar_position: 31
+title: 8.2 各模型推理命令汇总
+description: 8.2 各模型推理命令汇总
+---
+
+## 概述
+
+本文汇总 LeRobot 所有主流算法在真实机械臂上的推理命令，可直接复制使用（替换端口号和模型路径）。
+
+> 说明：真实机械臂推理使用 `lerobot-record --policy.path`，`lerobot-eval` 仅用于仿真benchmark 评估。
+## ACT 模型推理
+
+```text
+conda activate lerobot
+lerobot-record \
+    --policy.path=outputs/train/act_my_task/checkpoints/last/pretrained_model \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480},
+        "wrist": {"type": "opencv", "index_or_path": 2, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --control.n_episodes=20 \
+    --repo-id=YOUR_HF_USERNAME/eval_act_my_task
+```
+
+ACT 推理特点：
+
+- 推理速度快（Transformer 前向传播）
+- 动作以 chunk 方式执行，运动较平滑
+## SmolVLA 模型推理
+
+```text
+lerobot-record \
+    --
+policy.path=outputs/train/smolvla_my_task/checkpoints/last/pretrained_model \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480},
+        "wrist": {"type": "opencv", "index_or_path": 2, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --control.n_episodes=10 \
+    --repo-id=YOUR_HF_USERNAME/eval_smolvla_my_task
+```
+
+SmolVLA 推理特点：
+
+- 支持自然语言任务描述作为输入
+- 推理时可通过语言改变任务目标
+## Pi0 模型推理
+
+```text
+lerobot-record \
+    --policy.path=outputs/train/pi0_my_task/checkpoints/last/pretrained_model \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480},
+        "wrist": {"type": "opencv", "index_or_path": 2, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --control.n_episodes=10 \
+    --repo-id=YOUR_HF_USERNAME/eval_pi0_my_task
+```
+
+Pi0 推理特点：
+
+- 推理时需要执行扩散去噪过程，速度略慢
+- 可通过减少扩散步数（num_inference_steps ）加速
+## Pi0.5 模型推理
+
+```text
+lerobot-record \
+    --
+policy.path=outputs/train/pi0fast_my_task/checkpoints/last/pretrained_model \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --control.n_episodes=10 \
+    --repo-id=YOUR_HF_USERNAME/eval_pi0fast_my_task
+```
+## WALL-OSS 模型推理
+
+```text
+lerobot-record \
+    --
+policy.path=outputs/train/walloss_my_task/checkpoints/last/pretrained_model \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --control.n_episodes=10 \
+    --repo-id=YOUR_HF_USERNAME/eval_walloss_my_task
+```
+## Diffusion Policy 模型推理
+
+```text
+lerobot-record \
+    --
+policy.path=outputs/train/diffusion_my_task/checkpoints/last/pretrained_model \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --control.n_episodes=10 \
+    --repo-id=YOUR_HF_USERNAME/eval_diffusion_my_task
+```
+## 使用 HuggingFace 上的预训练模型推理
+
+如果已将模型上传到 HuggingFace，可直接通过模型 ID 推理（自动下载）：
+```text
+lerobot-record \
+    --policy.path=YOUR_HF_USERNAME/act_my_task \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480}
+    }' \
+    --control.n_episodes=5 \
+    --repo-id=YOUR_HF_USERNAME/eval_act_my_task
+```
+## 已有训练模型快速部署
+
+如果获得了他人分享的模型权重文件（.safetensors 或 model.pt ），无需自己训练即可部署：
+```text
+# Step 1: 确认模型文件结构
+ls my_model/
+# 应包含：config.json, model.safetensors（或 model.pt）
+# Step 2: 直接推理
+lerobot-record \
+    --policy.path=./my_model \
+    --robot.type=so101_follower \
+    --robot.port=/dev/ttyACM0 \
+    --robot.cameras='{
+        "overhead": {"type": "opencv", "index_or_path": 0}
+    }' \
+    --control.n_episodes=5 \
+    --repo-id=YOUR_HF_USERNAME/eval_my_model
+```
+## 推理参数速查
+
+| 参数 | 默认值 | 说明 |
+| --- | --- | --- |
+| control.n episodes _ | 10  | 总推理次数 |
+| policy.device  | cuda  | 推理设备（ cuda / mps /cpu ） |
+| policy.use amp _ | false  | 混合精度推理（加速，可能降精度） |
+
+Mac 用户将 policy.device 设为 mps ；无 GPU 的设备设为 cpu 。
+## 参考资料
+
+- [LeRobot 真实机器人推理文档（Run inference and evaluate your policy）](https://huggingface.co/docs/lerobot/en/il_robots#run-inference-and-evaluate-your-policy)

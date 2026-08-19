@@ -1,27 +1,44 @@
 import React from 'react';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
+import ProductPage from '@site/src/components/ProductPage';
 
 export default function C044() {
   return (
-    <Layout title="ST3215 C044" description="ST3215 C044 — 高速型智能舵机，0.10s/60°">
-      <main className="container margin-vert--lg" style={{maxWidth: 800}}>
-        <span style={{fontSize: '0.75rem', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.12em'}}>舵机产品</span>
-        <h1 style={{fontSize: '2.25rem', fontWeight: 900, letterSpacing: '-0.03em', marginTop: '0.5rem'}}>ST3215 C044</h1>
-        <p style={{fontSize: '1.05rem', color: '#64748b', lineHeight: 1.7}}>高速型，优化的转速响应，适合快速运动控制场景。</p>
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>技术规格</h2>
-        <table><tbody>
-          <tr><td>扭矩</td><td>10 kg·cm</td></tr>
-          <tr><td>速度</td><td>0.10 s/60°</td></tr>
-          <tr><td>精度</td><td>0.2°</td></tr>
-          <tr><td>电压</td><td>6V - 12V</td></tr>
-          <tr><td>通信</td><td>RS485 总线</td></tr>
-          <tr><td>重量</td><td>78g</td></tr>
-        </tbody></table>
-        <div style={{textAlign: 'right', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0'}}>
-          <Link to="/docs/servos/st3215-c044" className="button button--primary">📖 查看教程 →</Link>
-        </div>
-      </main>
-    </Layout>
+    <ProductPage
+      title="ST3215 C044"
+      description="ST3215 C044 — 高速型智能总线舵机，0.10s/60°"
+      category="舵机产品"
+      categoryTo="/docs/servos/overview"
+      accent="#f59e0b"
+      tagline="高速型智能总线舵机"
+      intro="0.10s/60° 优化转速响应，适合快速分拣与动态控制场景；RS485 总线多机通信，闭环控制 + 完整状态反馈。"
+      illustration="servo"
+      keySpecs={[
+        {label: '速度', value: '0.10 s/60°'},
+        {label: '扭矩', value: '10 kg·cm'},
+        {label: '精度', value: '0.2°'},
+        {label: '重量', value: '78g'},
+      ]}
+      highlights={[
+        {icon: '⚡', title: '高速响应', desc: '0.10s/60° 转速，适合快速分拣与动态控制。'},
+        {icon: '🔌', title: 'RS485 总线', desc: '单总线最多 254 节点，简化布线。'},
+        {icon: '📊', title: '完整反馈', desc: '实时回传位置、速度、扭矩、温度。'},
+        {icon: '⚡', title: '宽压兼容', desc: '6V-12V 宽压供电，兼容 2S-3S 锂电池。'},
+      ]}
+      specs={[
+        {label: '扭矩', value: '10 kg·cm'},
+        {label: '速度', value: '0.10 s/60°'},
+        {label: '精度', value: '0.2°'},
+        {label: '电压', value: '6V - 12V'},
+        {label: '通信', value: 'RS485 总线'},
+        {label: '重量', value: '78g'},
+      ]}
+      docsUrl="/docs/servos/st3215-c044"
+      docsLabel="查看教程"
+      related={[
+        {name: 'ST3215 C018', desc: '标准型，扭矩速度均衡', to: '/products/st3215-c018'},
+        {name: 'ST3215 C046', desc: '高精度型，±0.15° 精密定位', to: '/products/st3215-c046'},
+        {name: 'SCS0009', desc: '微型舵机，5kg·cm', to: '/products/scs0009'},
+      ]}
+    />
   );
 }

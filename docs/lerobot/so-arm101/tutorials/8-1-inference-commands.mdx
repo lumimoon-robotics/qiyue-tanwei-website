@@ -1,0 +1,81 @@
+---
+sidebar_position: 30
+title: 8.1 推理命令说明
+description: 8.1 推理命令说明
+---
+
+## 概述
+
+模型训练完成后，通过 lerobot-record --policy.path 命令将模型部署到真实机械臂上运行（推理/Inference），让机器人自主执行任务。
+
+> 说明：`lerobot-eval` 用于仿真 benchmark 评估（LIBERO、Meta-World 等），**真实机械臂推理使用 `lerobot-record` + `--policy.path` 参数**。
+## 两种推理模式
+
+| 模式 | 命令 | 说明 |
+| --- | --- | --- |
+| 自主推理 | `lerobot-record --policy.path=<模型路径>` | 机器人完全自主执行，不需要人工操控主动臂 |
+| 辅助遥操作 | `lerobot-teleoperate --policy.path=<模型路径>` | 主动臂作为辅助输入，模型决定最终动作 |
+
+绝大多数场景使用自主推理模式。
+## 基础推理命令结构
+
+```text
+lerobot-record \
+    --policy.path=<模型路径或HuggingFace模型ID> \
+    --robot.type=so101_follower \
+    --robot.port=<从动臂串口端口> \
+    --eval.n_episodes=<评估次数> \
+    --repo-id=<HuggingFace数据集ID，用于保存推理记录> \
+    [--robot.cameras=<摄像头配置>]
+```
+## 核心参数说明
+
+| 参数 | 说明 | 示例 |
+| --- | --- | --- |
+| --policy.path | 模型路径（本地或 HuggingFace） | outputs/train/act_my_task/checkpoints/last/pretrained_model |
+| --robot.type | 机器人类型 | so101_follower |
+| --robot.port | 从动臂串口端口 | /dev/ttyACM0 |
+| --eval.n_episodes | 推理执行次数 | 10 |
+| --repo-id | 推理记录保存的数据集 ID | YOUR_HF_USERNAME/eval_act_my_task |
+| --robot.cameras | 摄像头配置（JSON 格式） | 同训练时摄像头配置 |
+
+## 模型路径格式
+
+### 本地训练模型
+
+```text
+--policy.path=outputs/train/act_my_task/checkpoints/last/pretrained_model
+# 或绝对路径
+--policy.path=/Users/amy/lerobot/outputs/train/act_my_task/checkpoints/last/pretrained_model
+```
+### HuggingFace 模型
+
+```text
+--policy.path=YOUR_HF_USERNAME/act_my_task
+# 或使用社区模型
+--policy.path=lerobot/act_so101_pick_place
+```
+## 推理时的摄像头配置
+
+推理时使用的摄像头配置必须与训练时一致（相机名称和分辨率完全匹配）：
+```text
+# 如果训练时用了两个摄像头
+--robot.cameras='{
+    "overhead": {"type": "opencv", "index_or_path": 0, "fps": 60, "width": 640, "height": 480},
+    "wrist": {"type": "opencv", "index_or_path": 2, "fps": 60, "width": 640, "height": 480}
+}'
+```
+
+⚠️ 如果摄像头名称或分辨率与训练时不一致，模型输出会出错
+## 推理安全注意事项
+
+⚠️ 自主推理安全须知
+
+1. 清空工作区：推理开始前确保机械臂工作范围内无人员或障碍物
+2. 准备急停：随时准备按 `Ctrl+C` 停止，或拔掉电源
+3. 首次用低速：可以配置较低的速度限制测试
+4. 观察首帧：机械臂开始运动后立即观察，如有异常立即停止
+5. 初始位置：推理前将机械臂手动归到与训练时相同的初始位置
+## 参考资料
+
+- [LeRobot 真实机器人推理文档（Run inference and evaluate your policy）](https://huggingface.co/docs/lerobot/en/il_robots#run-inference-and-evaluate-your-policy)

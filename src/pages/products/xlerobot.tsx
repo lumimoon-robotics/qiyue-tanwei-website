@@ -1,39 +1,44 @@
 import React from 'react';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import ProductPage from '@site/src/components/ProductPage';
 
 export default function Xlerobot() {
   return (
-    <Layout title="Xlerobot 家务机器人" description="Xlerobot — AI驱动的双臂服务机器人">
-      <main className="container margin-vert--lg" style={{maxWidth: 800}}>
-        <img src={useBaseUrl('img/xlerobot.png')} alt="Xlerobot" style={{width: '100%', maxHeight: 360, objectFit: 'contain', borderRadius: 12, marginBottom: '2rem'}} />
-        <span style={{fontSize: '0.75rem', fontWeight: 700, color: '#6366f1', textTransform: 'uppercase', letterSpacing: '0.12em'}}>LeRobot 开源硬件</span>
-        <h1 style={{fontSize: '2.25rem', fontWeight: 900, letterSpacing: '-0.03em', marginTop: '0.5rem'}}>Xlerobot 家务机器人</h1>
-        <p style={{fontSize: '1.05rem', color: '#64748b', lineHeight: 1.7}}>双臂协作 + 端侧 AI，自然语言指令驱动，模仿学习框架加持。</p>
-
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>技术规格</h2>
-        <table><tbody>
-          <tr><td>自由度</td><td>双臂各 7 DoF + 腰部 2 DoF（可选）</td></tr>
-          <tr><td>移动平台</td><td>Lekiwi 全向底盘</td></tr>
-          <tr><td>高度</td><td>1.45m</td></tr>
-          <tr><td>自重</td><td>~45kg</td></tr>
-          <tr><td>续航</td><td>6-8 小时</td></tr>
-          <tr><td>计算平台</td><td>Jetson Orin / 高通 RB6</td></tr>
-        </tbody></table>
-
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>亮点</h2>
-        <ul style={{lineHeight: 2}}>
-          <li>端侧 AI 推理，毫秒级场景理解</li>
-          <li>视觉-语言模型驱动自然语言交互</li>
-          <li>模仿学习框架，遥操作示教快速部署新技能</li>
-          <li>碰撞检测 + 力矩限制，安全人机协作</li>
-        </ul>
-
-        <div style={{textAlign: 'right', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0'}}>
-          <Link to="/docs/lerobot/xlerobot/quickstart" className="button button--primary">📖 查看教程 →</Link>
-        </div>
-      </main>
-    </Layout>
+    <ProductPage
+      title="Xlerobot 家务机器人"
+      description="Xlerobot — AI 驱动的双臂服务机器人，端侧推理 + 模仿学习"
+      category="LeRobot 开源硬件"
+      categoryTo="/docs/lerobot/overview"
+      accent="#6366f1"
+      tagline="AI 驱动的双臂服务机器人"
+      intro="双臂协作 + 端侧 AI 推理，视觉-语言模型驱动自然语言交互，模仿学习框架通过遥操作示教快速部署新技能。"
+      image="img/xlerobot.png"
+      keySpecs={[
+        {label: '双臂', value: '7 DoF × 2'},
+        {label: '身高', value: '1.45m'},
+        {label: '续航', value: '6-8h'},
+        {label: '计算', value: 'Jetson Orin'},
+      ]}
+      highlights={[
+        {icon: '🧠', title: '端侧 AI 推理', desc: '毫秒级场景理解，数据不出本地，保护隐私。'},
+        {icon: '💬', title: '视觉-语言交互', desc: '视觉-语言模型驱动，自然语言指令即可操控。'},
+        {icon: '🎓', title: '模仿学习', desc: '遥操作示教 + 模仿学习框架，快速部署新技能。'},
+        {icon: '🛡️', title: '安全人机协作', desc: '碰撞检测 + 力矩限制，与人类安全共处。'},
+      ]}
+      specs={[
+        {label: '自由度', value: '双臂各 7 DoF + 腰部 2 DoF（可选）'},
+        {label: '移动平台', value: 'Lekiwi 全向底盘'},
+        {label: '高度', value: '1.45m'},
+        {label: '自重', value: '~45kg'},
+        {label: '续航', value: '6-8 小时'},
+        {label: '计算平台', value: 'Jetson Orin / 高通 RB6'},
+      ]}
+      docsUrl="/docs/lerobot/xlerobot/quickstart"
+      docsLabel="查看教程"
+      related={[
+        {name: 'Lekiwi 底盘', desc: 'Xlerobot 的移动底座，提供全向移动能力', to: '/products/lekiwi'},
+        {name: '双相机', desc: '双目立体视觉，为机器人提供深度感知', to: '/products/dual-camera'},
+        {name: 'AmazingHand 灵巧手', desc: '16 自由度灵巧手，适配精细家务操作', to: '/products/amazinghand'},
+      ]}
+    />
   );
 }

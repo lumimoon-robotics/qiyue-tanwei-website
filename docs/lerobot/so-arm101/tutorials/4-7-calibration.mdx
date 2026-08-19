@@ -1,0 +1,116 @@
+---
+sidebar_position: 16
+title: 4.7 运动范围校准
+description: 4.7 运动范围校准
+---
+
+## 4.7.1 概述
+
+校准是将机械臂各关节的物理位置与软件坐标系对齐的过程。只有正确校准后，主动臂才能准确控制从动臂，且训练出的神经网络才能在不同机器人之间迁移。
+## 4.7.2 前提条件
+
+在运行本文命令前，须已完成：
+
+舵机 ID 编号（1-6）机械臂已组装完成，全部 6 个舵机串联接入串口端口号已确认
+## 4.7.3 校准从动臂
+
+### 启动lerobot
+
+```text
+conda activate lerobot
+```
+### 运行校准命令
+
+```text
+lerobot-calibrate \
+    --robot.type=so101_follower \
+    --robot.port=/dev/cu.usbmodem5B141149011   # ← 替换为你的从动臂所连接的舵机控制板的端口号
+```
+### 校准流程
+
+脚本会引导你将机械臂移动到特定的参考姿态：先移动到中位，按回车结束；再依次转动各关节到上下限位，再按回车结束。中位会写入舵机的EEPROM中，上下限位则只会保存在电脑的json文件中。
+
+![图](/img/tutorial/so-arm101/4-7-calibration-p2-1.png)
+
+如果已经校准过了，运行该命令会提示你是否要重新校准。如果不重新校准，直接按enter即可；如果需要重新校准，则先按c，再按enter。
+
+![图](/img/tutorial/so-arm101/4-7-calibration-p3-2.png)
+
+### 参考校准姿态
+
+中位（Home Position）：
+
+![图](/img/tutorial/so-arm101/4-7-calibration-p3-3.png)
+
+视频演示（从动臂完整校准流程）：
+
+![图](/img/tutorial/so-arm101/4-7-calibration-p4-4.png)
+
+## 4.7.4 校准主动臂
+
+```text
+lerobot-calibrate \
+    --teleop.type=so101_leader \
+    --teleop.port=/dev/cu.usbmodem5B141114621   # ← 替换为你的主动臂所连接的舵机控制板的端口号
+```
+
+流程与从动臂校准相同，按脚本提示操作即可。
+## 4.7.5 校准文件位置
+
+校准结果保存在本地：
+```text
+# 校准文件默认路径
+~/.lerobot/calibration/
+├── so101_follower_<port>.json     # 从动臂校准文件
+└── so101_leader_<port>.json       # 主动臂校准文件
+```
+
+可以查看校准文件内容：
+```text
+cat ~/.lerobot/calibration/so101_follower_*.json
+```
+
+如果没有在对应的路径下，可以通过以下命令查找对应的路径：
+```text
+find ~ -type f -name "my_leader_arm.json" 2>/dev/null
+find ~ -type f -name "my_follower_arm.json" 2>/dev/null
+```
+
+示例内容：
+```text
+{
+  "motor_names": ["base", "shoulder", "elbow", "wrist_flex", "wrist_roll", "gripper"],
+  "start_pos": [1024, 2048, 1024, 2048, 2048, 2048],
+  "end_pos": [3072, 3072, 3072, 3072, 3072, 3072],
+  "calib_mode": ["DEGREE", "DEGREE", ...]
+}
+```
+## 4.7.6 重新校准
+
+以下情况需要重新校准：
+
+- 更换了任何舵机
+- 改变了机械结构（如重新安装舵盘）
+- 发现遥操作时主从同步不准确
+- 在不同电脑上使用同一个机械臂重新运行相同的校准命令即可，旧的校准文件会被覆盖。
+## 4.7.7 常见 Bug 及解决
+
+### Bug 1：校准时某关节无法移动到参考位置
+
+现象：手动移动关节到指定位置时遇到机械限位原因：组装时舵盘初始角度安装有偏差
+
+解决：
+
+1. 断电后手动松开该关节舵盘螺丝
+2. 将关节移动到尽量接近中位
+3. 重新拧紧舵盘螺丝
+4. 重新运行校准
+### Bug 2：校准后遥操作仍有偏差
+
+现象：主动臂移到某位置，从动臂到达不同位置原因：两套机械臂的零位校准不同步解决：对主动臂和从动臂分别重新校准，确保使用相同参考姿态
+### Bug 3：校准文件冲突
+
+现象：更换了端口后原校准失效原因：校准文件与端口名绑定解决：用新端口重新运行校准，或手动重命名校准文件
+## 参考资料
+
+- [HuggingFace SO-101 校准文档](https://huggingface.co/docs/lerobot/so101)

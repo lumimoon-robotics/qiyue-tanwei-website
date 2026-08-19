@@ -1,27 +1,44 @@
 import React from 'react';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
+import ProductPage from '@site/src/components/ProductPage';
 
 export default function SCS0009() {
   return (
-    <Layout title="SCS0009" description="SCS0009 — 微型智能舵机，5kg·cm，高速响应">
-      <main className="container margin-vert--lg" style={{maxWidth: 800}}>
-        <span style={{fontSize: '0.75rem', fontWeight: 700, color: '#f59e0b', textTransform: 'uppercase', letterSpacing: '0.12em'}}>舵机产品</span>
-        <h1 style={{fontSize: '2.25rem', fontWeight: 900, letterSpacing: '-0.03em', marginTop: '0.5rem'}}>SCS0009</h1>
-        <p style={{fontSize: '1.05rem', color: '#64748b', lineHeight: 1.7}}>微型智能总线舵机，极致轻量与高速响应，适合空间严苛的精密应用。</p>
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>技术规格</h2>
-        <table><tbody>
-          <tr><td>扭矩</td><td>5 kg·cm</td></tr>
-          <tr><td>速度</td><td>0.08 s/60°</td></tr>
-          <tr><td>精度</td><td>0.1°</td></tr>
-          <tr><td>电压</td><td>5V - 8.4V</td></tr>
-          <tr><td>通信</td><td>RS485 总线</td></tr>
-          <tr><td>重量</td><td>32g</td></tr>
-        </tbody></table>
-        <div style={{textAlign: 'right', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0'}}>
-          <Link to="/docs/servos/scs0009" className="button button--primary">📖 查看教程 →</Link>
-        </div>
-      </main>
-    </Layout>
+    <ProductPage
+      title="SCS0009"
+      description="SCS0009 — 微型智能总线舵机，5kg·cm，高速响应"
+      category="舵机产品"
+      categoryTo="/docs/servos/overview"
+      accent="#f59e0b"
+      tagline="微型高速智能总线舵机"
+      intro="极致轻量与高速响应，仅重 32g，0.08s/60° 转速，适合空间严苛的精密应用，如微型手指关节与云台。"
+      illustration="servo-mini"
+      keySpecs={[
+        {label: '重量', value: '32g'},
+        {label: '速度', value: '0.08 s/60°'},
+        {label: '精度', value: '0.1°'},
+        {label: '扭矩', value: '5 kg·cm'},
+      ]}
+      highlights={[
+        {icon: '🪶', title: '极致轻量', desc: '仅 32g，适合空间严苛的精密微型应用。'},
+        {icon: '⚡', title: '高速响应', desc: '0.08s/60° 转速，快速到位。'},
+        {icon: '🔌', title: 'RS485 总线', desc: '单总线多机通信，简化布线。'},
+        {icon: '📊', title: '完整反馈', desc: '实时回传位置、速度、扭矩、温度。'},
+      ]}
+      specs={[
+        {label: '扭矩', value: '5 kg·cm'},
+        {label: '速度', value: '0.08 s/60°'},
+        {label: '精度', value: '0.1°'},
+        {label: '电压', value: '5V - 8.4V'},
+        {label: '通信', value: 'RS485 总线'},
+        {label: '重量', value: '32g'},
+      ]}
+      docsUrl="/docs/servos/scs0009"
+      docsLabel="查看教程"
+      related={[
+        {name: 'ST3215 C046', desc: '高精度型，±0.15° 精密定位', to: '/products/st3215-c046'},
+        {name: 'ST3215 C044', desc: '高速型，0.10s/60°', to: '/products/st3215-c044'},
+        {name: 'ST3215 C018', desc: '标准型，扭矩速度均衡', to: '/products/st3215-c018'},
+      ]}
+    />
   );
 }

@@ -1,0 +1,118 @@
+---
+sidebar_position: 4
+title: 相机 SDK 使用
+description: 启月探微相机产品 Python SDK 使用指南 — 安装、采集、ROS2 发布
+keywords: [相机SDK, OpenCV, ROS2, 图像采集, qiyue-camera-sdk]
+last_update:
+  date: 2026-08-17
+  author: Qiyue Team
+---
+
+# 🎥 相机 SDK 使用
+
+本指南适用于启月探微全系列相机产品（腕部相机、固定相机、双相机），
+介绍 Python SDK 的安装、图像采集与 ROS2 集成。
+
+## 1. 安装 SDK
+
+```bash
+pip install qiyue-camera-sdk
+```
+
+## 2. 快速采集
+
+```python
+#!/usr/bin/env python3
+""" 相机快速采集示例 """
+
+from qiyue_camera import Camera
+
+# 自动检测并连接第一台相机
+cam = Camera(auto_connect=True)
+
+print(f"设备: {cam.get_device_name()}")
+print(f"分辨率: {cam.get_resolution()}")
+print(f"帧率: {cam.get_fps()}")
+
+# 采集一帧
+frame = cam.read()
+print(f"帧尺寸: {frame.shape}")
+
+# 保存图像
+cam.save("snapshot.png")
+
+# 关闭
+cam.close()
+print("✅ 采集完成")
+```
+
+## 3. 视频流 + OpenCV 处理
+
+```python
+#!/usr/bin/env python3
+""" 实时视频流 + OpenCV 处理 """
+
+import cv2
+from qiyue_camera import Camera
+
+cam = Camera(auto_connect=True)
+
+while True:
+    frame = cam.read()  # numpy array (BGR)
+
+    # 灰度化
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    cv2.imshow("qiyue camera", gray)
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+cam.close()
+cv2.destroyAllWindows()
+```
+
+## 4. 双相机深度图
+
+```python
+#!/usr/bin/env python3
+""" 双相机深度图示例 """
+
+from qiyue_camera import StereoCamera
+
+stereo = StereoCamera(auto_connect=True)
+
+# 获取左右目 + 深度图
+left, right, depth = stereo.read()
+
+# depth 为 float32 深度图，单位为米
+print(f"深度范围: {depth.min():.2f}m ~ {depth.max():.2f}m")
+```
+
+## 5. ROS2 集成
+
+```bash
+# 启动腕部相机节点
+ros2 launch qiyue_camera wrist.launch.py
+
+# 启动双相机节点（含深度图）
+ros2 launch qiyue_camera dual.launch.py
+```
+
+查看话题：
+
+```bash
+# 图像话题
+ros2 topic list | grep camera
+
+# 实时查看图像
+ros2 run rqt_image_view rqt_image_view
+
+# 查看深度图
+ros2 topic echo /camera/depth/image_raw --once
+```
+
+## 📖 下一步
+
+- [腕部相机](./wrist/overview) — 产品规格与应用场景
+- [固定相机](./fixed/overview) — 全局感知方案
+- [双相机](./dual/overview) — 双目立体视觉方案

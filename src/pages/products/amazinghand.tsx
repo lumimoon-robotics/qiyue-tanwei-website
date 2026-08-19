@@ -1,39 +1,44 @@
 import React from 'react';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
-import useBaseUrl from '@docusaurus/useBaseUrl';
+import ProductPage from '@site/src/components/ProductPage';
 
 export default function AmazingHand() {
   return (
-    <Layout title="AmazingHand 灵巧手" description="AmazingHand — 五指触觉灵巧手，16自由度，120触觉单元">
-      <main className="container margin-vert--lg" style={{maxWidth: 800}}>
-        <img src={useBaseUrl('img/amazinghand.png')} alt="AmazingHand" style={{width: '100%', maxHeight: 360, objectFit: 'contain', borderRadius: 12, marginBottom: '2rem'}} />
-        <span style={{fontSize: '0.75rem', fontWeight: 700, color: '#6366f1', textTransform: 'uppercase', letterSpacing: '0.12em'}}>LeRobot 开源硬件</span>
-        <h1 style={{fontSize: '2.25rem', fontWeight: 900, letterSpacing: '-0.03em', marginTop: '0.5rem'}}>AmazingHand 灵巧手</h1>
-        <p style={{fontSize: '1.05rem', color: '#64748b', lineHeight: 1.7}}>16 自由度仿生灵巧手，120 个触觉单元，力控精度 ±0.1N。</p>
-
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>技术规格</h2>
-        <table><tbody>
-          <tr><td>自由度</td><td>16（拇指4+食指3+中指3+无名指3+小指3）</td></tr>
-          <tr><td>指尖力范围</td><td>0-15N</td></tr>
-          <tr><td>触觉分辨率</td><td>24点/指尖（共120个触觉单元）</td></tr>
-          <tr><td>力控精度</td><td>±0.1N</td></tr>
-          <tr><td>自重</td><td>~1.1kg</td></tr>
-          <tr><td>通信接口</td><td>CAN / RS485 / USB</td></tr>
-        </tbody></table>
-
-        <h2 style={{marginTop: '2.5rem', fontSize: '1.4rem', fontWeight: 700}}>亮点</h2>
-        <ul style={{lineHeight: 2}}>
-          <li>5指16自由度仿人手运动学</li>
-          <li>120个触觉单元实时力反馈</li>
-          <li>兼容SO-ARM101、UR、Kinova等主流机械臂</li>
-          <li>全开源CAD + 驱动 + 控制算法</li>
-        </ul>
-
-        <div style={{textAlign: 'right', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #e2e8f0'}}>
-          <Link to="/docs/lerobot/amazinghand/overview" className="button button--primary">📖 查看教程 →</Link>
-        </div>
-      </main>
-    </Layout>
+    <ProductPage
+      title="AmazingHand 灵巧手"
+      description="AmazingHand — 五指触觉灵巧手，16 自由度，120 触觉单元"
+      category="LeRobot 开源硬件"
+      categoryTo="/docs/lerobot/overview"
+      accent="#6366f1"
+      tagline="五指触觉灵巧手 · 16 自由度"
+      intro="5 指 16 自由度仿人手运动学，120 个触觉单元实时力反馈，力控精度 ±0.1N，兼容 SO-ARM101、UR、Kinova 等主流机械臂。"
+      image="img/amazinghand.png"
+      keySpecs={[
+        {label: '自由度', value: '16'},
+        {label: '触觉单元', value: '120 个'},
+        {label: '力控精度', value: '±0.1N'},
+        {label: '自重', value: '~1.1kg'},
+      ]}
+      highlights={[
+        {icon: '✋', title: '仿人运动学', desc: '5 指 16 自由度，拇指 4 自由度，复现人手灵活抓取。'},
+        {icon: '🖐️', title: '触觉反馈', desc: '120 个触觉单元实时反馈，实现精细力控操作。'},
+        {icon: '🔌', title: '即插即用', desc: 'CAN / RS485 / USB 多接口，兼容主流机械臂。'},
+        {icon: '📐', title: '全开源', desc: 'CAD + 驱动 + 控制算法全部开源，二次开发自由。'},
+      ]}
+      specs={[
+        {label: '自由度', value: '16（拇指4 + 食指3 + 中指3 + 无名指3 + 小指3）'},
+        {label: '指尖力范围', value: '0-15N'},
+        {label: '触觉分辨率', value: '24 点/指尖（共 120 个触觉单元）'},
+        {label: '力控精度', value: '±0.1N'},
+        {label: '自重', value: '~1.1kg'},
+        {label: '通信接口', value: 'CAN / RS485 / USB'},
+      ]}
+      docsUrl="/docs/lerobot/amazinghand/overview"
+      docsLabel="查看教程"
+      related={[
+        {name: 'SO-ARM101 机械臂', desc: 'AmazingHand 的推荐搭载平台', to: '/products/so-arm101'},
+        {name: 'Xlerobot 家务机器人', desc: '双臂服务机器人，适配精细家务操作', to: '/products/xlerobot'},
+        {name: 'ST3215 C046', desc: '高精度舵机，可用于灵巧手关节驱动', to: '/products/st3215-c046'},
+      ]}
+    />
   );
 }

@@ -1,0 +1,74 @@
+---
+sidebar_position: 2
+title: 1.2 SO-101 机械臂简介
+description: 1.2 SO-101 机械臂简介
+---
+
+## 1.2.1 概述
+
+SO-101 是由 The Robot Studio 与 Hugging Face 联合推出的新一代开源机械臂，在 SO-100 基础上全面升级，具备更好的走线方案、更易组装的结构和更新的电机配置，是目前最适合具身智能研究入门的低成本开源平台之一。
+## 1.2.2 SO-101 vs SO-100 改进对比
+
+| 对比项 | SO-100 | SO-101 |
+| --- | --- | --- |
+| 走线方案 | 外露走线 | 内嵌走线，更整洁 |
+| 组装难度 | 较高 | 降低，改进了连接件设计 |
+| 电机型号 | STS3215 | STS3215（更新配置） |
+| 文档支持 | 基础 | 完整，含视频教程 |
+| 社区支持 | 一般 | 活跃，Discord 专属频道 |
+
+## 1.2.3 主从臂设计概念
+
+SO-101 采用主从臂（Leader-Follower）遥操作架构：
+```text
+主动臂（Leader）  ──→  信号传输  ──→  从动臂（Follower）
+   人手持操控                          实际执行任务
+```
+
+- 从动臂（Follower Arm）：执行实际任务，安装在工作区域，带夹爪
+- 主动臂（Leader Arm）：由人手持控制，电机轻量化设计便于操作这种设计使得数据采集更加自然直观，采集的轨迹数据可直接用于模型训练。
+## 1.2.4  机械臂自由度
+
+SO-101 共有 6 个自由度（6-DOF）：
+
+| 关节编号 | 位置 | 功能 |
+| --- | --- | --- |
+| 关节 1 | 底座 | 肩部旋转（Shoulder Pan） |
+| 关节 2 | 肩部 | 肩部抬升（Shoulder Lift） |
+| 关节 3 | 肘部 | 肘部弯曲（Elbow Flex） |
+| 关节 4 | 腕部 | 腕部弯曲（Wrist Flex） |
+| 关节 5 | 腕部 | 腕部旋转（Wrist Roll） |
+| 关节 6 | 夹爪 | 夹爪开合（Gripper） |
+
+## 1.2.5 典型应用场景
+
+- 拾取与放置（Pick and Place）
+- 抓握任务（Grasping）
+- 物品分拣
+- 桌面操作任务
+- 具身智能研究数据采集
+## 1.2.6 扩展平台：XLeRobot
+
+XLeRobot 是在 SO-101 基础上构建的完整双臂移动机器人平台：
+```text
+XLeRobot 组成：
+├── 2x SO-101 机械臂（双臂）
+├── LeKiwi 移动底盘
+├── 电池供电系统
+├── RGB 腕部相机
+└── 深度相机（带 2 自由度云台）
+```
+
+支持 VR 遥操作，可用于更复杂的移动操作任务研究。
+## 1.2.7 相关视频资源
+
+| 内容 | 链接 |
+| --- | --- |
+| SO-101 官方演示视频 | [Hugging Face SO-101 页面](https://huggingface.co/docs/lerobot/so101) |
+| TheRobotStudio GitHub | [SO-ARM100 仓库](https://github.com/TheRobotStudio/SO-ARM100) |
+| LeRobot Discord | [社区讨论](https://discord.gg/s3KuuzsPFb) |
+
+## 参考资料
+
+- [HuggingFace SO-101 文档](https://huggingface.co/docs/lerobot/so101)
+- [TheRobotStudio SO-ARM100 GitHub](https://github.com/TheRobotStudio/SO-ARM100)

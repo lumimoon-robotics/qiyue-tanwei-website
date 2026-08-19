@@ -1,0 +1,134 @@
+---
+sidebar_position: 7
+title: 3.1 Mac 环境安装
+description: 3.1 Mac 环境安装
+---
+
+## 3.1.1 概述
+
+本文介绍在 macOS 系统上安装 LeRobot 及 SO-101 所需全部依赖的步骤，包括 Python 环境、LeRobot 框架和飞特舵机 SDK。
+## 3.1.2 系统要求
+
+项目要求
+
+macOS 版本12 Monterey 及以上
+
+Python 版本3.12 及以上（lerobot 最新版要求）
+
+磁盘空间≥ 10GB（含依赖和数据集）
+
+内存≥ 8GB（16GB 推荐）
+
+注意：Mac 不支持 NVIDIA GPU，因此 Mac 适合用于遥操作和数据采集，不适合本地训练模型（训练需要 Linux + NVIDIA GPU）。
+## 3.1.3 安装步骤
+
+### 第一步：安装 Python 环境
+
+### 方式一：使用 conda（推荐）
+
+```text
+# 安装 miniforge（Apple Silicon 用户使用 arm64 版本）
+# 下载地址：https://github.com/conda-forge/miniforge
+# 安装后创建 lerobot 虚拟环境（需 Python 3.12，3.10/3.11 会报版本不兼容错误）
+conda create -n lerobot python=3.12
+conda activate lerobot
+```
+### 方式二：使用系统 Python + venv
+
+```text
+# 创建虚拟环境
+python3 -m venv ~/lerobot_env
+source ~/lerobot_env/bin/activate
+```
+### 第二步：安装 LeRobot
+
+```text
+# 确保已激活虚拟环境，然后克隆仓库
+git clone https://github.com/huggingface/lerobot.git
+cd lerobot
+# 安装 LeRobot 及飞特舵机支持（SO-101 必须）
+pip install -e ".[feetech]"
+# 验证安装
+lerobot-info
+```
+
+预期输出：
+```text
+LeRobot version: x.x.x
+...
+```
+### 第三步：安装串口驱动
+
+macOS 通常不需要额外安装 CH34x 驱动，但如果控制板无法被识别，请安装以下驱动：
+```text
+# 检查是否识别到控制板（列出所有 USB 串口设备）
+ls /dev/cu.*
+```
+
+如果没有输出，下载并安装 CH34x 驱动：
+
+- 下载地址：[GitHub - CH34x macOS 驱动](https://github.com/WCHSoftGroup/ch34xser_macos)
+### 第四步：验证安装
+
+### 连接控制板测试
+
+```text
+# 激活环境
+conda activate lerobot
+# 查找串口端口
+lerobot-find-port
+```
+
+当出现如下操作时，拔掉对应的USB接口，然后按enter；系统会识别出对应的端口号；再接入对应的USB接口，供后续调试使用。运行命令后的提示：
+
+![图](/img/tutorial/so-arm101/3-1-mac-install-p4-1.png)
+
+拔掉端口号，并按enter后的提示：
+
+![图](/img/tutorial/so-arm101/3-1-mac-install-p4-2.png)
+
+按照提示操作，应能成功识别出控制板端口（如 /dev/tty.usbmodem5AE70493411 ）。
+## 3.1.4 macOS 特殊注意事项
+
+### 摄像头权限
+
+macOS 需要手动授权摄像头访问：
+
+1. 打开「系统设置」→「隐私与安全性」→「相机」
+2. 确认终端应用（Terminal/iTerm）已被授权访问相机
+### Apple Silicon（M1/M2/M3）用户
+
+- 使用 miniforge 而非 anaconda （原生 arm64 支持）
+- 部分训练依赖可能需要通过 Rosetta 运行：
+```text
+# 如需在 Rosetta 模式下运行（x86_64）
+arch -x86_64 conda create -n lerobot_x86 python=3.12
+```
+### 串口权限
+
+macOS 无需额外设置串口权限，当前登录用户可直接访问 USB 串口设备。若遇到权限问题，请检查「系统设置 → 隐私与安全性」中终端应用是否已获得相关授权，或尝试重新插拔控制板。
+## 3.1.5 常见问题
+
+Q：运行 `lerobot-find-port` 提示找不到设备？A：检查 USB-C 线是否为数据线（非纯充电线）；尝试不同 USB 端口；重新插拔控制板。
+
+Q：pip install 时报错 `requires a different Python: x.x not in '>=3.12'`？A：Python 版本过低，需新建 Python 3.12 环境：
+```text
+conda create -n lerobot python=3.12
+conda activate lerobot
+cd ~/lerobot
+pip install -e ".[feetech]"
+```
+
+Q：pip install 时遇到其他依赖冲突？A：确保使用 Python 3.12，且虚拟环境是干净的（全新创建）：
+```text
+conda create -n lerobot_new python=3.12
+conda activate lerobot_new
+cd ~/lerobot
+pip install -e ".[feetech]"
+```
+
+Q：Mac 可以训练模型吗？A：理论上可以用 CPU 训练，但速度极慢，不实用。推荐在 Mac 上采集数据集，然后上传到云 GPU 平台（如 NVIDIA Brev）训练。
+## 参考资料
+
+- [LeRobot GitHub 安装说明](https://github.com/huggingface/lerobot)
+- [HuggingFace LeRobot 官方文档](https://huggingface.co/docs/lerobot/index)
